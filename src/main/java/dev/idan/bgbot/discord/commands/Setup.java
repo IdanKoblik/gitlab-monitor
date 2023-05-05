@@ -30,6 +30,6 @@ public class Setup extends ListenerAdapter {
 
         tokenRepository.insert(token);
 
-        event.reply(token.getSecretToken()).setEphemeral(true).queue();
+        event.reply(token.getSecretToken() + " \nhttps://beta-gitlab.linuxwiz.net/webhook").setEphemeral(true).queue();
     }
 }
