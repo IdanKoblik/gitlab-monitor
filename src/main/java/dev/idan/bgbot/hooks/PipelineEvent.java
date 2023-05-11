@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
+import static dev.idan.bgbot.utils.PartialImage.getEmail;
+
 @Component
 public class PipelineEvent implements HookType {
 
@@ -23,6 +25,9 @@ public class PipelineEvent implements HookType {
         String duration = objectNode.get("object_attributes").get("duration").asText();
         String pipelineId = objectNode.get("object_attributes").get("id").asText();
         String url = instanceURL + "/" + projectName + "/-/pipelines/" + pipelineId;
+        String userMail = objectNode.get("user").get("email").asText();
+
+        String avatar = getEmail(userAvatar, userMail, token);
 
         EmbedBuilder builder = new EmbedBuilder();
         builder.setAuthor(userName, userLink, userAvatar);

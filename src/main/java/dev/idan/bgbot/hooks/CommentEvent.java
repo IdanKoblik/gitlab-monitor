@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
+import static dev.idan.bgbot.utils.PartialImage.getEmail;
+
 @Component
-public class CommentEvent implements HookType{
+public class CommentEvent extends PipelineEvent implements HookType{
 
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
         // analyze the json objects
@@ -20,6 +22,9 @@ public class CommentEvent implements HookType{
         String noteableType = objectNode.get("object_attributes").get("noteable_type").asText();
         String note = objectNode.get("object_attributes").get("note").asText();
         String url = objectNode.get("object_attributes").get("url").asText();
+        String userMail = objectNode.get("user").get("email").asText();
+
+        String avatar = getEmail(userAvatar, userMail, token);
 
         EmbedBuilder builder = new EmbedBuilder();
         if (!noteableType.equals("Issue"))
@@ -29,7 +34,7 @@ public class CommentEvent implements HookType{
         String issueIid = objectNode.get("issue").get("iid").asText();
         builder.setTitle(userName + " Commented on " + noteableType + ": " + issueTitle + " (#" + issueIid + ")", url);
 
-        builder.setAuthor(userName, userLink, userAvatar);
+        builder.setAuthor(userName, userLink, avatar);
         builder.setDescription(note);
         builder.setFooter(projectName);
         builder.setTimestamp(Instant.now());

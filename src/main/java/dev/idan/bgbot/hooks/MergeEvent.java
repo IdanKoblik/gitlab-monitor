@@ -8,10 +8,13 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
+import static dev.idan.bgbot.utils.PartialImage.getEmail;
+
 @Component
 public class MergeEvent implements HookType{
 
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
+        // how to get gravatar from user
         // analyze the json objects
         String userName = objectNode.get("user").get("username").asText();
         String userLink = instanceURL + "/" + userName;
@@ -21,10 +24,14 @@ public class MergeEvent implements HookType{
         String action = objectNode.get("object_attributes").get("action").asText();
         String mergeUrl = objectNode.get("object_attributes").get("url").asText();
         String projectName = objectNode.get("project").get("path_with_namespace").asText();
+        String userMail = objectNode.get("user").get("email").asText();
+
+        String avatar = getEmail(userAvatar, userMail, token);
 
         channel.sendMessageEmbeds(
                 new EmbedBuilder()
-                        .setAuthor(userName, userLink, userAvatar)
+                        .setAuthor(userName, userLink, avatar)
+                        // add to the footer gravatar of user (https://www.gravatar.com/avatar/ + md5 of email)
                         .setFooter(projectName)
                         .setTitle(userName + " " + action + " merge request from " + sourceBranch + " to " + targetBranch, mergeUrl)
                         .setTimestamp(Instant.now())

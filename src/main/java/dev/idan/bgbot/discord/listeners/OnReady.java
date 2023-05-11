@@ -1,6 +1,7 @@
 package dev.idan.bgbot.discord.listeners;
 
 import dev.idan.bgbot.repository.TokenRepository;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -17,8 +18,7 @@ public class OnReady extends ListenerAdapter {
     @Autowired
     TokenRepository tokenRepository;
 
-    @Override
-    public void onReady(ReadyEvent event) {
+    public void onReady(ReadyEvent event, TextChannel channel) {
         if (run) return;
         run = true;
 

@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @Component
-public class PushEvent implements HookType {
+public class PushEvent extends PartialImage implements HookType {
 
     @Override
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
@@ -25,9 +25,12 @@ public class PushEvent implements HookType {
         // analyze the json objects
         String userName = objectNode.get("user_username").asText();
         String userLink = instanceURL + "/" + userName;
+        String userMail = objectNode.get("user_email").asText();
         String userAvatar = objectNode.get("user_avatar").asText();
         String projectName = objectNode.get("project").get("path_with_namespace").asText();
         String ref = objectNode.get("ref").asText();
+
+        String avatar = getEmail(userAvatar, userMail, token);
 
         List<JsonNode> commits = iteratorToList(objectNode.get("commits").elements());
         StringBuilder sb = new StringBuilder();
@@ -48,9 +51,9 @@ public class PushEvent implements HookType {
         channel.sendMessageEmbeds(
                 new EmbedBuilder()
                         .setTitle(String.format("Pushed to %s", target))
-                        .setAuthor(userName, userLink, userAvatar)
+                        .setAuthor(userName, userLink, avatar)
                         .setDescription(sb.toString())
-                        .setFooter(projectName)
+                        .setFooter(projectName, avatar)
                         .setTimestamp(Instant.now())
                         .build()
         ).queue();
