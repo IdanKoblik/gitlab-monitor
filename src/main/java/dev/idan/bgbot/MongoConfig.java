@@ -56,6 +56,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         return Collections.singleton("dev.idan.bgbot.entities");
     }
 
+
     @Bean
     @SneakyThrows
     public JDA jda() {
