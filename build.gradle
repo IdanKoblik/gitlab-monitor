@@ -6,7 +6,6 @@ plugins {
 }
 
 group = 'dev.idan'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
@@ -21,7 +20,7 @@ repositories {
 
 shadowJar {
     destinationDirectory.set(file('output'))
-    archiveFileName.set("bgbot.jar")
+    archiveFileName.set("server.jar")
 }
 
 springBoot {

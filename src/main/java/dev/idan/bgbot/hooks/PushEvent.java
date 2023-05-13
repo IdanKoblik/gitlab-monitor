@@ -3,6 +3,8 @@ package dev.idan.bgbot.hooks;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.entities.Token;
+import dev.idan.bgbot.utils.PartialImage;
+import lombok.SneakyThrows;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import java.util.List;
 @Component
 public class PushEvent extends PartialImage implements HookType {
 
+    @SneakyThrows
     @Override
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
         if (channel == null) {
@@ -47,6 +50,8 @@ public class PushEvent extends PartialImage implements HookType {
         }
 
         String target = getTarget(ref);
+
+        System.out.println(ref);
 
         channel.sendMessageEmbeds(
                 new EmbedBuilder()
