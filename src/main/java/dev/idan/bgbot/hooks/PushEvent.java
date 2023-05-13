@@ -58,7 +58,7 @@ public class PushEvent extends PartialImage implements HookType {
                         .setTitle(String.format("Pushed to %s", target))
                         .setAuthor(userName, userLink, avatar)
                         .setDescription(sb.toString())
-                        .setFooter(projectName, avatar)
+                        .setFooter(projectName)
                         .setTimestamp(Instant.now())
                         .build()
         ).queue();

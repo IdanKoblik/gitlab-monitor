@@ -1,5 +1,6 @@
 package dev.idan.bgbot.hooks;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.entities.Token;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -7,6 +8,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Optional;
 
 import static dev.idan.bgbot.utils.PartialImage.getEmail;
 
@@ -30,7 +32,7 @@ public class PipelineEvent implements HookType {
         String avatar = getEmail(userAvatar, userMail, token);
 
         EmbedBuilder builder = new EmbedBuilder();
-        builder.setAuthor(userName, userLink, userAvatar);
+        builder.setAuthor(userName, userLink, avatar);
         builder.setFooter(projectName);
         builder.setTimestamp(Instant.now());
 
@@ -45,8 +47,8 @@ public class PipelineEvent implements HookType {
         }
 
         if (status.equals("failed")) {
-            String failedReason = objectNode.get("builds").get("failure_reason").asText();
-            builder.setTitle("Pipeline " + "#" + iid + " of branch " + ref + " by " + userName + " has been failed", url);
+            String failedReason = Optional.ofNullable(objectNode.get("builds"))
+                    .map(obj -> obj.get("failure_reason")).map(JsonNode::asText).orElse("No reason provided");            builder.setTitle("Pipeline " + "#" + iid + " of branch " + ref + " by " + userName + " has been failed", url);
             builder.setDescription(failedReason);
             channel.sendMessageEmbeds(builder.build()).queue();
         }
