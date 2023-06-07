@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OnLeave extends ListenerAdapter {
+public class GuildLeaveListener extends ListenerAdapter {
 
     @Autowired
     TokenRepository tokenRepository;
