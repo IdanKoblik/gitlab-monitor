@@ -2,15 +2,16 @@ package dev.idan.bgbot.hooks;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.entities.Token;
-import dev.idan.bgbot.utils.PartialImage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
+import static dev.idan.bgbot.utils.PartialImage.getEmail;
+
 @Component
-public class IssueEvent extends PartialImage implements HookType {
+public class IssueEvent implements HookType {
 
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
         // analyze the json objects
