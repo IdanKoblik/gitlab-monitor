@@ -1,6 +1,6 @@
 package dev.idan.bgbot;
 
-import dev.idan.bgbot.discord.listeners.ReadyListener;
+import dev.idan.bgbot.listeners.ReadyListener;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.session.ReadyEvent;

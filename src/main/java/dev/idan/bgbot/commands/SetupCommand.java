@@ -1,4 +1,4 @@
-package dev.idan.bgbot.discord.commands;
+package dev.idan.bgbot.commands;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;

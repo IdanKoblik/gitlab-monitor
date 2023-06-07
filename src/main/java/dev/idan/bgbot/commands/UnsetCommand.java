@@ -1,4 +1,4 @@
-package dev.idan.bgbot.discord.commands;
+package dev.idan.bgbot.commands;
 
 import dev.idan.bgbot.repository.TokenRepository;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

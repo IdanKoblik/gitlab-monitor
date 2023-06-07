@@ -1,4 +1,4 @@
-package dev.idan.bgbot.discord.listeners;
+package dev.idan.bgbot.listeners;
 
 import dev.idan.bgbot.repository.TokenRepository;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
