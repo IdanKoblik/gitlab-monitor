@@ -9,6 +9,10 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 public class Token {
 
+    @Getter
+    @Setter
+    public boolean useGravatar = false;
+
     @Id
     @MongoId
     @Field("_id")

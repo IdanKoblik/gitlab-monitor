@@ -1,22 +1,19 @@
-package dev.idan.bgbot.discord.commands;
+package dev.idan.bgbot.listeners;
 
 import dev.idan.bgbot.repository.TokenRepository;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Unset extends ListenerAdapter {
+public class ChannelDeleteListener extends ListenerAdapter {
 
     @Autowired
     TokenRepository tokenRepository;
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("unset")) return;
-
+    public void onChannelDelete(ChannelDeleteEvent event) {
         tokenRepository.deleteByGuildID(event.getGuild().getIdLong());
-        event.reply("Ok").queue();
     }
 }

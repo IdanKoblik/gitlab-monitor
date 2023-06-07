@@ -1,6 +1,6 @@
 package dev.idan.bgbot;
 
-import dev.idan.bgbot.discord.listeners.OnReady;
+import dev.idan.bgbot.listeners.ReadyListener;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -25,7 +25,7 @@ public class BgbotApplication {
         jda.getRegisteredListeners().forEach(System.out::println);
 
         jda.awaitReady();
-        context.getBean(OnReady.class).onReady(new ReadyEvent(jda));
+        context.getBean(ReadyListener.class).onReady(new ReadyEvent(jda));
     }
 
 }

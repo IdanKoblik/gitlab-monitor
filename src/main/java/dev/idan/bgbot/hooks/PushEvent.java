@@ -3,7 +3,6 @@ package dev.idan.bgbot.hooks;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.entities.Token;
-import dev.idan.bgbot.utils.PartialImage;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -14,8 +13,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static dev.idan.bgbot.utils.PartialImage.getEmail;
+
 @Component
-public class PushEvent extends PartialImage implements HookType {
+public class PushEvent implements HookType {
 
     @SneakyThrows
     @Override

@@ -11,7 +11,7 @@ import java.time.Instant;
 import static dev.idan.bgbot.utils.PartialImage.getEmail;
 
 @Component
-public class CommentEvent extends PipelineEvent implements HookType{
+public class CommentEvent implements HookType{
 
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
         // analyze the json objects

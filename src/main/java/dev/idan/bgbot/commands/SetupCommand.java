@@ -1,4 +1,4 @@
-package dev.idan.bgbot.discord.commands;
+package dev.idan.bgbot.commands;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class Setup extends ListenerAdapter {
+public class SetupCommand extends ListenerAdapter {
 
     @Autowired
     TokenRepository tokenRepository;

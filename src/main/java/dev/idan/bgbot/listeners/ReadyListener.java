@@ -1,4 +1,4 @@
-package dev.idan.bgbot.discord.listeners;
+package dev.idan.bgbot.listeners;
 
 import dev.idan.bgbot.repository.TokenRepository;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OnReady extends ListenerAdapter {
+public class ReadyListener extends ListenerAdapter {
 
     private boolean run = false;
 
