@@ -1,5 +1,5 @@
 
-BgBot is an open source discord  gitlab project monitor providing option to monitor you gitlab projects events
+Gitlab-monitor is an open source discord  gitlab project monitor providing option to monitor you gitlab projects events
 
 ## Setup
 
