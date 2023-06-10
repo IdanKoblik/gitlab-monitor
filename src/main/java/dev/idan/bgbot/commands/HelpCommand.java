@@ -20,9 +20,9 @@ public class HelpCommand extends ListenerAdapter {
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         event.replyEmbeds(
                 new EmbedBuilder()
-                        .setAuthor("BgBot - How to use", "https://github.com/BETAIDK/bgbot/edit/main/README.md"
+                        .setAuthor("Gitlab monitor - How to use", "https://github.com/BETAIDK/gitlab-monitor/edit/main/README.md"
                                 , event.getJDA().getSelfUser().getAvatarUrl())
-                        .setTitle("Here's a little documentation for how to use bgbot.")
+                        .setTitle("Here's a little documentation for how to use gitlab monitor.")
                         .setDescription (
                                         """
                                         ```
@@ -37,7 +37,7 @@ public class HelpCommand extends ListenerAdapter {
                                         inside the secret token secction
                                         ```
                                         ```
-                                        3. Done! enjoy BgBot and if you find any bug or have
+                                        3. Done! enjoy gitlab monitor and if you find any bug or have
                                         any suggestion feel free to mail me (idankob@gmail.com)
                                         ```
                                         """
