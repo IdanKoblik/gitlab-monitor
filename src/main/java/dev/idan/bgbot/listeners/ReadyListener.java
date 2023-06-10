@@ -30,7 +30,7 @@ public class ReadyListener extends ListenerAdapter {
                 "unset", "remove channel from bgbot")
         );
         CommandData help = (Commands.slash(
-                "help", "bgbot - docs"
+                "help", "gitlab-monitor - docs"
         ));
 
         event.getJDA().upsertCommand(unset).queue();
