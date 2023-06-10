@@ -3,7 +3,6 @@ package dev.idan.bgbot.hooks;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.entities.Token;
-import lombok.SneakyThrows;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.springframework.stereotype.Component;
@@ -13,12 +12,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static dev.idan.bgbot.utils.PartialImage.getEmail;
-
 @Component
 public class PushEvent implements HookType {
 
-    @SneakyThrows
     @Override
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
         if (channel == null) {
@@ -29,12 +25,11 @@ public class PushEvent implements HookType {
         // analyze the json objects
         String userName = objectNode.get("user_username").asText();
         String userLink = instanceURL + "/" + userName;
-        String userMail = objectNode.get("user_email").asText();
         String userAvatar = objectNode.get("user_avatar").asText();
         String projectName = objectNode.get("project").get("path_with_namespace").asText();
         String ref = objectNode.get("ref").asText();
-
-        String avatar = getEmail(userAvatar, userMail, token);
+        String after = objectNode.get("after").asText();
+        String before = objectNode.get("before").asText();
 
         List<JsonNode> commits = iteratorToList(objectNode.get("commits").elements());
         StringBuilder sb = new StringBuilder();
@@ -52,17 +47,37 @@ public class PushEvent implements HookType {
 
         String target = getTarget(ref);
 
-        System.out.println(ref);
-
-        channel.sendMessageEmbeds(
-                new EmbedBuilder()
-                        .setTitle(String.format("Pushed to %s", target))
-                        .setAuthor(userName, userLink, avatar)
-                        .setDescription(sb.toString())
-                        .setFooter(projectName)
-                        .setTimestamp(Instant.now())
-                        .build()
-        ).queue();
+        if (after.equals("0000000000000000000000000000000000000000")) {
+            channel.sendMessageEmbeds(
+                    new EmbedBuilder()
+                            .setTitle(String.format("Branch %s was deleted", target))
+                            .setAuthor(userName, userLink, userAvatar)
+                            .setDescription(sb.toString())
+                            .setFooter(projectName)
+                            .setTimestamp(Instant.now())
+                            .build()
+            ).queue();
+        } else if (before.equals("0000000000000000000000000000000000000000")) {
+            channel.sendMessageEmbeds(
+                    new EmbedBuilder()
+                            .setTitle(String.format("Branch %s was created", target))
+                            .setAuthor(userName, userLink, userAvatar)
+                            .setDescription(sb.toString())
+                            .setFooter(projectName)
+                            .setTimestamp(Instant.now())
+                            .build()
+            ).queue();
+        }else {
+            channel.sendMessageEmbeds(
+                    new EmbedBuilder()
+                            .setTitle(String.format("Pushed to %s", target))
+                            .setAuthor(userName, userLink, userAvatar)
+                            .setDescription(sb.toString())
+                            .setFooter(projectName)
+                            .setTimestamp(Instant.now())
+                            .build()
+            ).queue();
+        }
     }
 
     static String getTarget(String ref) {
@@ -70,7 +85,7 @@ public class PushEvent implements HookType {
             return String.format("branch %s", ref.replace("refs/heads/", ""));
         else if (ref.startsWith("refs/tags"))
             return String.format("tag %s", ref.replace("refs/tags/", ""));
-        else return ref;
+        return ref;
     }
 
     static <T> List<T> iteratorToList(Iterator<T> iter) {
@@ -81,4 +96,3 @@ public class PushEvent implements HookType {
         return list;
     }
 }
-
