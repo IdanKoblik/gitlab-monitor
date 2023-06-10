@@ -18,11 +18,6 @@ repositories {
     mavenCentral()
 }
 
-shadowJar {
-    destinationDirectory.set(file('output'))
-    archiveFileName.set("server.jar")
-}
-
 springBoot {
     mainClass = "dev.idan.bgbot.BgbotApplication"
 }
