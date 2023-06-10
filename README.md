@@ -1,16 +1,16 @@
 
-BgBot is an open source discord  gitlab project monitor providing option to monitor you gitlab projects events
+Gitlab-monitor is an open source discord gitlab project monitor providing option to monitor you gitlab projects events
 
 ## Setup
 
-to setup BgBot on your discord server you need to:
+to setup gitlab-monitor on your discord server you need to:
 
 1. write in any channel /setup and provide on which channel you want to get updates of your project
 
 2. the discord bot will respone with secret token and url that you need to put inside webhook token section in the settings of your project
 the url that you given put inside thr url section and the secret token inside the secret token secction
 
-3. Done! enjoy BgBot and if you find any bug or have any suggestion feel free to mail me
+3. Done! enjoy gitlab-monitor and if you find any bug or have any suggestion feel free to mail me
 
 
 
