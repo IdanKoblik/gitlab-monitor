@@ -1,4 +1,4 @@
-package dev.idan.bgbot;
+package dev.idan.bgbot.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -6,7 +6,6 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import io.github.cdimascio.dotenv.Dotenv;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -59,10 +58,17 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Bean
     @SneakyThrows
     public JDA jda() {
-        Dotenv env = Dotenv.load();
-        return JDABuilder.createDefault(env.get("TOKEN"))
+        return JDABuilder.createDefault(configData().token())
                 .setActivity(Activity.playing("with gitlab api"))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
+    }
+
+    @Bean
+    @SneakyThrows
+    public ConfigData configData() {
+        ObjectMapper mapper = new ObjectMapper();
+        File json = new File("config.json");
+        return mapper.readValue(json, ConfigData.class);
     }
 }

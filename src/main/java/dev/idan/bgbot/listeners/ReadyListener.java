@@ -1,7 +1,6 @@
 package dev.idan.bgbot.listeners;
 
 import dev.idan.bgbot.repository.TokenRepository;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -18,21 +17,24 @@ public class ReadyListener extends ListenerAdapter {
     @Autowired
     TokenRepository tokenRepository;
 
-    public void onReady(ReadyEvent event, TextChannel channel) {
+    public void onReady(ReadyEvent event) {
         if (run) return;
         run = true;
 
-        System.out.println("test");
         CommandData setup = (Commands.slash(
                         "setup", "configure the bgbot as you like")
                 .addOption(OptionType.CHANNEL, "channel", "The channel that you want to get updates on", true)
         );
 
         CommandData unset = (Commands.slash(
-                "unset", "soon")
+                "unset", "remove channel from bgbot")
         );
+        CommandData help = (Commands.slash(
+                "help", "bgbot - docs"
+        ));
 
         event.getJDA().upsertCommand(unset).queue();
         event.getJDA().upsertCommand(setup).queue();
+        event.getJDA().upsertCommand(help).queue();
     }
 }
