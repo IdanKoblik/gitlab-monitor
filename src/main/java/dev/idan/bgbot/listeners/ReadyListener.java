@@ -28,14 +28,13 @@ public class ReadyListener extends ListenerAdapter {
                 .addOption(OptionType.CHANNEL, "channel", "The channel that you want to get updates on", true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
-
         CommandData unset = (Commands.slash(
                 "unset", "remove channel from bgbot")
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
         CommandData help = (Commands.slash(
-                "help", "gitlab-monitor - docs"
-        ));
+                "help", "gitlab-monitor - docs")
+        );
 
         event.getJDA().upsertCommand(unset).queue();
         event.getJDA().upsertCommand(setup).queue();

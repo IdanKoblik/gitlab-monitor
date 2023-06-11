@@ -3,6 +3,7 @@ package dev.idan.bgbot.hooks;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.entities.Token;
+import dev.idan.bgbot.utils.PartialImage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.springframework.stereotype.Component;
@@ -26,10 +27,12 @@ public class PushEvent implements HookType {
         String userName = objectNode.get("user_username").asText();
         String userLink = instanceURL + "/" + userName;
         String userAvatar = objectNode.get("user_avatar").asText();
+        String userMail = objectNode.get("user_email").asText();
         String projectName = objectNode.get("project").get("path_with_namespace").asText();
         String ref = objectNode.get("ref").asText();
         String after = objectNode.get("after").asText();
         String before = objectNode.get("before").asText();
+        String avatar = PartialImage.getEmail(userAvatar, userMail, token);
 
         List<JsonNode> commits = iteratorToList(objectNode.get("commits").elements());
         StringBuilder sb = new StringBuilder();
@@ -51,7 +54,7 @@ public class PushEvent implements HookType {
             channel.sendMessageEmbeds(
                     new EmbedBuilder()
                             .setTitle(String.format("Branch %s was deleted", target))
-                            .setAuthor(userName, userLink, userAvatar)
+                            .setAuthor(userName, userLink, avatar)
                             .setDescription(sb.toString())
                             .setFooter(projectName)
                             .setTimestamp(Instant.now())
