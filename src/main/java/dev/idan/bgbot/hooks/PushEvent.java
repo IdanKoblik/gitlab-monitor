@@ -70,7 +70,7 @@ public class PushEvent implements HookType {
                             .setTimestamp(Instant.now())
                             .build()
             ).queue();
-        }else {
+        } else {
             channel.sendMessageEmbeds(
                     new EmbedBuilder()
                             .setTitle(String.format("Pushed to %s", target))
@@ -85,9 +85,9 @@ public class PushEvent implements HookType {
 
     static String getTarget(String ref) {
         if (ref.startsWith("refs/heads/"))
-            return String.format("branch %s", ref.replace("refs/heads/", ""));
+            return String.format("%s", ref.replace("refs/heads/", ""));
         else if (ref.startsWith("refs/tags"))
-            return String.format("tag %s", ref.replace("refs/tags/", ""));
+            return String.format("%s", ref.replace("refs/tags/", ""));
         return ref;
     }
 

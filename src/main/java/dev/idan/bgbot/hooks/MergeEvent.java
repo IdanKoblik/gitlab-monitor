@@ -30,7 +30,6 @@ public class MergeEvent implements HookType{
         channel.sendMessageEmbeds(
                 new EmbedBuilder()
                         .setAuthor(userName, userLink, avatar)
-                        // add to the footer gravatar of user (https://www.gravatar.com/avatar/ + md5 of email)
                         .setFooter(projectName)
                         .setTitle(userName + " " + action + " merge request from " + sourceBranch + " to " + targetBranch, mergeUrl)
                         .setTimestamp(Instant.now())
