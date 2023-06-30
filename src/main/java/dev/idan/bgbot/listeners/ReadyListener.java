@@ -34,6 +34,7 @@ public class ReadyListener extends ListenerAdapter {
         );
         CommandData help = (Commands.slash(
                 "help", "gitlab-monitor - docs")
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
 
         event.getJDA().upsertCommand(unset).queue();
