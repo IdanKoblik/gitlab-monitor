@@ -18,6 +18,8 @@ public class HelpCommand extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        if (!event.getName().equals("help")) return;
+
         event.replyEmbeds(
                 new EmbedBuilder()
                         .setAuthor("Gitlab monitor - How to use", "https://github.com/BETAIDK/gitlab-monitor/edit/main/README.md"

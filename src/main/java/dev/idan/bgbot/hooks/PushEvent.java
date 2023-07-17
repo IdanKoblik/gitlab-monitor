@@ -64,7 +64,7 @@ public class PushEvent implements HookType {
             channel.sendMessageEmbeds(
                     new EmbedBuilder()
                             .setTitle(String.format("Branch %s was created", target))
-                            .setAuthor(userName, userLink, userAvatar)
+                            .setAuthor(userName, userLink, avatar)
                             .setDescription(sb.toString())
                             .setFooter(projectName)
                             .setTimestamp(Instant.now())
@@ -74,7 +74,7 @@ public class PushEvent implements HookType {
             channel.sendMessageEmbeds(
                     new EmbedBuilder()
                             .setTitle(String.format("Pushed to %s", target))
-                            .setAuthor(userName, userLink, userAvatar)
+                            .setAuthor(userName, userLink, avatar)
                             .setDescription(sb.toString())
                             .setFooter(projectName)
                             .setTimestamp(Instant.now())
