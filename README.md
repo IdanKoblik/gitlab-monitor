@@ -1,16 +1,16 @@
 
 Gitlab-monitor is an open source discord gitlab project monitor providing option to monitor you gitlab projects events
 
-## Setup
+# Getting started
 
-to setup gitlab-monitor on your discord server you need to:
+* Follow the following steps to set up the gitlab monitor without any problems.
 
-1. write in any channel /setup and provide on which channel you want to get updates of your project
+## Discord
 
-2. the discord bot will respone with secret token and url that you need to put inside webhook token section in the settings of your project
-the url that you given put inside thr url section and the secret token inside the secret token secction
-
-3. Done! enjoy gitlab-monitor and if you find any bug or have any suggestion feel free to mail me
+### 1. [Invite](https://discord.com/oauth2/authorize?client_id=1096899961867730964&scope=bot) the bot into your discord server.
+### 2. Write in any channel the "/setup" command and provide which channel you would like to get notifications from the bot.
+### 3. After you write the command the bot will response with a token and a link.After that put the link and the token inside the settings of your project.
+### 4. Done! Now you can enjoy the features of the Git monitor.
 
 
 
