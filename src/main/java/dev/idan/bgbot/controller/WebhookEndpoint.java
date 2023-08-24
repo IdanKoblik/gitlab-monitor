@@ -49,7 +49,7 @@ public class WebhookEndpoint {
                           @RequestHeader("X-Gitlab-Token") String secretToken) {
         Optional<Token> tokenOptional = secretToken == null ? Optional.empty() : tokenRepository.findById(secretToken);
         if (tokenOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Secret token must be specified");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Secret discordToken must be specified");
         }
 
         Token token = tokenOptional.get();
