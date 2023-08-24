@@ -36,6 +36,13 @@ public class Token {
     @Setter
     private long guildID;
 
+    @Override
+    public String toString() {
+        return "Token{" +
+                "channelID=" + channelID +
+                '}';
+    }
+
     @JsonCreator
     public Token() {
     }

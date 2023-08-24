@@ -15,6 +15,6 @@ public class GuildLeaveListener extends ListenerAdapter {
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
         if (!event.getJDA().getUsers().contains(event.getJDA().getSelfUser())) return;
-        tokenRepository.deleteAll();
+        tokenRepository.deleteByGuildID(event.getGuild().getIdLong());
     }
 }

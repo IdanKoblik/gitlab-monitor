@@ -23,13 +23,18 @@ public class ReadyListener extends ListenerAdapter {
         if (run) return;
         run = true;
 
-        CommandData setup = (Commands.slash(
-                        "init", "configure the Gitlab monitor as you wish")
+        CommandData init = (Commands.slash(
+                "init", "configure the Gitlab monitor as you wish")
                 .addOption(OptionType.CHANNEL, "channel", "The channel that you want to get updates on", true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
-        CommandData unset = (Commands.slash(
+        CommandData remove = (Commands.slash(
                 "remove", "disconnects channel from the Gitlab monitor")
+                .addOption(OptionType.CHANNEL, "channel", "The channel that you want to disconnect from the Gitlab monitor", true)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
+        );
+        CommandData tokens = (Commands.slash(
+                "tokens", "get all the tokens that are connected to the Gitlab monitor")
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
         CommandData help = (Commands.slash(
@@ -37,8 +42,9 @@ public class ReadyListener extends ListenerAdapter {
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
 
-        event.getJDA().upsertCommand(unset).queue();
-        event.getJDA().upsertCommand(setup).queue();
+        event.getJDA().upsertCommand(remove).queue();
+        event.getJDA().upsertCommand(init).queue();
+        event.getJDA().upsertCommand(tokens).queue();
         event.getJDA().upsertCommand(help).queue();
     }
 }

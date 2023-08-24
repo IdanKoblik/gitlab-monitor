@@ -14,6 +14,6 @@ public class ChannelDeleteListener extends ListenerAdapter {
 
     @Override
     public void onChannelDelete(ChannelDeleteEvent event) {
-        tokenRepository.deleteByGuildID(event.getGuild().getIdLong());
+        tokenRepository.deleteByChannelID(event.getChannel().getIdLong());
     }
 }

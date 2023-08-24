@@ -2,6 +2,7 @@ package dev.idan.bgbot.commands;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.unions.GuildChannelUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -18,14 +19,14 @@ public class InitCommand extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("setup")) return;
+        if (!event.getName().equals("init")) return;
 
         GuildChannelUnion channel = event.getOption("channel").getAsChannel();
-        long channelID = channel.getIdLong();
+        if (channel.getType() != ChannelType.TEXT) return;
 
         Token token = new Token();
         token.setSecretToken(UUID.randomUUID().toString().trim());
-        token.setChannelID(channelID);
+        token.setChannelID(channel.getIdLong());
         token.setGuildID(channel.getGuild().getIdLong());
 
         tokenRepository.insert(token);
