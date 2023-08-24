@@ -19,6 +19,4 @@ public interface TokenRepository extends MongoRepository<Token, String> {
     void deleteByChannelID(long id);
 
     boolean existsByChannelID(long id);
-
-    List<Token> findAllByGuildID(long id);
 }
