@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class SetupCommand extends ListenerAdapter {
+public class InitCommand extends ListenerAdapter {
 
     @Autowired
     TokenRepository tokenRepository;

@@ -24,16 +24,16 @@ public class ReadyListener extends ListenerAdapter {
         run = true;
 
         CommandData setup = (Commands.slash(
-                        "setup", "configure the bgbot as you like")
+                        "init", "configure the Gitlab monitor as you wish")
                 .addOption(OptionType.CHANNEL, "channel", "The channel that you want to get updates on", true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
         CommandData unset = (Commands.slash(
-                "unset", "remove channel from bgbot")
+                "remove", "disconnects channel from the Gitlab monitor")
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
         CommandData help = (Commands.slash(
-                "help", "gitlab-monitor - docs")
+                "help", "Gitlab monitor documentation")
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
 

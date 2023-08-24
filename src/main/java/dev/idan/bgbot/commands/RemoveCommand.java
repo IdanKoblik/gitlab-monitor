@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UnsetCommand extends ListenerAdapter {
+public class RemoveCommand extends ListenerAdapter {
 
     @Autowired
     TokenRepository tokenRepository;

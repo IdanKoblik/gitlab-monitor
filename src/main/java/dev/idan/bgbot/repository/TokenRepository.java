@@ -10,5 +10,4 @@ public interface TokenRepository extends MongoRepository<Token, String> {
 
     @DeleteQuery
     void deleteByGuildID(long id);
-
 }
