@@ -33,10 +33,6 @@ public class ReadyListener extends ListenerAdapter {
                 .addOption(OptionType.CHANNEL, "channel", "The channel that you want to disconnect from the Gitlab monitor", true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
-        CommandData tokens = (Commands.slash(
-                "tokens", "get all the tokens that are connected to the Gitlab monitor")
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
-        );
         CommandData help = (Commands.slash(
                 "help", "Gitlab monitor documentation")
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
@@ -44,7 +40,6 @@ public class ReadyListener extends ListenerAdapter {
 
         event.getJDA().upsertCommand(remove).queue();
         event.getJDA().upsertCommand(init).queue();
-        event.getJDA().upsertCommand(tokens).queue();
         event.getJDA().upsertCommand(help).queue();
     }
 }
