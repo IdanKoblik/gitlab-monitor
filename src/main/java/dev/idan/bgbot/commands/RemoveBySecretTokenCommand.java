@@ -19,7 +19,7 @@ public class RemoveBySecretTokenCommand extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("removeBySecretToken")) return;
+        if (!event.getName().equals("removebysecrettoken")) return;
 
         String secretToken = Optional.of(event.getOption("secret-token").getAsString()).orElse(null);
         GuildChannelUnion channel = event.getOption("channel").getAsChannel();
