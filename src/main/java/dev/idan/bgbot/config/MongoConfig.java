@@ -58,7 +58,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Bean
     @SneakyThrows
     public JDA jda() {
-        return JDABuilder.createDefault(configData().token())
+        return JDABuilder.createDefault(configData().discordToken())
                 .setActivity(Activity.playing("with gitlab api"))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
