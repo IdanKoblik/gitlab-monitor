@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.utils.PartialImage;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -47,8 +49,13 @@ public class PipelineEvent implements HookType {
 
         if (status.equals("failed")) {
             String failedReason = Optional.ofNullable(objectNode.get("builds"))
-                    .map(obj -> obj.get("failure_reason")).map(JsonNode::asText).orElse("No reason provided");            builder.setTitle("Pipeline " + "#" + iid + " of branch " + ref + " by " + userName + " has been failed", url);
-            builder.setDescription(failedReason);
+                    .map(obj -> obj.get("failure_reason")).map(JsonNode::asText).orElse("No reason provided");
+            builder.setTitle("Pipeline " + "#" + iid + " of branch " + ref + " by " + userName + " has been failed", url);
+
+            Role role = channel.getGuild().getRoleById(token.getNotifyRoleID());
+            builder.setDescription("Reason: " + failedReason + "\n");
+            if (role != null) builder.appendDescription(role.getAsMention());
+
             channel.sendMessageEmbeds(builder.build()).queue();
         }
     }

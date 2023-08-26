@@ -22,6 +22,7 @@ public class InitCommand extends ListenerAdapter {
         if (!event.getName().equals("init")) return;
 
         GuildChannelUnion channel = event.getOption("channel").getAsChannel();
+        if (channel.getType() != ChannelType.TEXT) return;
 
         Token token = new Token();
         token.setSecretToken(UUID.randomUUID().toString().trim());

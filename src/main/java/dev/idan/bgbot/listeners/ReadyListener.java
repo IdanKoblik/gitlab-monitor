@@ -37,9 +37,23 @@ public class ReadyListener extends ListenerAdapter {
                 "help", "Gitlab monitor documentation")
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
+        CommandData notify = (Commands.slash(
+                "notify", "The bot will mention a selected role when a pipeline fails")
+                .addOption(OptionType.ROLE, "role", "The role that you would like to get mention when pipeline fails", true)
+                .addOption(OptionType.STRING, "secret-token", "The secret token that you got when you ran the init command (use /tokens to find all the tokens)", true)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
+        );
+        CommandData removeNotify = (Commands.slash(
+                "removenotify", "The bot will stop mentioning a selected role when a pipeline fails")
+                .addOption(OptionType.ROLE, "role", "The role that you would like to stop mention when pipeline fails", true)
+                .addOption(OptionType.STRING, "secret-token", "The secret token that you got when you ran the init command (use /tokens to find all the tokens)", true)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
+        );
+        CommandData tokens = (Commands.slash(
+                "tokens", "Get all the tokens that are connected to this channel")
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
+        );
 
-        event.getJDA().upsertCommand(remove).queue();
-        event.getJDA().upsertCommand(init).queue();
-        event.getJDA().upsertCommand(help).queue();
+        event.getJDA().updateCommands().addCommands(init, remove, help, notify, removeNotify, tokens).queue();
     }
 }
