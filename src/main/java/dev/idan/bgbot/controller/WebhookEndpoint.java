@@ -28,6 +28,9 @@ public class WebhookEndpoint {
     PushEvent pushEvent;
 
     @Autowired
+    TagEvent tagEvent;
+
+    @Autowired
     IssueEvent issueEvent;
 
     @Autowired
@@ -57,6 +60,7 @@ public class WebhookEndpoint {
         String objectKind = objectNode.get("object_kind").asText();
         HookType handler = switch (objectKind) {
             case "push" -> pushEvent;
+            case "tag_push" -> tagEvent;
             case "issue" -> issueEvent;
             case "note" -> commentEvent;
             case "merge_request" -> mergeEvent;

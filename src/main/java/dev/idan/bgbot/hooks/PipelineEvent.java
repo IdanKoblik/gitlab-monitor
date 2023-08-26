@@ -17,6 +17,11 @@ import java.util.Optional;
 public class PipelineEvent implements HookType {
 
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
+        if (channel == null) {
+            System.out.println("Log channel was not found");
+            return;
+        }
+
         // analyze the json objects
         String projectName = objectNode.get("project").get("path_with_namespace").asText();
         String userName = objectNode.get("user").get("username").asText();
