@@ -19,6 +19,8 @@ public interface TokenRepository extends MongoRepository<Token, String> {
     @DeleteQuery
     void deleteByNotifyRoleID(long notifyRoleID);
 
+    void deleteBySecretToken(String secretToken);
+
     boolean existsByChannelID(long channelID);
 
     boolean existsByNotifyRoleID(long notifyRoleID);

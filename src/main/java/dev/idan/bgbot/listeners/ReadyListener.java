@@ -53,7 +53,13 @@ public class ReadyListener extends ListenerAdapter {
                 "tokens", "Get all the tokens that are connected to this channel")
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
         );
+        CommandData removeBySecretToken = (Commands.slash(
+                "removeBySecretToken", "Disconnects a channel from the Gitlab monitor by the secret token")
+                .addOption(OptionType.STRING, "secret-token", "The secret token that you got when you ran the init command (use /tokens to find all the tokens)", true)
+                .addOption(OptionType.CHANNEL, "channel", "The channel that you want to disconnect from the Gitlab monitor", true)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR))
+        );
 
-        event.getJDA().updateCommands().addCommands(init, remove, help, notify, removeNotify, tokens).queue();
+        event.getJDA().updateCommands().addCommands(init, remove, help, notify, removeNotify, tokens, removeBySecretToken).queue();
     }
 }

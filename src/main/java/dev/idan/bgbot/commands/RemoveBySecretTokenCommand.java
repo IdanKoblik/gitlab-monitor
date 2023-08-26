@@ -2,7 +2,8 @@ package dev.idan.bgbot.commands;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.unions.GuildChannelUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +12,18 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class RemoveNotifyCommand extends ListenerAdapter {
+public class RemoveBySecretTokenCommand extends ListenerAdapter {
 
     @Autowired
     TokenRepository tokenRepository;
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("removenotify")) return;
+        if (!event.getName().equals("removeBySecretToken")) return;
 
-        Role role = Optional.of(event.getOption("role").getAsRole()).orElse(null);
         String secretToken = Optional.of(event.getOption("secret-token").getAsString()).orElse(null);
+        GuildChannelUnion channel = event.getOption("channel").getAsChannel();
+        if (channel.getType() != ChannelType.TEXT) return;
 
         Optional<Token> tokenOptional = tokenRepository.findById(secretToken);
 
@@ -30,13 +32,13 @@ public class RemoveNotifyCommand extends ListenerAdapter {
             return;
         }
 
-        if (tokenOptional.get().getNotifyRoleID() != role.getIdLong()) {
-            event.reply("This role is not connected to the secret token.").setEphemeral(true).queue();
+        if (tokenOptional.get().getChannelID() != channel.getIdLong()) {
+            event.reply("This channel is not connected to the secret token.").setEphemeral(true).queue();
             return;
         }
 
-        tokenRepository.deleteByNotifyRoleID(role.getIdLong());
+        tokenRepository.deleteBySecretToken(secretToken);
 
-        event.reply("The role has been removed from this repository").queue();
+        event.reply("This channel has been disconnected from the Gitlab monitor.").setEphemeral(true).queue();
     }
 }
