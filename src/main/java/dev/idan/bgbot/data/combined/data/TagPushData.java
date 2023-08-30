@@ -1,20 +1,20 @@
-package dev.idan.bgbot.data;
+package dev.idan.bgbot.data.combined.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TagAndPushData extends WebhookGlobalData {
+public class TagPushData {
 
     @JsonProperty("event_name")
     String eventName;
 
-    String after;
-
     String before;
+
+    String after;
 
     String ref;
 
     @JsonProperty("ref_protected")
-    Boolean refProtected;
+    boolean refProtected;
 
     @JsonProperty("checkout_sha")
     String checkoutSha;
