@@ -18,8 +18,6 @@ Gitlab-monitor is an open source discord gitlab project monitor providing option
 
 - [@BETAIDK](https://www.github.com/BETAIDK)
 - [@Liorsl](https://github.com/liorsl)
-- [@Ikfir](https://github.com/ikfir)
-
 
 
 ## Support
