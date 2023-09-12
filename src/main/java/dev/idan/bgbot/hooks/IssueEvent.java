@@ -13,6 +13,11 @@ import java.time.Instant;
 public class IssueEvent implements HookType {
 
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
+        if (channel == null) {
+            System.out.println("Log channel was not found");
+            return;
+        }
+
         // analyze the json objects
         String userName = objectNode.get("user").get("username").asText();
         String userLink = instanceURL + "/" + userName;

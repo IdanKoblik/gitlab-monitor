@@ -10,9 +10,15 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 
 @Component
-public class CommentEvent implements HookType{
+public class CommentEvent implements HookType {
+    // TODO: Add full support for comment sub events
 
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
+        if (channel == null) {
+            System.out.println("Log channel was not found");
+            return;
+        }
+
         // analyze the json objects
         String userName = objectNode.get("user").get("username").asText();
         String userAvatar = objectNode.get("user").get("avatar_url").asText();
