@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.entities.Token;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -46,13 +47,14 @@ public class ReleaseEvent implements HookType{
             builder.addField("link", format, true);
         }
 
-        builder.setAuthor(name,  url);
+        builder.setAuthor(name, url);
         builder.setTitle("New Release: " + name, url);
         builder.setFooter(projectName);
         builder.setTimestamp(Instant.now());
         channel.sendMessageEmbeds(builder.build()).queue();
     }
 
+    @NotNull
     static <T> List<T> iteratorToList(Iterator<T> iter) {
         List<T> list = new ArrayList<>();
         while (iter.hasNext()) {

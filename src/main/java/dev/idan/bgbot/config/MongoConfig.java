@@ -37,8 +37,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @SneakyThrows
     @Override
     public MongoClient mongoClient() {
-        // we read the file twice
-        // bad
         File file = new File("mongo.json");
         ObjectNode objectNode = (ObjectNode) new ObjectMapper().readTree(file);
 

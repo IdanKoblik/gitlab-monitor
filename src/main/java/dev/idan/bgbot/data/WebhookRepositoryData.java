@@ -1,5 +1,8 @@
 package dev.idan.bgbot.data;
 
+import lombok.Getter;
+
+@Getter
 public class WebhookRepositoryData {
 
     String name;

@@ -1,8 +1,10 @@
 package dev.idan.bgbot.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
-public class WebhookProjectData {
+@Getter
+public class WebhookProjectData implements ProjectName {
 
     int id;
 
@@ -32,4 +34,9 @@ public class WebhookProjectData {
 
     @JsonProperty("default_branch")
     String defaultBranch;
+
+    @Override
+    public String getProjectName() {
+        return name;
+    }
 }

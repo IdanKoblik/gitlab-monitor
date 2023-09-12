@@ -1,7 +1,9 @@
 package dev.idan.bgbot.data.pipeline;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class PipelineObjectAttributes {
 
     int id;
@@ -22,4 +24,6 @@ public class PipelineObjectAttributes {
     String source;
 
     String status;
+
+    int duration;
 }

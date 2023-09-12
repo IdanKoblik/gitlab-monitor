@@ -11,6 +11,7 @@ import java.time.Instant;
 
 @Component
 public class CommentEvent implements HookType {
+    // TODO: Add full support for comment sub events
 
     public void process(ObjectNode objectNode, String instanceURL, Token token, TextChannel channel) {
         if (channel == null) {
