@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.data.WebhookProjectData;
 import dev.idan.bgbot.data.combined.data.TagPushPipelineCommitData;
+import dev.idan.bgbot.data.release.assets.Assets;
 import dev.idan.bgbot.data.release.assets.LinksData;
 import dev.idan.bgbot.data.release.assets.SourcesData;
 import dev.idan.bgbot.entities.Token;
@@ -38,13 +39,14 @@ public class ReleaseWebhookData extends WebhookData {
 
     String action;
 
-    private WebhookProjectData project;
+    @JsonProperty("project")
+    WebhookProjectData project;
 
-    private TagPushPipelineCommitData commit;
+    @JsonProperty("commit")
+    TagPushPipelineCommitData commit;
 
-    private List<LinksData> links;
-
-    private List<SourcesData> sources;
+    @JsonProperty("assets")
+    Assets assets;
 
     @Override
     public String getAuthorName() {
@@ -68,14 +70,21 @@ public class ReleaseWebhookData extends WebhookData {
 
     @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
-        for (SourcesData sourcesData : sources) {
+        if (commit == null) System.out.println("Commit null");
+        if (commit != null) System.out.println("Commit !null");
+
+        if (project == null) System.out.println("Project null");
+        if (project != null) System.out.println("Project !null");
+
+
+        for (SourcesData sourcesData : assets.getSources()) {
             String sourceName = sourcesData.getFormat();
             String sourceLink = sourcesData.getUrl();
             String format = String.format("[%s](%s)", "Source code", sourceLink);
             builder.addField(sourceName, format, true);
         }
 
-        for (LinksData linksData : links) {
+        for (LinksData linksData : assets.getLinks()) {
             String linkName = linksData.getName();
             String linkLink = linksData.getUrl();
             String format = String.format("[%s](%s)", linkName, linkLink);

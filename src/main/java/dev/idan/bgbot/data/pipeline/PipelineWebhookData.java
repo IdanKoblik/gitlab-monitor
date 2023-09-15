@@ -2,8 +2,6 @@ package dev.idan.bgbot.data.pipeline;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.data.WebhookProjectData;
 import dev.idan.bgbot.data.combined.data.IssueCommentMergePipelineUserData;
@@ -15,21 +13,22 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @JsonTypeName("pipeline")
 public class PipelineWebhookData extends WebhookData {
 
-    private WebhookProjectData project;
+    WebhookProjectData project;
 
-    private IssueCommentMergePipelineUserData user;
+    @JsonProperty("user")
+    IssueCommentMergePipelineUserData user;
 
-    private TagPushPipelineCommitData commit;
+    TagPushPipelineCommitData commit;
 
     @JsonProperty("object_attributes")
-    private PipelineObjectAttributes objectAttributes;
+    PipelineObjectAttributes objectAttributes;
 
-    private List<PipelineBuilds> builds;
+    @JsonProperty
+    List<PipelineBuilds> builds;
 
     @Override
     public String getAuthorName() {
@@ -53,6 +52,8 @@ public class PipelineWebhookData extends WebhookData {
 
     @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
+        if (user == null) System.out.println("Test");
+
         String status = objectAttributes.getStatus();
         String ref = objectAttributes.getRef();
         String userName = user.getName();
