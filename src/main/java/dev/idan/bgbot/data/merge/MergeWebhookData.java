@@ -15,7 +15,7 @@ public class MergeWebhookData extends IssueCommentMergeData {
 
     @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
-        builder.setTitle(String.format("%s merge request from %s to %s",
+        builder.setTitle(String.format("%s merge request from branch %s to branch %s",
                 objectAttributes.getAction(),
                 objectAttributes.getSourceBranch(),
                 objectAttributes.getTargetBranch()

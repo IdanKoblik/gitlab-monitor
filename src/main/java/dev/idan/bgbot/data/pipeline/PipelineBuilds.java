@@ -1,13 +1,12 @@
 package dev.idan.bgbot.data.pipeline;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Getter;
 
 @Getter
 public class PipelineBuilds {
 
-    int id;
+    long id;
 
     String stage;
 

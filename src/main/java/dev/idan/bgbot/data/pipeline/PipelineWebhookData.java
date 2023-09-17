@@ -23,11 +23,13 @@ public class PipelineWebhookData extends WebhookData {
     @JsonProperty("user")
     IssueCommentMergePipelineUserData user;
 
+    @JsonProperty("commit")
     TagPushPipelineCommitData commit;
 
     @JsonProperty("object_attributes")
     PipelineObjectAttributes objectAttributes;
 
+    @JsonProperty("builds")
     List<PipelineBuilds> builds;
 
     @Override
@@ -52,7 +54,7 @@ public class PipelineWebhookData extends WebhookData {
 
     @Override
     public String getProjectUrl() {
-        return project.getWebUrl();
+        return project.getProjectUrl();
     }
 
     @Override
@@ -66,7 +68,7 @@ public class PipelineWebhookData extends WebhookData {
         String ref = objectAttributes.getRef();
         String userName = user.getName();
         String url = project.getWebUrl() + "/-/pipelines/" + objectAttributes.getId();
-        int iid = objectAttributes.getIid();
+        long iid = objectAttributes.getIid();
 
         builder.setTitle(String.format("Starting pipeline #%d of branch %s by %s", iid, ref, userName), url);
 

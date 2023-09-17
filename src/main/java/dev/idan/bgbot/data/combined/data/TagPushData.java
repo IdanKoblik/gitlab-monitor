@@ -20,10 +20,13 @@ public abstract class TagPushData extends WebhookData {
     @JsonProperty("event_name")
     String eventName;
 
+    @JsonProperty("before")
     String before;
 
+    @JsonProperty("after")
     String after;
 
+    @JsonProperty("ref")
     String ref;
 
     @JsonProperty("ref_protected")
@@ -44,12 +47,14 @@ public abstract class TagPushData extends WebhookData {
     @JsonProperty("project_id")
     int projectId;
 
+    @JsonProperty("commits")
     List<TagPushCommitData> commits;
 
+    @JsonProperty("project")
     WebhookProjectData project;
 
+    @JsonProperty("repository")
     WebhookRepositoryData repository;
-
 
     @Override
     public String getProjectName() {
@@ -97,19 +102,20 @@ public abstract class TagPushData extends WebhookData {
             builder.setTitle(String.format("%s %s was deleted", head, target));
         } else if (before.equals(EMPTY_COMMIT_SHA)) {
             builder.setTitle(String.format("%s %s was created", head, target));
+        } else {
+            builder.setTitle(String.format("Pushed to %s %s", head, target));
         }
-
-        builder.setTitle(String.format("Pushed to %s", target));
     }
 
     public static String getTarget(String ref) {
         if (ref.startsWith("refs/heads/")) {
-            head = "Push";
+            head = "Branch";
             return String.format("%s", ref.replace("refs/heads/", ""));
         }
 
         else if (ref.startsWith("refs/tags")) {
             head = "Tag";
+            return String.format("%s", ref.replace("refs/tags/", ""));
         }
 
         return ref;

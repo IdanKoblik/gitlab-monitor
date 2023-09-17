@@ -1,18 +1,13 @@
 package dev.idan.bgbot.controller;
 
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.data.WebhookData;
-import dev.idan.bgbot.data.build.BuildWebhookData;
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.hooks.*;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.utils.PartialImage;
-import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.schema.JsonSchemaObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,10 +59,7 @@ public class WebhookEndpoint {
 
         Token token = tokenOptional.get();
 
-        if (!data.sendEmbed()) {
-            System.out.println("test1");
-            return;
-        }
+        if (!data.sendEmbed()) return;
 
         if (jda.getTextChannelById(token.getChannelID()) == null) return;
 

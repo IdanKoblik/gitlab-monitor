@@ -19,17 +19,16 @@ public class CommentIssueWebhookData extends IssueCommentMergeData {
 
     @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
-        String userName = getUser().getName();
         String noteableType = objectAttributes.getNoteableType();
 
         if (objectAttributes.getNoteableType().equals("Issue")) {
             builder.setTitle(
-                    userName + " Commented on " + noteableType
+                       " Commented on " + noteableType
                             + ": " + issue.getTitle() +
                             " (#" + issue.getId() + ")", objectAttributes.getUrl());
         }
 
-        builder.setTitle(String.format("%s Commented on %s", userName, noteableType), objectAttributes.getUrl());
+        builder.setTitle(String.format("Commented on %s", noteableType), objectAttributes.getUrl());
         builder.setDescription(objectAttributes.getNote());
     }
 }

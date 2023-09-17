@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class PipelineObjectAttributes {
 
-    int id;
+    long id;
 
-    int iid;
+    long iid;
 
     String name;
 
