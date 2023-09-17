@@ -1,7 +1,9 @@
 package dev.idan.bgbot.controller;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.data.WebhookData;
+import dev.idan.bgbot.data.build.BuildWebhookData;
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.hooks.*;
 import dev.idan.bgbot.repository.TokenRepository;
@@ -61,6 +63,11 @@ public class WebhookEndpoint {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Secret discordToken must be specified");
 
         Token token = tokenOptional.get();
+
+        if (!data.sendEmbed()) {
+            System.out.println("test1");
+            return;
+        }
 
         if (jda.getTextChannelById(token.getChannelID()) == null) return;
 

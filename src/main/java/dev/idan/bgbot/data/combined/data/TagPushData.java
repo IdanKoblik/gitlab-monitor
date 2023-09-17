@@ -67,6 +67,16 @@ public abstract class TagPushData extends WebhookData {
     }
 
     @Override
+    public String getProjectUrl() {
+        return project.getWebUrl();
+    }
+
+    @Override
+    public boolean sendEmbed() {
+        return true;
+    }
+
+    @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < Math.min(5, commits.size()); i++) {

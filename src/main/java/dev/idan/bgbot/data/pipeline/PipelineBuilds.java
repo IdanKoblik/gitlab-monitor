@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Getter;
 
 @Getter
-@JsonTypeName("build")
 public class PipelineBuilds {
 
     int id;

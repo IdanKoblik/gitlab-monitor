@@ -28,6 +28,7 @@ public class ReleaseWebhookData extends WebhookData {
 
     String description;
 
+    @JsonProperty("name")
     String name;
 
     @JsonProperty("released_at")
@@ -69,14 +70,17 @@ public class ReleaseWebhookData extends WebhookData {
     }
 
     @Override
+    public String getProjectUrl() {
+        return project.getWebUrl();
+    }
+
+    @Override
+    public boolean sendEmbed() {
+        return true;
+    }
+
+    @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
-        if (commit == null) System.out.println("Commit null");
-        if (commit != null) System.out.println("Commit !null");
-
-        if (project == null) System.out.println("Project null");
-        if (project != null) System.out.println("Project !null");
-
-
         for (SourcesData sourcesData : assets.getSources()) {
             String sourceName = sourcesData.getFormat();
             String sourceLink = sourcesData.getUrl();

@@ -17,6 +17,7 @@ import java.util.Optional;
 @JsonTypeName("pipeline")
 public class PipelineWebhookData extends WebhookData {
 
+    @JsonProperty("project")
     WebhookProjectData project;
 
     @JsonProperty("user")
@@ -27,7 +28,6 @@ public class PipelineWebhookData extends WebhookData {
     @JsonProperty("object_attributes")
     PipelineObjectAttributes objectAttributes;
 
-    @JsonProperty
     List<PipelineBuilds> builds;
 
     @Override
@@ -51,14 +51,24 @@ public class PipelineWebhookData extends WebhookData {
     }
 
     @Override
-    public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
-        if (user == null) System.out.println("Test");
+    public String getProjectUrl() {
+        return project.getWebUrl();
+    }
 
+    @Override
+    public boolean sendEmbed() {
+        return true;
+    }
+
+    @Override
+    public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
         String status = objectAttributes.getStatus();
         String ref = objectAttributes.getRef();
         String userName = user.getName();
-        String url = instanceURL + "/" + project.getProjectName() + "/-/pipelines/" + objectAttributes.getId();
+        String url = project.getWebUrl() + "/-/pipelines/" + objectAttributes.getId();
         int iid = objectAttributes.getIid();
+
+        builder.setTitle(String.format("Starting pipeline #%d of branch %s by %s", iid, ref, userName), url);
 
         if (status.equals("success"))
             builder.setTitle(
