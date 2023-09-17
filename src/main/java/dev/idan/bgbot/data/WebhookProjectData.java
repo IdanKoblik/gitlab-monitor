@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class WebhookProjectData implements ProjectName {
+public class WebhookProjectData implements ProjectNameAndUrl {
 
     int id;
 
@@ -38,5 +38,10 @@ public class WebhookProjectData implements ProjectName {
     @Override
     public String getProjectName() {
         return name;
+    }
+
+    @Override
+    public String getProjectUrl() {
+        return webUrl;
     }
 }

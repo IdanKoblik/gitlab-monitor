@@ -13,5 +13,5 @@ public class TagPushPipelineCommitData {
 
     String url;
 
-    private TagPushPipelineCommitAuthorData author;
+    TagPushPipelineCommitAuthorData author;
 }

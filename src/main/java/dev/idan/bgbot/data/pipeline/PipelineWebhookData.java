@@ -2,8 +2,6 @@ package dev.idan.bgbot.data.pipeline;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.data.WebhookProjectData;
 import dev.idan.bgbot.data.combined.data.IssueCommentMergePipelineUserData;
@@ -15,21 +13,22 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @JsonTypeName("pipeline")
 public class PipelineWebhookData extends WebhookData {
 
-    private WebhookProjectData project;
+    @JsonProperty("project")
+    WebhookProjectData project;
 
-    private IssueCommentMergePipelineUserData user;
+    @JsonProperty("user")
+    IssueCommentMergePipelineUserData user;
 
-    private TagPushPipelineCommitData commit;
+    TagPushPipelineCommitData commit;
 
     @JsonProperty("object_attributes")
-    private PipelineObjectAttributes objectAttributes;
+    PipelineObjectAttributes objectAttributes;
 
-    private List<PipelineBuilds> builds;
+    List<PipelineBuilds> builds;
 
     @Override
     public String getAuthorName() {
@@ -52,12 +51,24 @@ public class PipelineWebhookData extends WebhookData {
     }
 
     @Override
+    public String getProjectUrl() {
+        return project.getWebUrl();
+    }
+
+    @Override
+    public boolean sendEmbed() {
+        return true;
+    }
+
+    @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
         String status = objectAttributes.getStatus();
         String ref = objectAttributes.getRef();
         String userName = user.getName();
-        String url = instanceURL + "/" + project.getProjectName() + "/-/pipelines/" + objectAttributes.getId();
+        String url = project.getWebUrl() + "/-/pipelines/" + objectAttributes.getId();
         int iid = objectAttributes.getIid();
+
+        builder.setTitle(String.format("Starting pipeline #%d of branch %s by %s", iid, ref, userName), url);
 
         if (status.equals("success"))
             builder.setTitle(

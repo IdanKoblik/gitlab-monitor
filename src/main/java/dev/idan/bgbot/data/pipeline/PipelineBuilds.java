@@ -1,6 +1,7 @@
 package dev.idan.bgbot.data.pipeline;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Getter;
 
 @Getter

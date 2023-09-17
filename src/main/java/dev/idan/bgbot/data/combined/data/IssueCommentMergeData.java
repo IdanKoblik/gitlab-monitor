@@ -38,4 +38,14 @@ public abstract class IssueCommentMergeData extends WebhookData {
     public String getProjectName() {
         return project.getProjectName();
     }
+
+    @Override
+    public String getProjectUrl() {
+        return project.getWebUrl();
+    }
+
+    @Override
+    public boolean sendEmbed() {
+        return true;
+    }
 }

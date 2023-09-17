@@ -37,3 +37,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Local staff ###
+config.json
+mongo.json
