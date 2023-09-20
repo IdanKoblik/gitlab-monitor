@@ -1,4 +1,4 @@
-package dev.idan.bgbot.data.pipeline;
+package dev.idan.bgbot.data.pipeline.builds;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

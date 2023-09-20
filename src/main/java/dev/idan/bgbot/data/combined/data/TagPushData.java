@@ -98,12 +98,14 @@ public abstract class TagPushData extends WebhookData {
         String target = getTarget(ref);
         builder.setDescription(sb.toString());
 
+        String url = project.getWebUrl() + "/-/tree/" + target;
+
         if (after.equals(EMPTY_COMMIT_SHA)) {
             builder.setTitle(String.format("%s %s was deleted", head, target));
         } else if (before.equals(EMPTY_COMMIT_SHA)) {
-            builder.setTitle(String.format("%s %s was created", head, target));
+            builder.setTitle(String.format("%s %s was created", head, target), url);
         } else {
-            builder.setTitle(String.format("Pushed to %s %s", head, target));
+            builder.setTitle(String.format("Pushed to %s %s", head, target), url);
         }
     }
 
@@ -113,7 +115,7 @@ public abstract class TagPushData extends WebhookData {
             return String.format("%s", ref.replace("refs/heads/", ""));
         }
 
-        else if (ref.startsWith("refs/tags")) {
+        else if (ref.startsWith("refs/tags/")) {
             head = "Tag";
             return String.format("%s", ref.replace("refs/tags/", ""));
         }

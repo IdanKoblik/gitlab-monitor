@@ -6,6 +6,8 @@ import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.data.WebhookProjectData;
 import dev.idan.bgbot.data.combined.data.IssueCommentMergePipelineUserData;
 import dev.idan.bgbot.data.combined.data.TagPushPipelineCommitData;
+import dev.idan.bgbot.data.pipeline.builds.PipelineBuilds;
+import dev.idan.bgbot.data.pipeline.object.attributes.PipelineObjectAttributes;
 import dev.idan.bgbot.entities.Token;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Role;

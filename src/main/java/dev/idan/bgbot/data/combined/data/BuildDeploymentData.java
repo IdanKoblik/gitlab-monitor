@@ -3,7 +3,6 @@ package dev.idan.bgbot.data.combined.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.data.WebhookProjectData;
-import dev.idan.bgbot.data.build.BuildDeploymentUserWebhook;
 import dev.idan.bgbot.entities.Token;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
