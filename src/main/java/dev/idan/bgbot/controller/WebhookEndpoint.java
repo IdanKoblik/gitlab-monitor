@@ -2,7 +2,6 @@ package dev.idan.bgbot.controller;
 
 import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.entities.Token;
-import dev.idan.bgbot.hooks.*;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.utils.PartialImage;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -26,27 +25,6 @@ public class WebhookEndpoint {
 
     @Autowired
     JDA jda;
-
-    @Autowired
-    PushEvent pushEvent;
-
-    @Autowired
-    TagEvent tagEvent;
-
-    @Autowired
-    IssueEvent issueEvent;
-
-    @Autowired
-    MergeEvent mergeEvent;
-
-    @Autowired
-    CommentEvent commentEvent;
-
-    @Autowired
-    PipelineEvent pipelineEvent;
-
-    @Autowired
-    ReleaseEvent releaseEvent;
 
     @PostMapping(value = "webhook", consumes = {
             "application/json"
