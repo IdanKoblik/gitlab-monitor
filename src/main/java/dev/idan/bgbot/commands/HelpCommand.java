@@ -32,11 +32,11 @@ public class HelpCommand extends ListenerAdapter {
                                 channel you want to get updates of your project
                                 ```
                                 ```
-                                2. the discord bot will respone with secret token and
-                                url that you need to putinside webhook token section in\s
+                                2. the discord bot will response with secret token and
+                                url that you need to put inside webhook token section in\s
                                 the settings of your project.
                                 the given url put inside thr url section and the secret token
-                                inside the secret token secction
+                                inside the secret token section
                                 ```
                                 ```
                                 3. Done! enjoy gitlab monitor and if you find any bug or have
