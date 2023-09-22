@@ -55,32 +55,4 @@ public class WebhookEndpoint {
 
         jda.getTextChannelById(token.getChannelID()).sendMessageEmbeds(builder.build()).queue();
     }
-
-    /*@PostMapping(value = "webhook", consumes = {
-            "application/json"
-    })
-    public void onWebhook(@RequestBody ObjectNode objectNode, @RequestHeader("X-Gitlab-Instance") String instanceURL,
-                          @RequestHeader("X-Gitlab-Token") String secretToken) {
-        Optional<Token> tokenOptional = secretToken == null ? Optional.empty() : tokenRepository.findById(secretToken);
-        if (tokenOptional.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Secret discordToken must be specified");
-        }
-
-        Token token = tokenOptional.get();
-
-        String objectKind = objectNode.get("object_kind").asText();
-        HookType handler = switch (objectKind) {
-            case "push" -> pushEvent;
-            case "tag_push" -> tagEvent;
-            case "issue" -> issueEvent;
-            case "note" -> commentEvent;
-            case "merge_request" -> mergeEvent;
-            case "pipeline" -> pipelineEvent;
-            case "release" -> releaseEvent;
-            default -> null;
-        };
-        if (handler == null) return;
-
-        handler.process(objectNode, instanceURL, token, jda.getTextChannelById(token.getChannelID()));
-    }*/
 }

@@ -23,4 +23,5 @@ public class JdaConfig {
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
     }
+
 }

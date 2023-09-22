@@ -6,8 +6,8 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import lombok.NonNull;
 import lombok.SneakyThrows;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import java.util.Collections;
 @Configuration
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
-    @NotNull
+    @NonNull
     @SneakyThrows
     @Override
     protected String getDatabaseName() {
@@ -32,7 +32,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         return objectNode.get("database").asText();
     }
 
-    @NotNull
+    @NonNull
     @SneakyThrows
     @Override
     public MongoClient mongoClient() {
@@ -47,7 +47,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         return MongoClients.create(mongoClientSettings);
     }
 
-    @NotNull
+    @NonNull
     @Override
     protected Collection<String> getMappingBasePackages() {
         return Collections.singleton("dev.idan.bgbot.entities");
