@@ -28,17 +28,17 @@ public class RemoveBySecretTokenCommand extends ListenerAdapter {
         Optional<Token> tokenOptional = tokenRepository.findById(secretToken);
 
         if (tokenOptional.isEmpty()) {
-            event.reply("This token is not connected to the Gitlab monitor.").setEphemeral(true).queue();
+            event.reply("This token is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
             return;
         }
 
         if (tokenOptional.get().getChannelID() != channel.getIdLong()) {
-            event.reply("This channel is not connected to the secret token.").setEphemeral(true).queue();
+            event.reply("This channel is not connected to the secret token. ❌").setEphemeral(true).queue();
             return;
         }
 
         tokenRepository.deleteBySecretToken(secretToken);
 
-        event.reply("This channel has been disconnected from the Gitlab monitor.").setEphemeral(true).queue();
+        event.reply("This channel has been disconnected from the Gitlab monitor. ✅").setEphemeral(true).queue();
     }
 }

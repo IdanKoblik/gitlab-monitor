@@ -1,4 +1,4 @@
-package dev.idan.bgbot.data.pipeline;
+package dev.idan.bgbot.data.pipeline.object.attributes;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class PipelineObjectAttributes {
 
-    int id;
+    long id;
 
-    int iid;
+    long iid;
 
     String name;
 

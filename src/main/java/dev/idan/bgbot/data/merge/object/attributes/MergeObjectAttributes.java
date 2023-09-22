@@ -1,4 +1,4 @@
-package dev.idan.bgbot.data.merge;
+package dev.idan.bgbot.data.merge.object.attributes;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.idan.bgbot.data.combined.data.IssueMergeObjectAttributesData;

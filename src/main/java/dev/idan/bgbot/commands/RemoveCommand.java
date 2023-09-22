@@ -20,11 +20,11 @@ public class RemoveCommand extends ListenerAdapter {
         GuildChannelUnion channel = event.getOption("channel").getAsChannel();
 
         if (!tokenRepository.existsByChannelID(channel.getIdLong())) {
-            event.reply("This channel is not connected to the Gitlab monitor.").setEphemeral(true).queue();
+            event.reply("This channel is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
             return;
         }
 
         tokenRepository.deleteByChannelID(channel.getIdLong());
-        event.reply("This channel has been disconnected from the Gitlab monitor.").setEphemeral(true).queue();
+        event.reply("This channel has been disconnected from the Gitlab monitor. ✅").setEphemeral(true).queue();
     }
 }

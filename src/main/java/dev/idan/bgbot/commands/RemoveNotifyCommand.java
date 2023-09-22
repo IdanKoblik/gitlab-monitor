@@ -26,17 +26,17 @@ public class RemoveNotifyCommand extends ListenerAdapter {
         Optional<Token> tokenOptional = tokenRepository.findById(secretToken);
 
         if (tokenOptional.isEmpty()) {
-            event.reply("This token is not connected to the Gitlab monitor.").setEphemeral(true).queue();
+            event.reply("This token is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
             return;
         }
 
         if (tokenOptional.get().getNotifyRoleID() != role.getIdLong()) {
-            event.reply("This role is not connected to the secret token.").setEphemeral(true).queue();
+            event.reply("This role is not connected to the secret token. ❌").setEphemeral(true).queue();
             return;
         }
 
         tokenRepository.deleteByNotifyRoleID(role.getIdLong());
 
-        event.reply("The role has been removed from this repository").queue();
+        event.reply("The role has been removed from this repository ✅").queue();
     }
 }

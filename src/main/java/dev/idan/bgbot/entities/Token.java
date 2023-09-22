@@ -8,10 +8,10 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+@Getter
+@Setter
 public class Token {
 
-    @Getter
-    @Setter
     public boolean useGravatar = false;
 
     @Id
@@ -29,17 +29,11 @@ public class Token {
         this.secretToken = secretToken;
     }
 
-    @Getter
-    @Setter
     @Indexed(unique = true)
     private long channelID;
 
-    @Getter
-    @Setter
     private long guildID;
 
-    @Getter
-    @Setter
     private long notifyRoleID;
 
     @JsonCreator

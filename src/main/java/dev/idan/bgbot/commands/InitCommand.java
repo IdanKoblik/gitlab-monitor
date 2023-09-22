@@ -1,5 +1,6 @@
 package dev.idan.bgbot.commands;
 
+import dev.idan.bgbot.config.ConfigData;
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
@@ -17,6 +18,9 @@ public class InitCommand extends ListenerAdapter {
     @Autowired
     TokenRepository tokenRepository;
 
+    @Autowired
+    ConfigData configData;
+
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if (!event.getName().equals("init")) return;
@@ -31,6 +35,6 @@ public class InitCommand extends ListenerAdapter {
 
         tokenRepository.insert(token);
 
-        event.reply(token.getSecretToken() + " \nhttps://beta-gitlab.linuxwiz.net/webhook").setEphemeral(true).queue();
+        event.reply(token.getSecretToken() + '\n' + configData.webhookURL()).setEphemeral(true).queue();
     }
 }

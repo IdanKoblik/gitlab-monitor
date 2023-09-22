@@ -2,7 +2,6 @@ package dev.idan.bgbot.data.release;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.JsonNode;
 import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.data.WebhookProjectData;
 import dev.idan.bgbot.data.combined.data.TagPushPipelineCommitData;
@@ -12,20 +11,17 @@ import dev.idan.bgbot.data.release.assets.SourcesData;
 import dev.idan.bgbot.entities.Token;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 @JsonTypeName("release")
 public class ReleaseWebhookData extends WebhookData {
 
+    @JsonProperty("id")
     int id;
 
     @JsonProperty("created_at")
     String createdAt;
 
+    @JsonProperty("description")
     String description;
 
     @JsonProperty("name")
@@ -34,10 +30,12 @@ public class ReleaseWebhookData extends WebhookData {
     @JsonProperty("released_at")
     String releasedAt;
 
+    @JsonProperty("tag")
     String tag;
 
     String url;
 
+    @JsonProperty("action")
     String action;
 
     @JsonProperty("project")

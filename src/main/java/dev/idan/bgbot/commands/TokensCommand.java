@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class TokensCommand extends ListenerAdapter {
@@ -23,7 +22,7 @@ public class TokensCommand extends ListenerAdapter {
         List<Token> tokenOptional = tokenRepository.findAllByChannelID(event.getChannel().getIdLong());
 
         if (tokenOptional.isEmpty()) {
-            event.reply("This channel is not connected to the Gitlab monitor.").setEphemeral(true).queue();
+            event.reply("This channel is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
             return;
         }
 

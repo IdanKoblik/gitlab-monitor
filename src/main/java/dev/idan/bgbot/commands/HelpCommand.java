@@ -26,23 +26,23 @@ public class HelpCommand extends ListenerAdapter {
                                 , event.getJDA().getSelfUser().getAvatarUrl())
                         .setTitle("Here's a little documentation for how to use gitlab monitor.")
                         .setDescription (
-                                        """
-                                        ```
-                                        1. write in any channel /setup and provide on which\s
-                                        channel you want to get updates of your project
-                                        ```
-                                        ```
-                                        2. the discord bot will respone with secret token and
-                                        url that you need to putinside webhook token section in\s
-                                        the settings of your project.
-                                        the given url put inside thr url section and the secret token
-                                        inside the secret token secction
-                                        ```
-                                        ```
-                                        3. Done! enjoy gitlab monitor and if you find any bug or have
-                                        any suggestion feel free to mail me (idankob@gmail.com)
-                                        ```
-                                        """
+                                """
+                                ```
+                                1. write in any channel /setup and provide on which\s
+                                channel you want to get updates of your project
+                                ```
+                                ```
+                                2. the discord bot will response with secret token and
+                                url that you need to put inside webhook token section in\s
+                                the settings of your project.
+                                the given url put inside thr url section and the secret token
+                                inside the secret token section
+                                ```
+                                ```
+                                3. Done! enjoy gitlab monitor and if you find any bug or have
+                                any suggestion feel free to mail me (idankob@gmail.com)
+                                ```
+                                """
                         )
                         .setColor(Color.white)
                         .setFooter("Made by Beta#8084")

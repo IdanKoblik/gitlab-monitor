@@ -3,23 +3,22 @@ package dev.idan.bgbot.data.combined.data;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.data.WebhookProjectData;
-import dev.idan.bgbot.data.WebhookRepositoryData;
-import lombok.Getter;
+import dev.idan.bgbot.entities.Token;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
-@Getter
-public abstract class IssueCommentMergeData extends WebhookData {
-
-    @JsonProperty("event_type")
-    String eventType;
+public class BuildDeploymentData extends WebhookData {
 
     @JsonProperty("user")
-    private IssueCommentMergePipelineUserData user;
+    BuildDeploymentUserWebhook user;
 
     @JsonProperty("project")
-    private WebhookProjectData project;
+    WebhookProjectData project;
 
-    @JsonProperty("repository")
-    private WebhookRepositoryData repository;
+    @Override
+    public String getEmail() {
+        return user.getEmail();
+    }
 
     @Override
     public String getAuthorName() {
@@ -32,22 +31,20 @@ public abstract class IssueCommentMergeData extends WebhookData {
     }
 
     @Override
-    public String getEmail() {
-        return user.getEmail();
-    }
-
-    @Override
     public String getProjectName() {
         return project.getProjectName();
     }
 
     @Override
     public String getProjectUrl() {
-        return project.getWebUrl();
+        return project.getProjectUrl();
     }
 
     @Override
     public boolean sendEmbed() {
-        return true;
+        return false;
     }
+
+    @Override
+    public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {}
 }

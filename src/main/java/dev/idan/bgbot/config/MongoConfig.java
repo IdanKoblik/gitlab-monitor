@@ -6,11 +6,8 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import lombok.NonNull;
 import lombok.SneakyThrows;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +23,7 @@ import java.util.Collections;
 @Configuration
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
+    @NonNull
     @SneakyThrows
     @Override
     protected String getDatabaseName() {
@@ -34,6 +32,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         return objectNode.get("database").asText();
     }
 
+    @NonNull
     @SneakyThrows
     @Override
     public MongoClient mongoClient() {
@@ -48,18 +47,10 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         return MongoClients.create(mongoClientSettings);
     }
 
+    @NonNull
     @Override
     protected Collection<String> getMappingBasePackages() {
         return Collections.singleton("dev.idan.bgbot.entities");
-    }
-
-    @Bean
-    @SneakyThrows
-    public JDA jda() {
-        return JDABuilder.createDefault(configData().discordToken())
-                .setActivity(Activity.playing("with gitlab api"))
-                .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .build();
     }
 
     @Bean

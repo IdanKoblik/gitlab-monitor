@@ -26,12 +26,12 @@ public class NotifyCommand extends ListenerAdapter {
         Optional<Token> tokenOptional = tokenRepository.findById(secretToken);
 
         if (tokenOptional.isEmpty()) {
-            event.reply("This token is not connected to the Gitlab monitor.").setEphemeral(true).queue();
+            event.reply("This token is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
             return;
         }
 
         if (tokenOptional.get().getNotifyRoleID() != 0) {
-            event.reply("This token is already connected to a role.").setEphemeral(true).queue();
+            event.reply("This token is already connected to a role. ❌").setEphemeral(true).queue();
             return;
         }
 
@@ -40,6 +40,6 @@ public class NotifyCommand extends ListenerAdapter {
         token.setNotifyRoleID(role.getIdLong());
         tokenRepository.save(token);
 
-        event.reply("The role has been added to the database").queue();
+        event.reply("The role has been added to the database. ✅").queue();
     }
 }
