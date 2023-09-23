@@ -11,4 +11,5 @@ public class TagPushCommitData extends TagPushPipelineCommitData {
 
     @JsonProperty("author")
     private TagPushPipelineCommitAuthorData author;
+
 }

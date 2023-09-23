@@ -23,7 +23,7 @@ public abstract class IssueCommentMergeData extends WebhookData {
 
     @Override
     public String getAuthorName() {
-        return user.getName();
+        return user.getUsername();
     }
 
     @Override

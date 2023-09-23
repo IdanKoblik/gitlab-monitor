@@ -1,5 +1,6 @@
 package dev.idan.bgbot.controller;
 
+import dev.idan.bgbot.config.ConfigData;
 import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
@@ -24,6 +25,9 @@ public class WebhookEndpoint {
     TokenRepository tokenRepository;
 
     @Autowired
+    ConfigData configData;
+
+    @Autowired
     JDA jda;
 
     @PostMapping(value = "webhook", consumes = {
@@ -43,12 +47,11 @@ public class WebhookEndpoint {
 
         EmbedBuilder builder = new EmbedBuilder();
         String userName = data.getAuthorName();
-        String userLink = instanceURL + "/" + userName;
         String avatar = data.getAuthorAvatarUrl();
 
         if (token.isUseGravatar()) avatar = PartialImage.getEmail(avatar, data.getEmail(), token);
 
-        builder.setAuthor(userName, userLink, avatar);
+        builder.setAuthor(userName, configData.websiteURL(), avatar);
         builder.setFooter(data.getProjectName());
         builder.setTimestamp(Instant.now());
         data.apply(builder, instanceURL, token, jda.getTextChannelById(token.getChannelID()));

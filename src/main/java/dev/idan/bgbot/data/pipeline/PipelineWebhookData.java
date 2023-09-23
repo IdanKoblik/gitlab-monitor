@@ -68,28 +68,26 @@ public class PipelineWebhookData extends WebhookData {
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
         String status = objectAttributes.getStatus();
         String ref = objectAttributes.getRef();
-        String userName = user.getName();
         String url = project.getWebUrl() + "/-/pipelines/" + objectAttributes.getId();
         long iid = objectAttributes.getIid();
 
-        builder.setTitle(String.format("Starting pipeline #%d of branch %s by %s", iid, ref, userName), url);
+        builder.setTitle(String.format("Starting pipeline #%d of branch %s", iid, ref), url);
 
         if (status.equals("success"))
             builder.setTitle(
                     "Pipeline " + "#" + iid +
-                        " of branch " + ref + " by " + userName + " " +
-                        "has passed in: " + objectAttributes.getDuration() + " seconds", url);
+                        " of branch " + ref + " has passed in: " + objectAttributes.getDuration() + " seconds", url);
 
         if (status.equals("skipped"))
             builder.setTitle(
                     "Pipeline " + "#" + iid +
-                    " of branch " + ref + " by " + userName + " has been skipped", url);
+                    " of branch " + ref + " has been skipped", url);
 
         if (status.equals("failed")) {
             String failedReason = Optional.ofNullable(builds)
                     .map(obj -> obj.get(0).getFailedReason()).orElse("No reason provided");
 
-            builder.setTitle("Pipeline " + "#" + iid + " of branch " + ref + " by " + userName + " has been failed", url)
+            builder.setTitle("Pipeline " + "#" + iid + " of branch " + ref + " has been failed", url)
             .setDescription("Reason: " + failedReason + "\n");
 
             Role role = channel.getGuild().getRoleById(token.getNotifyRoleID());
