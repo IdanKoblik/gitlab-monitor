@@ -6,7 +6,6 @@ build/generated
 build/resources
 build/tmp
 build/reslovedMainClassName
-build/
 
 src/main/resources/.env
 
