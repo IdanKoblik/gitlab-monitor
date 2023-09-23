@@ -84,7 +84,7 @@ public class PipelineWebhookData extends WebhookData {
                     " of branch " + ref + " has been skipped", url);
 
         if (status.equals("failed")) {
-            String failedReason = Optional.ofNullable(builds)
+            String failedReason = Optional.of(builds)
                     .map(obj -> obj.get(0).getFailedReason()).orElse("No reason provided");
 
             builder.setTitle("Pipeline " + "#" + iid + " of branch " + ref + " has been failed", url)
