@@ -2,7 +2,11 @@ HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
+!**/src/main/**/build/classes
+!**/src/main/**/build/generated
+!**/src/main/**/build/resources
+!**/src/main/**/build/tmp
+!**/src/main/**/build/reslovedMainClassName
 !**/src/test/**/build/
 
 src/main/resources/.env
