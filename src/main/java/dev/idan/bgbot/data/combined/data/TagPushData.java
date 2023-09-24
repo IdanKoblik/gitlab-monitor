@@ -87,11 +87,10 @@ public abstract class TagPushData extends WebhookData {
         for (int i = 0; i < Math.min(5, commits.size()); i++) {
             TagPushCommitData commit = commits.get(i);
             String commitID = commit.getId().substring(0, 7);
-            String commitMessage = commit.getMessage();
 
             sb.append(String.format("[`%s`](%s)", commitID, commit.getUrl()));
             sb.append(" ");
-            sb.append(commitMessage);
+            sb.append(commit.getTitle());
             sb.append("\n");
         }
 
@@ -101,11 +100,11 @@ public abstract class TagPushData extends WebhookData {
         String url = project.getWebUrl() + "/-/tree/" + target;
 
         if (after.equals(EMPTY_COMMIT_SHA)) {
-            builder.setTitle(String.format("%s %s was deleted", head, target));
+            builder.setTitle(String.format("%s `%s` was deleted", head, target));
         } else if (before.equals(EMPTY_COMMIT_SHA)) {
-            builder.setTitle(String.format("%s %s was created", head, target), url);
+            builder.setTitle(String.format("%s `%s` was created", head, target), url);
         } else {
-            builder.setTitle(String.format("Pushed to %s %s", head, target), url);
+            builder.setTitle(String.format("Pushed to %s `%s`", head.toLowerCase(), target), url);
         }
     }
 
