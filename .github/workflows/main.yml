@@ -28,6 +28,6 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker build -t ghcr.io/${{ github.repository }}/${{ github.run_id }} .
-          docker push ghcr.io/${{ github.repository }}/${{ github.run_id }}
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker build -t ghcr.io/${{ github.repository }}/your-image-name:latest .  # Ensure your-image-name is lowercase
+            docker push ghcr.io/${{ github.repository }}/your-image-name:latest  # Ensure your-image-name is lowercase
