@@ -1,11 +1,7 @@
 HELP.md
 .gradle
 !gradle/wrapper/gradle-wrapper.jar
-build/classes
-build/generated
-build/resources
-build/tmp
-build/resolvedMainClassName
+!build
 
 src/main/resources/.env
 
