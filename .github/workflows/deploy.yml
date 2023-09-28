@@ -2,7 +2,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: ['18-fix-github-actions']
+    branches: ['main']
 
 env:
   REGISTRY: ghcr.io
