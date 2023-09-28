@@ -1,4 +1,4 @@
-name: Create and publish a Docker image
+name: Java CI with Gradle
 
 on:
   push:
@@ -20,14 +20,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          server-id: github
-          settings-path: ${{ github.workspace }}
 
-      - name: Build Spring Boot Application
-        run: ./gradlew bootJar
-
-      - name: Build and Push Docker Image
-        run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker build -t ghcr.io/${{ github.repository }}/${{ github.run_id }} .
-          docker push ghcr.io/${{ github.repository }}/${{ github.run_id }}
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+        with:
+          arguments: bootJar
