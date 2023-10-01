@@ -12,7 +12,6 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import java.util.List;
 
 import static dev.idan.bgbot.utils.CommitHelper.EMPTY_COMMIT_SHA;
-import static dev.idan.bgbot.utils.CommitHelper.head;
 
 @Getter
 public abstract class TagPushData extends WebhookData {
@@ -97,26 +96,38 @@ public abstract class TagPushData extends WebhookData {
         String target = getTarget(ref);
         builder.setDescription(sb.toString());
 
-        String url = project.getWebUrl() + "/-/tree/" + target;
+        String url = project.getWebUrl() + getUrl(ref);
 
         if (after.equals(EMPTY_COMMIT_SHA)) {
-            builder.setTitle(String.format("%s `%s` was deleted", head, target));
+            builder.setTitle(String.format("%s was deleted", target));
         } else if (before.equals(EMPTY_COMMIT_SHA)) {
-            builder.setTitle(String.format("%s `%s` was created", head, target), url);
+            builder.setTitle(String.format("%s was created", target), url);
         } else {
-            builder.setTitle(String.format("Pushed to %s `%s`", head.toLowerCase(), target), url);
+            builder.setTitle(String.format("Pushed to %s", target.toLowerCase()), url);
         }
     }
 
     public static String getTarget(String ref) {
         if (ref.startsWith("refs/heads/")) {
-            head = "Branch";
-            return String.format("%s", ref.replace("refs/heads/", ""));
+            return String.format("Branch `%s`", ref.replace("refs/heads/", ""));
         }
 
-        else if (ref.startsWith("refs/tags/")) {
-            head = "Tag";
-            return String.format("%s", ref.replace("refs/tags/", ""));
+        if (ref.startsWith("refs/tags/")) {
+            return String.format("Tag `%s`", ref.replace("refs/tags/", ""));
+        }
+
+        return ref;
+    }
+
+    public static String getUrl(String ref) {
+        if (ref.startsWith("refs/heads")) {
+            // /-/tree/ -> branch
+            return "/-/tree/" + ref.replace("refs/heads/", "");
+        }
+
+        if (ref.startsWith("refs/tags")) {
+            // /-/tags/ -> tag
+            return "/-/tags/" + ref.replace("refs/tags/", "");
         }
 
         return ref;
