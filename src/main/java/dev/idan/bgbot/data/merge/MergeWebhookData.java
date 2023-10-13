@@ -14,10 +14,13 @@ public class MergeWebhookData extends IssueCommentMergeData {
     @JsonProperty("object_attributes")
     private MergeObjectAttributes objectAttributes;
 
+    String action = objectAttributes.getAction().substring(0, 1).toUpperCase()
+            + objectAttributes.getAction().substring(1);
+
     @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
         builder.setTitle(String.format("%s merge request from branch %s to branch %s",
-                objectAttributes.getAction(),
+                action,
                 objectAttributes.getSourceBranch(),
                 objectAttributes.getTargetBranch()
         ), objectAttributes.getUrl());

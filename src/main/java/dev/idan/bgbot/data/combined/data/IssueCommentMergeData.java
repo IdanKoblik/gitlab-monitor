@@ -50,4 +50,5 @@ public abstract class IssueCommentMergeData extends WebhookData {
     public boolean sendEmbed() {
         return true;
     }
+
 }
