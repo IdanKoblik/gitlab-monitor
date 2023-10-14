@@ -1,30 +1,40 @@
+<h1 align="center">Gitlab monitor 👋</h1>
 
-Gitlab-monitor is an open source discord gitlab project monitor providing option to monitor you gitlab projects events
+> Gitlab-monitor is an open source discord gitlab project monitor providing option to monitor you gitlab projects events
 
-# Getting started
+## Information
 
-* Follow the following steps to set up the gitlab monitor without any problems.
+### Commands
+> Every command powered by a slash command.
 
-## Discord
+#### Util:
+* ```help``` - This command will provide you information about the bot.
+* ```init``` - This command will allow you to setup the bot on your discord server.
+* ```tokens``` - This command is very dangerous because this command revel all the secret tokens that connected to the bot so make sure nobody can see it.
 
-### 1. [Invite](https://discord.com/oauth2/authorize?client_id=1096899961867730964&scope=bot) the bot into your discord server.
-### 2. Write in any channel the "/setup" command and provide which channel you would like to get notifications from the bot.
-### 3. After you write the command the bot will response with a token and a link.After that put the link and the token inside the settings of your project.
-### 4. Done! Now you can enjoy the features of the Git monitor.
+#### External commands:
+* ```notify``` - This command allows you to get mentioned every time that a pipeline fails.
 
+#### Remove commands:
+* ```removenotify``` - This command allows you to disable the notify command.
+* ```removebysecrettoken``` - This command allows you to disconnect a Secret-token from a channel.
+* ```remove``` - This command allows you to remove a channel from the gitlab monitor.
 
+## Guide
+> Follow the following steps to set up the gitlab monitor without any problems.
 
-## Authors
+### Discord
+[**Click on this text to invite the bot to your discord server.**](https://discord.com/oauth2/authorize?client_id=1096899961867730964&scope=bot)
+1) Invite the bot to your discord server.
 
-- [@BETAIDK](https://www.github.com/BETAIDK)
-- [@Liorsl](https://github.com/liorsl)
+### Setup
+1) Write in any channel that support slash commands, write the command ```/init```, and then provide the channel that you would like to get notifications on.
 
+## Author
+👤 [Idan Koblik](https://github.com/IdanKoblik)
+* Discord: 0x62657461
+* Github: @IdanKoblik
 
-## Support
-
-For support, email idankob@gmail.com.
-
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
+## 📝 License
+Copyright © 2019 [Idan Koblik](https://github.com/IdanKoblik). <br>
+This project is [Apache License 2.0](https://github.com/IdanKoblik/gitlab-monitor/blob/main/LICENSE) licensed.
