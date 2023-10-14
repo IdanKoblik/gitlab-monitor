@@ -36,5 +36,5 @@
 * Github: @IdanKoblik
 
 ## 📝 License
-Copyright © 2019 [Idan Koblik](https://github.com/IdanKoblik).
+Copyright © 2019 [Idan Koblik](https://github.com/IdanKoblik). <br>
 This project is [Apache License 2.0](https://github.com/IdanKoblik/gitlab-monitor/blob/main/LICENSE) licensed.
