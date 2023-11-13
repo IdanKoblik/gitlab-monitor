@@ -3,17 +3,25 @@ package dev.idan.bgbot.commands;
 import dev.idan.bgbot.config.ConfigData;
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
+import dev.idan.bgbot.system.Command;
+import lombok.AllArgsConstructor;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.unions.GuildChannelUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
-public class InitCommand extends ListenerAdapter {
+@AllArgsConstructor
+public class InitCommand extends Command {
 
     @Autowired
     TokenRepository tokenRepository;
@@ -22,7 +30,7 @@ public class InitCommand extends ListenerAdapter {
     ConfigData configData;
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("init")) return;
 
         GuildChannelUnion channel = event.getOption("channel").getAsChannel();
@@ -36,5 +44,12 @@ public class InitCommand extends ListenerAdapter {
         tokenRepository.insert(token);
 
         event.reply(token.getSecretToken() + '\n' + configData.webhookURL()).setEphemeral(true).queue();
+    }
+
+    @Override
+    protected CommandData commandData() {
+        return Commands.slash("init", "Configure the Gitlab monitor as you wish")
+                .addOption(OptionType.CHANNEL, "channel", "The channel that you want to get updates on", true)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 }

@@ -2,22 +2,30 @@ package dev.idan.bgbot.commands;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
+import dev.idan.bgbot.system.Command;
+import lombok.AllArgsConstructor;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class NotifyCommand extends ListenerAdapter {
+@AllArgsConstructor
+public class NotifyCommand extends Command {
 
     @Autowired
     TokenRepository tokenRepository;
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("notify")) return;
 
         Role role = Optional.of(event.getOption("role").getAsRole()).orElse(null);
@@ -41,5 +49,13 @@ public class NotifyCommand extends ListenerAdapter {
         tokenRepository.save(token);
 
         event.reply("The role has been added to the database. ✅").queue();
+    }
+
+    @Override
+    protected CommandData commandData() {
+        return Commands.slash("notify", "The bot will mention a selected role when a pipeline fails")
+                .addOption(OptionType.ROLE, "role", "The role that you would like to get mention when pipeline fails", true)
+                .addOption(OptionType.STRING, "secret-token", "The secret token that you got when you ran the init command (use /tokens to find all the tokens)", true)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 }

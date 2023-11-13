@@ -1,20 +1,15 @@
 package dev.idan.bgbot;
 
-import dev.idan.bgbot.repository.TokenRepository;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@Slf4j
+@ComponentScan(basePackages = "dev.idan")
 public class BgbotApplication {
-
-    @Autowired
-    TokenRepository tokenRepository;
 
     @SneakyThrows
     public static void main(String[] args) {

@@ -2,24 +2,32 @@ package dev.idan.bgbot.commands;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
+import dev.idan.bgbot.system.Command;
+import lombok.AllArgsConstructor;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.unions.GuildChannelUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class RemoveBySecretTokenCommand extends ListenerAdapter {
+@AllArgsConstructor
+public class RemoveBySecretTokenCommand extends Command {
 
     @Autowired
     TokenRepository tokenRepository;
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("removebysecrettoken")) return;
+    protected void execute(@NotNull SlashCommandInteractionEvent event) {
+        if (!event.getName().equals("remove-by-secret-token")) return;
 
         String secretToken = Optional.of(event.getOption("secret-token").getAsString()).orElse(null);
         GuildChannelUnion channel = event.getOption("channel").getAsChannel();
@@ -40,5 +48,13 @@ public class RemoveBySecretTokenCommand extends ListenerAdapter {
         tokenRepository.deleteBySecretToken(secretToken);
 
         event.reply("This channel has been disconnected from the Gitlab monitor. ✅").setEphemeral(true).queue();
+    }
+
+    @Override
+    protected CommandData commandData() {
+        return Commands.slash("remove-by-secret-token", "Disconnects a channel from the Gitlab monitor by the secret token")
+                .addOption(OptionType.STRING, "secret-token", "The secret token that you got when you ran the init command (use /tokens to find all the tokens)", true)
+                .addOption(OptionType.CHANNEL, "channel", "The channel that you want to disconnect from the Gitlab monitor", true)
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 }
