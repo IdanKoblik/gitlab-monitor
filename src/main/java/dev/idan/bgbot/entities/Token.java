@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.annotation.Collation;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Getter
 @Setter
+@Collation(value = "token")
 public class Token {
 
     public boolean useGravatar = false;

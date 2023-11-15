@@ -1,7 +1,8 @@
 package dev.idan.bgbot.repository;
 
 import dev.idan.bgbot.entities.Token;
-import org.springframework.data.mongodb.repository.*;
+import org.springframework.data.mongodb.repository.DeleteQuery;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public interface TokenRepository extends MongoRepository<Token, String> {
     @DeleteQuery
     void deleteByNotifyRoleID(long notifyRoleID);
 
+    @DeleteQuery
     void deleteBySecretToken(String secretToken);
 
     boolean existsByChannelID(long channelID);

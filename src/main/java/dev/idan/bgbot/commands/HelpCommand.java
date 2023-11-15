@@ -1,23 +1,23 @@
 package dev.idan.bgbot.commands;
 
-import dev.idan.bgbot.repository.TokenRepository;
+import dev.idan.bgbot.system.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.time.Instant;
 
 @Component
-public class HelpCommand extends ListenerAdapter {
-
-    @Autowired
-    TokenRepository tokenRepository;
+public class HelpCommand extends Command {
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("help")) return;
 
         event.replyEmbeds(
@@ -49,5 +49,11 @@ public class HelpCommand extends ListenerAdapter {
                         .setTimestamp(Instant.now())
                         .build()
         ).queue();
+    }
+
+    @Override
+    protected CommandData commandData() {
+        return Commands.slash("help", "Gitlab monitor documentation")
+                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 }
