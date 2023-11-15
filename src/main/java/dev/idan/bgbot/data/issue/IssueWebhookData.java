@@ -14,13 +14,11 @@ public class IssueWebhookData extends IssueCommentMergeData {
     @JsonProperty("object_attributes")
     private IssueObjectAttributesData objectAttributes;
 
-    String action = objectAttributes.getAction().substring(0, 1).toUpperCase()
-            + objectAttributes.getAction().substring(1);
-
     @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
         builder.setTitle(String.format("%s issue: #%d %s",
-                        action,
+                objectAttributes.getAction().substring(0, 1).toUpperCase()
+                        + objectAttributes.getAction().substring(1),
                         objectAttributes.getIid(),
                         objectAttributes.getTitle()
                 ), objectAttributes.getUrl()
