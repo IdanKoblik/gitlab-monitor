@@ -2,7 +2,7 @@ name: Java CI with Gradle.
 
 on:
   push:
-    branches: ['main']
+    branches: ['31-command-manager']
 
 env:
   REGISTRY: ghcr.io
@@ -59,7 +59,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: test
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
