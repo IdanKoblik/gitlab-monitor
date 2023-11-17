@@ -46,7 +46,7 @@ public class TokensCommand extends Command {
         StringBuilder sb = new StringBuilder();
         sb.append("```").append("Secret tokens:").append("\n");
         for (Token token : tokenOptional) {
-            sb.append(token.getSecretToken()).append("\n");
+            sb.append(token.getSecretToken()).append(" - ").append(event.getJDA().getTextChannelById(token.getChannelId()).getName()).append("\n");
         }
 
         sb.append("---------------").append("\n");
