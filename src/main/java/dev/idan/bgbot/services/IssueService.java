@@ -16,7 +16,7 @@ public class IssueService {
     ConfigData configData;
 
     public void createIssue(long projectId, String title, String description) {
-        String apiUrl = String.format("https://%s/api/v4/projects/%s/issues", configData.gitlabUrl(), projectId);
+        String apiUrl = String.format("https://%s/api/v4/projects/%d/issues", configData.gitlabUrl(), projectId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("private-token", configData.botAccessToken());

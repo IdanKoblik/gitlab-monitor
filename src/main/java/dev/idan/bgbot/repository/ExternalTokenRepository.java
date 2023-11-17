@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.DeleteQuery;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,4 +24,6 @@ public interface ExternalTokenRepository extends MongoRepository<ExternalToken, 
     Optional<ExternalToken> findByProjectId(long projectId);
 
     Optional<ExternalToken> findByGuildId(long guildId);
+
+    List<ExternalToken> findAllByGuildId(long guildId);
 }

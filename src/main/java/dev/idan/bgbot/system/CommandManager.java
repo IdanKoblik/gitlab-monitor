@@ -10,6 +10,7 @@ import dev.idan.bgbot.config.ConfigData;
 import dev.idan.bgbot.repository.ExternalTokenRepository;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.services.IssueService;
+import dev.idan.bgbot.services.ProjectService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -33,14 +34,16 @@ public class CommandManager {
     private final TokenRepository tokenRepository;
     private final ExternalTokenRepository externalTokenRepository;
     private final IssueService issueService;
+    private final ProjectService projectService;
 
-    public CommandManager(JDA jda, String guildId, TokenRepository tokenRepository, ExternalTokenRepository externalTokenRepository, ConfigData configData, IssueService issueService) {
+    public CommandManager(JDA jda, String guildId, TokenRepository tokenRepository, ExternalTokenRepository externalTokenRepository, ConfigData configData, IssueService issueService, ProjectService projectService) {
         this.jda = jda;
         this.guildId = guildId;
         this.tokenRepository = tokenRepository;
         this.externalTokenRepository = externalTokenRepository;
         this.configData = configData;
         this.issueService = issueService;
+        this.projectService = projectService;
     }
 
     public void initCommands() {
@@ -48,7 +51,7 @@ public class CommandManager {
         addCommand(new InitCommand(tokenRepository, configData));
         addCommand(new NotifyCommand(tokenRepository));
         addCommand(new RemoveBySecretTokenCommand(tokenRepository));
-        addCommand(new TokensCommand(tokenRepository));
+        addCommand(new TokensCommand(projectService, tokenRepository, externalTokenRepository));
         addCommand(new RemoveNotifyCommand(tokenRepository));
         addCommand(new RemoveCommand(tokenRepository));
         addCommand(new InitExternalCommand(externalTokenRepository));

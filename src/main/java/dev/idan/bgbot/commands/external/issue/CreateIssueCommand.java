@@ -43,7 +43,7 @@ public class CreateIssueCommand extends Command {
         }
 
         issueService.createIssue(guildIdOptional.get().getProjectId(), issueTitle, issueDescription);
-        event.reply("You have successfully created an issue. ✅").queue();
+        event.reply("You have successfully created an issue. ✅").setEphemeral(true).queue();
     }
 
     @Override
@@ -51,6 +51,7 @@ public class CreateIssueCommand extends Command {
         return Commands.slash("create-issue", "Create issue via discord")
                 .addOption(OptionType.STRING, "issue-title", "The issue title", true)
                 .addOption(OptionType.STRING, "issue-description", "The issue description", true)
+                .addOption(OptionType.INTEGER, "project-id", "Project ID", true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 }
