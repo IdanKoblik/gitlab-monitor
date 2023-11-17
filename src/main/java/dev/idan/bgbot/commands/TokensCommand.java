@@ -26,7 +26,7 @@ public class TokensCommand extends Command {
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("tokens")) return;
 
-        List<Token> tokenOptional = tokenRepository.findAllByChannelID(event.getChannel().getIdLong());
+        List<Token> tokenOptional = tokenRepository.findAllByChannelId(event.getChannel().getIdLong());
 
         if (tokenOptional.isEmpty()) {
             event.reply("This channel is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();

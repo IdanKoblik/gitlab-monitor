@@ -1,10 +1,9 @@
-package dev.idan.bgbot.commands;
+package dev.idan.bgbot.commands.external;
 
-import dev.idan.bgbot.repository.TokenRepository;
+import dev.idan.bgbot.repository.ExternalTokenRepository;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.channel.unions.GuildChannelUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -16,30 +15,30 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class RemoveCommand extends Command {
+public class RemoveByProjectIdCommand extends Command {
 
     @Autowired
-    TokenRepository tokenRepository;
+    ExternalTokenRepository externalTokenRepository;
 
     @Override
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("remove")) return;
+        if (!event.getName().equals("remove-by-project-id")) return;
 
-        GuildChannelUnion channel = event.getOption("channel").getAsChannel();
-
-        if (!tokenRepository.existsByChannelId(channel.getIdLong())) {
-            event.reply("This channel is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
+        long projectId = event.getOption("project-id").getAsLong();
+        if (!externalTokenRepository.existsByProjectId(projectId)) {
+            event.reply("This project does not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
             return;
         }
 
-        tokenRepository.deleteByChannelId(channel.getIdLong());
-        event.reply("This channel has been disconnected from the Gitlab monitor. ✅").setEphemeral(true).queue();
+        externalTokenRepository.deleteByProjectId(projectId);
+
+        event.reply("This project has been successfully removed from Gitlab monitor. ✅").setEphemeral(true).queue();
     }
 
     @Override
     protected CommandData commandData() {
-        return Commands.slash("remove", "disconnects channel from the Gitlab monitor")
-                .addOption(OptionType.CHANNEL, "channel", "The channel that you want to disconnect from the Gitlab monitor", true)
+        return Commands.slash("remove-by-project-id", "Remove gitlab project from the Gitlab monitor")
+                .addOption(OptionType.INTEGER, "project-id", "your project id", true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 }

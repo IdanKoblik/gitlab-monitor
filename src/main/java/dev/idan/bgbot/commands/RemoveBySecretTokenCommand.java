@@ -40,7 +40,7 @@ public class RemoveBySecretTokenCommand extends Command {
             return;
         }
 
-        if (tokenOptional.get().getChannelID() != channel.getIdLong()) {
+        if (tokenOptional.get().getChannelId() != channel.getIdLong()) {
             event.reply("This channel is not connected to the secret token. ❌").setEphemeral(true).queue();
             return;
         }
