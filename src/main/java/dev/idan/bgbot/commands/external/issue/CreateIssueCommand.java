@@ -43,7 +43,7 @@ public class CreateIssueCommand extends Command {
         }
 
         issueService.createIssue(guildIdOptional.get().getProjectId(), issueTitle, issueDescription);
-        event.reply("You have successfully create an issue. ✅").queue();
+        event.reply("You have successfully created an issue. ✅").queue();
     }
 
     @Override
