@@ -1,13 +1,14 @@
 package dev.idan.bgbot.system;
 
 import dev.idan.bgbot.commands.HelpCommand;
-import dev.idan.bgbot.commands.TokensCommand;
 import dev.idan.bgbot.commands.issuer.IssuerInitCommand;
+import dev.idan.bgbot.commands.issuer.IssuerTokensCommand;
 import dev.idan.bgbot.commands.issuer.RemoveIssuerProjectCommand;
 import dev.idan.bgbot.commands.issuer.issue.CreateIssueCommand;
 import dev.idan.bgbot.commands.webhook.RemoveWebhookChannelCommand;
 import dev.idan.bgbot.commands.webhook.RemoveWebhookProjectCommand;
 import dev.idan.bgbot.commands.webhook.WebhookInitCommand;
+import dev.idan.bgbot.commands.webhook.WebhookTokensCommand;
 import dev.idan.bgbot.commands.webhook.qol.NotifyCommand;
 import dev.idan.bgbot.commands.webhook.qol.RemoveNotifyCommand;
 import dev.idan.bgbot.config.ConfigData;
@@ -55,12 +56,13 @@ public class CommandManager {
         addCommand(new WebhookInitCommand(tokenRepository, configData));
         addCommand(new NotifyCommand(tokenRepository));
         addCommand(new RemoveWebhookProjectCommand(tokenRepository));
-        addCommand(new TokensCommand(projectService, tokenRepository));
+        addCommand(new WebhookTokensCommand(tokenRepository));
         addCommand(new RemoveNotifyCommand(tokenRepository));
         addCommand(new RemoveWebhookChannelCommand(tokenRepository));
         addCommand(new IssuerInitCommand(issuerTokenRepository, projectService));
         addCommand(new RemoveIssuerProjectCommand(issuerTokenRepository));
         addCommand(new CreateIssueCommand(issuerTokenRepository, issueService));
+        addCommand(new IssuerTokensCommand(issuerTokenRepository, projectService));
 
         Guild guild = jda.getGuildById(guildId);
         if (guild == null) {

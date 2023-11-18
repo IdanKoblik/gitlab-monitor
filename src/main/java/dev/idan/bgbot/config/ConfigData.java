@@ -16,7 +16,10 @@ public record ConfigData(
         String gitlabUrl,
 
         @JsonProperty("bot_access_token")
-        String botAccessToken
+        String botAccessToken,
+
+        @JsonProperty("role_id")
+        String roleId
 ) {
 
 }

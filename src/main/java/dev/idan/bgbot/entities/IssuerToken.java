@@ -32,6 +32,10 @@ public class IssuerToken {
         this.guildId = guildId;
     }
 
+/*
+    private String projectAccessToken;
+*/
+
     @Indexed(unique = true)
     private Set<Long> projectIds;
 }

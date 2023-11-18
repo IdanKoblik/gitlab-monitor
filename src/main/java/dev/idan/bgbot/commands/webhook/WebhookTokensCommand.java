@@ -1,8 +1,7 @@
-package dev.idan.bgbot.commands;
+package dev.idan.bgbot.commands.webhook;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
-import dev.idan.bgbot.services.ProjectService;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.Permission;
@@ -18,28 +17,25 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class TokensCommand extends Command {
-
-    @Autowired
-    ProjectService projectService;
+public class WebhookTokensCommand extends Command {
 
     @Autowired
     private final TokenRepository tokenRepository;
 
     @Override
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("tokens")) return;
+        if (!event.getName().equals("webhook-tokens")) return;
 
-        List<Token> tokenOptional = tokenRepository.findAllByChannelId(event.getChannel().getIdLong());
+        List<Token> tokenList = tokenRepository.findAllByChannelId(event.getChannel().getIdLong());
 
-        if (tokenOptional.isEmpty()) {
+        if (tokenList.isEmpty()) {
             event.reply("This channel is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
             return;
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("```").append("Secret tokens:").append("\n");
-        for (Token token : tokenOptional) {
+        sb.append("```").append("Webhook tokens:").append("\n");
+        for (Token token : tokenList) {
             sb.append(token.getSecretToken()).append(" - ").append(event.getJDA().getTextChannelById(token.getChannelId()).getName()).append("\n");
         }
 
@@ -50,7 +46,7 @@ public class TokensCommand extends Command {
 
     @Override
     protected CommandData commandData() {
-        return Commands.slash("tokens", "Get all the tokens that are connected to this channel")
+        return Commands.slash("webhook-tokens", "Get all the webhook tokens that are connected to this channel")
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 }

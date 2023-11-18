@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.DeleteQuery;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,4 +17,6 @@ public interface IssuerTokenRepository extends MongoRepository<IssuerToken, Long
     boolean existsByGuildId(long guildId);
 
     Optional<IssuerToken> findByGuildId(long guildId);
+
+    List<IssuerToken> findAllByGuildId(long guildId);
 }

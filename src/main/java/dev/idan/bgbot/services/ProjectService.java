@@ -18,7 +18,7 @@ public class ProjectService {
     @Autowired
     ConfigData configData;
 
-    public ResponseEntity<?> existsByProjectId(long projectId) {
+    public ResponseEntity<String> existsByProjectId(long projectId) {
         try {
             String apiUrl = String.format("https://%s/api/v4/projects/%d", configData.gitlabUrl(), projectId);
             RestTemplate restTemplate = new RestTemplate();
@@ -27,8 +27,7 @@ public class ProjectService {
             headers.set("private-token", configData.botAccessToken());
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
-            restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
-            return ResponseEntity.ok().build();
+            return restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -36,17 +35,8 @@ public class ProjectService {
 
     @SneakyThrows
     public String getProjectName(long projectId) {
-        String apiUrl = String.format("https://%s/api/v4/projects/%d", configData.gitlabUrl(), projectId);
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("private-token", configData.botAccessToken());
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
-
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(response.getBody());
+        JsonNode jsonNode = objectMapper.readTree(existsByProjectId(projectId).getBody());
         return jsonNode.get("name").asText();
     }
 }
