@@ -1,4 +1,4 @@
-package dev.idan.bgbot.commands;
+package dev.idan.bgbot.commands.webhook;
 
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.system.Command;
@@ -16,14 +16,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class RemoveCommand extends Command {
+public class RemoveWebhookChannelCommand extends Command {
 
     @Autowired
     TokenRepository tokenRepository;
 
     @Override
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("remove")) return;
+        if (!event.getName().equals("remove-webhook-channel")) return;
 
         GuildChannelUnion channel = event.getOption("channel").getAsChannel();
 
@@ -38,7 +38,7 @@ public class RemoveCommand extends Command {
 
     @Override
     protected CommandData commandData() {
-        return Commands.slash("remove", "disconnects channel from the Gitlab monitor")
+        return Commands.slash("remove-webhook-channel", "Disconnects a channel from the Gitlab monitor.")
                 .addOption(OptionType.CHANNEL, "channel", "The channel that you want to disconnect from the Gitlab monitor", true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }

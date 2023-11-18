@@ -1,7 +1,7 @@
 package dev.idan.bgbot.listeners;
 
-import dev.idan.bgbot.entities.ExternalToken;
-import dev.idan.bgbot.repository.ExternalTokenRepository;
+import dev.idan.bgbot.entities.IssuerToken;
+import dev.idan.bgbot.repository.IssuerTokenRepository;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 public class AutoCompleteListener extends ListenerAdapter {
 
     @Autowired
-    ExternalTokenRepository externalTokenRepository;
+    IssuerTokenRepository issuerTokenRepository;
 
     @Override
     public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event) {
-        Optional<ExternalToken> externalTokenOptional = externalTokenRepository.findByGuildId(event.getGuild().getIdLong());
+        Optional<IssuerToken> externalTokenOptional = issuerTokenRepository.findByGuildId(event.getGuild().getIdLong());
         if (externalTokenOptional.isEmpty()) return;
 
         Set<Long> projectIds = externalTokenOptional.get().getProjectIds();

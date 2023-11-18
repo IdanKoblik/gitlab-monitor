@@ -1,7 +1,7 @@
-package dev.idan.bgbot.commands.external;
+package dev.idan.bgbot.commands.issuer;
 
-import dev.idan.bgbot.entities.ExternalToken;
-import dev.idan.bgbot.repository.ExternalTokenRepository;
+import dev.idan.bgbot.entities.IssuerToken;
+import dev.idan.bgbot.repository.IssuerTokenRepository;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.Permission;
@@ -19,18 +19,18 @@ import java.util.Set;
 
 @Component
 @AllArgsConstructor
-public class RemoveProjectCommand extends Command {
+public class RemoveIssuerProjectCommand extends Command {
 
     @Autowired
-    ExternalTokenRepository externalTokenRepository;
+    IssuerTokenRepository issuerTokenRepository;
 
     @Override
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("remove-project")) return;
+        if (!event.getName().equals("remove-issuer-project")) return;
 
         long projectId = event.getOption("project-id").getAsLong();
 
-        Optional<ExternalToken> externalTokenOptional = externalTokenRepository.findByGuildId(event.getGuild().getIdLong());
+        Optional<IssuerToken> externalTokenOptional = issuerTokenRepository.findByGuildId(event.getGuild().getIdLong());
         if (externalTokenOptional.isEmpty()) {
             event.reply("This server is not connected to the Gitlab-monitor. ❌").setEphemeral(true).queue();
             return;
@@ -43,13 +43,13 @@ public class RemoveProjectCommand extends Command {
         }
 
         ids.remove(projectId);
-        externalTokenRepository.save(externalTokenOptional.get());
+        issuerTokenRepository.save(externalTokenOptional.get());
         event.reply("This project has been successfully removed from Gitlab monitor. ✅").setEphemeral(true).queue();
     }
 
     @Override
     protected CommandData commandData() {
-        return Commands.slash("remove-project", "Remove gitlab project from the Gitlab monitor")
+        return Commands.slash("remove-issuer-project", "Remove gitlab project from the Gitlab monitor")
                 .addOption(OptionType.INTEGER, "project-id", "your project id", true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }

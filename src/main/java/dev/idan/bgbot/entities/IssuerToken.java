@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @Collation(value = "externalToken")
 @AllArgsConstructor
-public class ExternalToken {
+public class IssuerToken {
 
     @Id
     @MongoId

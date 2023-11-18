@@ -1,7 +1,7 @@
-package dev.idan.bgbot.commands.external;
+package dev.idan.bgbot.commands.issuer;
 
-import dev.idan.bgbot.entities.ExternalToken;
-import dev.idan.bgbot.repository.ExternalTokenRepository;
+import dev.idan.bgbot.entities.IssuerToken;
+import dev.idan.bgbot.repository.IssuerTokenRepository;
 import dev.idan.bgbot.services.ProjectService;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
@@ -22,17 +22,17 @@ import java.util.Set;
 
 @Component
 @AllArgsConstructor
-public class InitExternalCommand extends Command {
+public class IssuerInitCommand extends Command {
 
     @Autowired
-    ExternalTokenRepository externalTokenRepository;
+    IssuerTokenRepository issuerTokenRepository;
 
     @Autowired
     ProjectService projectService;
 
     @Override
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("init-external")) return;
+        if (!event.getName().equals("issuer-init")) return;
 
         long projectId = event.getOption("project-id").getAsLong();
         if (!(projectService.existsByProjectId(projectId).getStatusCode() == HttpStatusCode.valueOf(200))) {
@@ -40,14 +40,14 @@ public class InitExternalCommand extends Command {
             return;
         }
 
-        Optional<ExternalToken> externalTokenOptional = externalTokenRepository.findByGuildId(event.getGuild().getIdLong());
+        Optional<IssuerToken> externalTokenOptional = issuerTokenRepository.findByGuildId(event.getGuild().getIdLong());
         if (externalTokenOptional.isEmpty()) {
             // First time registering
             Set<Long> ids = new HashSet<>();
             ids.add(projectId);
 
-            ExternalToken token = new ExternalToken(event.getGuild().getIdLong(), ids);
-            externalTokenRepository.insert(token);
+            IssuerToken token = new IssuerToken(event.getGuild().getIdLong(), ids);
+            issuerTokenRepository.insert(token);
 
             event.reply("You successfully registered this project. ✅").setEphemeral(true).queue();
             return;
@@ -63,13 +63,13 @@ public class InitExternalCommand extends Command {
         ids.add(projectId);
         externalTokenOptional.get().setProjectIds(ids);
 
-        externalTokenRepository.save(externalTokenOptional.get());
+        issuerTokenRepository.save(externalTokenOptional.get());
         event.reply("You successfully registered this project. ✅").setEphemeral(true).queue();
     }
 
     @Override
     protected CommandData commandData() {
-        return Commands.slash("init-external", "Use this command if you planning to create issues via the bot")
+        return Commands.slash("issuer-init", "Use this command if you planning to create issues via the bot")
                 .addOption(OptionType.INTEGER, "project-id", "your project id", true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
