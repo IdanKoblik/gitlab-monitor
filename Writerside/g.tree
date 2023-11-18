@@ -6,5 +6,12 @@
                  name="gitlab-monitor-docs"
                  start-page="starter-topic.md">
 
-    <toc-element topic="starter-topic.md"/>
+    <toc-element topic="home-page.md"/>
+    <toc-element topic="Getting-started.md"/>
+    <toc-element topic="🧭-Commands.md"/>
+    <toc-element topic="Self-hosting.md">
+        <toc-element topic="🐬-Docker.md"/>
+        <toc-element topic="Computer.md"/>
+        <toc-element topic="Issuer.md"/>
+    </toc-element>
 </instance-profile>
