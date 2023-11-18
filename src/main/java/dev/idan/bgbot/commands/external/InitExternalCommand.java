@@ -14,6 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 @Component
 @AllArgsConstructor
 public class InitExternalCommand extends Command {
@@ -27,14 +31,30 @@ public class InitExternalCommand extends Command {
 
         long projectId = event.getOption("project-id").getAsLong();
 
-        if (externalTokenRepository.existsByProjectId(projectId)) {
+        Optional<ExternalToken> externalTokenOptional = externalTokenRepository.findByGuildId(event.getGuild().getIdLong());
+        if (externalTokenOptional.isEmpty()) {
+            // First time registering
+            Set<Long> ids = new HashSet<>();
+            ids.add(projectId);
+
+            ExternalToken token = new ExternalToken(event.getGuild().getIdLong(), ids);
+            externalTokenRepository.insert(token);
+
+            event.reply("You successfully registered this project. ✅").setEphemeral(true).queue();
+            return;
+        }
+
+        Set<Long> ids = externalTokenOptional.get().getProjectIds();
+        if (ids != null && ids.contains(projectId)) {
             event.reply("You already registered that project. ❌").setEphemeral(true).queue();
             return;
         }
 
-        ExternalToken token = new ExternalToken(projectId, event.getGuild().getIdLong());
-        externalTokenRepository.insert(token);
+        if (ids == null) ids = new HashSet<>();
+        ids.add(projectId);
+        externalTokenOptional.get().setProjectIds(ids);
 
+        externalTokenRepository.save(externalTokenOptional.get());
         event.reply("You successfully registered this project. ✅").setEphemeral(true).queue();
     }
 

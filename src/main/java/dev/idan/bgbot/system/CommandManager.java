@@ -2,7 +2,7 @@ package dev.idan.bgbot.system;
 
 import dev.idan.bgbot.commands.*;
 import dev.idan.bgbot.commands.external.InitExternalCommand;
-import dev.idan.bgbot.commands.external.RemoveByProjectIdCommand;
+import dev.idan.bgbot.commands.external.RemoveProjectCommand;
 import dev.idan.bgbot.commands.external.issue.CreateIssueCommand;
 import dev.idan.bgbot.commands.qol.NotifyCommand;
 import dev.idan.bgbot.commands.qol.RemoveNotifyCommand;
@@ -51,11 +51,11 @@ public class CommandManager {
         addCommand(new InitCommand(tokenRepository, configData));
         addCommand(new NotifyCommand(tokenRepository));
         addCommand(new RemoveBySecretTokenCommand(tokenRepository));
-        addCommand(new TokensCommand(projectService, tokenRepository, externalTokenRepository));
+        addCommand(new TokensCommand(projectService, tokenRepository));
         addCommand(new RemoveNotifyCommand(tokenRepository));
         addCommand(new RemoveCommand(tokenRepository));
         addCommand(new InitExternalCommand(externalTokenRepository));
-        addCommand(new RemoveByProjectIdCommand(externalTokenRepository));
+        addCommand(new RemoveProjectCommand(externalTokenRepository));
         addCommand(new CreateIssueCommand(externalTokenRepository, issueService));
 
         Guild guild = jda.getGuildById(guildId);

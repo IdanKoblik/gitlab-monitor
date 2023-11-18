@@ -1,6 +1,5 @@
 package dev.idan.bgbot.commands.external.issue;
 
-import dev.idan.bgbot.entities.ExternalToken;
 import dev.idan.bgbot.repository.ExternalTokenRepository;
 import dev.idan.bgbot.services.IssueService;
 import dev.idan.bgbot.system.Command;
@@ -16,8 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 @AllArgsConstructor
 public class CreateIssueCommand extends Command {
@@ -32,17 +29,24 @@ public class CreateIssueCommand extends Command {
     @SneakyThrows
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("create-issue")) return;
+        // TODO: add drop down
 
         String issueTitle = event.getOption("issue-title").getAsString();
         String issueDescription = event.getOption("issue-description").getAsString();
-        Optional<ExternalToken> guildIdOptional = externalTokenRepository.findByGuildId(event.getGuild().getIdLong());
+        long projectId = event.getOption("project-id").getAsLong();
 
-        if (guildIdOptional.isEmpty()) {
-            event.reply("This project does not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
+        if (issueTitle.isEmpty()) {
+            // There is an issue with issue title.
+            event.reply("There is an issue with the title of the issue. ❌").setEphemeral(true).queue();
             return;
         }
 
-        issueService.createIssue(guildIdOptional.get().getProjectId(), issueTitle, issueDescription);
+        if (issueTitle.length() > 255) {
+            event.reply("Issue title is too long (maximum is 255 characters). ❌").setEphemeral(true).queue();
+            return;
+        }
+
+        issueService.createIssue(projectId, issueTitle, issueDescription);
         event.reply("You have successfully created an issue. ✅").setEphemeral(true).queue();
     }
 

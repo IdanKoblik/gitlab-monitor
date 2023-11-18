@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Collation(value = "externalToken")
@@ -18,18 +20,18 @@ public class ExternalToken {
     @Id
     @MongoId
     @Field("_id")
-    private long projectId;
+    private long guildId;
 
     @Field("_id")
-    public long getProjectId() {
-        return projectId;
+    public long getGuildId() {
+        return guildId;
     }
 
     @Field("_id")
-    public void setProjectId(long projectId) {
-        this.projectId = projectId;
+    public void setGuildId(long guildId) {
+        this.guildId = guildId;
     }
 
     @Indexed(unique = true)
-    private long guildId;
+    private Set<Long> projectIds;
 }
