@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
@@ -30,6 +31,8 @@ public class WebhookEndpoint {
     @Autowired
     JDA jda;
 
+    private RestTemplate restTemplate;
+
     @PostMapping(value = "webhook", consumes = {
             "application/json"
     })
@@ -43,7 +46,7 @@ public class WebhookEndpoint {
 
         if (!data.sendEmbed()) return;
 
-        if (jda.getTextChannelById(token.getChannelID()) == null) return;
+        if (jda.getTextChannelById(token.getChannelId()) == null) return;
 
         EmbedBuilder builder = new EmbedBuilder();
         String userName = data.getAuthorName();
@@ -54,8 +57,8 @@ public class WebhookEndpoint {
         builder.setAuthor(userName, configData.websiteURL(), avatar);
         builder.setFooter(data.getProjectName());
         builder.setTimestamp(Instant.now());
-        data.apply(builder, instanceURL, token, jda.getTextChannelById(token.getChannelID()));
+        data.apply(builder, instanceURL, token, jda.getTextChannelById(token.getChannelId()));
 
-        jda.getTextChannelById(token.getChannelID()).sendMessageEmbeds(builder.build()).queue();
+        jda.getTextChannelById(token.getChannelId()).sendMessageEmbeds(builder.build()).queue();
     }
 }

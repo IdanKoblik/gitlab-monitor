@@ -1,6 +1,6 @@
 package dev.idan.bgbot.entities;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -9,37 +9,29 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.util.Set;
+
 @Getter
 @Setter
-@Collation(value = "token")
-public class Token {
-
-    public boolean useGravatar = false;
+@Collation(value = "externalToken")
+@AllArgsConstructor
+public class ExternalToken {
 
     @Id
     @MongoId
     @Field("_id")
-    private String secretToken;
-
-    @Field("_id")
-    public String getSecretToken() {
-        return secretToken;
-    }
-
-    @Field("_id")
-    public void setSecretToken(String secretToken) {
-        this.secretToken = secretToken;
-    }
-
-    @Indexed(unique = true)
-    private long channelId;
-
-    @Indexed(unique = true)
     private long guildId;
 
-    private long notifyRoleId;
-
-    @JsonCreator
-    public Token() {
+    @Field("_id")
+    public long getGuildId() {
+        return guildId;
     }
+
+    @Field("_id")
+    public void setGuildId(long guildId) {
+        this.guildId = guildId;
+    }
+
+    @Indexed(unique = true)
+    private Set<Long> projectIds;
 }

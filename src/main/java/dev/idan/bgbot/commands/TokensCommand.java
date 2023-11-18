@@ -2,6 +2,7 @@ package dev.idan.bgbot.commands;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
+import dev.idan.bgbot.services.ProjectService;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.Permission;
@@ -20,13 +21,16 @@ import java.util.List;
 public class TokensCommand extends Command {
 
     @Autowired
+    ProjectService projectService;
+
+    @Autowired
     private final TokenRepository tokenRepository;
 
     @Override
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("tokens")) return;
 
-        List<Token> tokenOptional = tokenRepository.findAllByChannelID(event.getChannel().getIdLong());
+        List<Token> tokenOptional = tokenRepository.findAllByChannelId(event.getChannel().getIdLong());
 
         if (tokenOptional.isEmpty()) {
             event.reply("This channel is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
@@ -34,9 +38,12 @@ public class TokensCommand extends Command {
         }
 
         StringBuilder sb = new StringBuilder();
+        sb.append("```").append("Secret tokens:").append("\n");
         for (Token token : tokenOptional) {
-            sb.append(token.getSecretToken()).append("\n");
+            sb.append(token.getSecretToken()).append(" - ").append(event.getJDA().getTextChannelById(token.getChannelId()).getName()).append("\n");
         }
+
+        sb.append("```");
 
         event.reply(sb.toString()).setEphemeral(true).queue();
     }

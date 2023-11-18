@@ -1,4 +1,4 @@
-package dev.idan.bgbot.commands;
+package dev.idan.bgbot.commands.qol;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
@@ -38,12 +38,12 @@ public class RemoveNotifyCommand extends Command {
             return;
         }
 
-        if (tokenOptional.get().getNotifyRoleID() != role.getIdLong()) {
+        if (tokenOptional.get().getNotifyRoleId() != role.getIdLong()) {
             event.reply("This role is not connected to the secret token. ❌").setEphemeral(true).queue();
             return;
         }
 
-        tokenRepository.deleteByNotifyRoleID(role.getIdLong());
+        tokenRepository.deleteByNotifyRoleId(role.getIdLong());
 
         event.reply("The role has been removed from this repository ✅").queue();
     }

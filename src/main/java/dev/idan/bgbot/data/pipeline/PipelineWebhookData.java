@@ -90,7 +90,7 @@ public class PipelineWebhookData extends WebhookData {
             builder.setTitle("Pipeline " + "#" + iid + " of branch " + ref + " has been failed", url)
             .setDescription("Reason: " + failedReason + "\n");
 
-            Role role = channel.getGuild().getRoleById(token.getNotifyRoleID());
+            Role role = channel.getGuild().getRoleById(token.getNotifyRoleId());
             if (role != null) builder.appendDescription(role.getAsMention());
         }
     }

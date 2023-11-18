@@ -18,6 +18,12 @@ configurations {
     
 repositories {
     mavenCentral()
+    maven {
+        url "https://jitpack.io"
+        content {
+            includeGroup "com.github.gitlab4j"
+        }
+    }
 }
 
 springBoot {

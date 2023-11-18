@@ -1,4 +1,4 @@
-package dev.idan.bgbot.commands;
+package dev.idan.bgbot.commands.qol;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
@@ -38,14 +38,14 @@ public class NotifyCommand extends Command {
             return;
         }
 
-        if (tokenOptional.get().getNotifyRoleID() != 0) {
+        if (tokenOptional.get().getNotifyRoleId() != 0) {
             event.reply("This token is already connected to a role. ❌").setEphemeral(true).queue();
             return;
         }
 
         Token token = tokenOptional.get();
 
-        token.setNotifyRoleID(role.getIdLong());
+        token.setNotifyRoleId(role.getIdLong());
         tokenRepository.save(token);
 
         event.reply("The role has been added to the database. ✅").queue();

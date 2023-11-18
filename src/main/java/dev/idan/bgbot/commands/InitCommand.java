@@ -38,8 +38,8 @@ public class InitCommand extends Command {
 
         Token token = new Token();
         token.setSecretToken(UUID.randomUUID().toString().trim());
-        token.setChannelID(channel.getIdLong());
-        token.setGuildID(channel.getGuild().getIdLong());
+        token.setChannelId(channel.getIdLong());
+        token.setGuildId(channel.getGuild().getIdLong());
 
         tokenRepository.insert(token);
 

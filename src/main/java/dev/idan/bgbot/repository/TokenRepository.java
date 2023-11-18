@@ -12,22 +12,25 @@ import java.util.Optional;
 public interface TokenRepository extends MongoRepository<Token, String> {
 
     @DeleteQuery
-    void deleteByGuildID(long guildID);
+    void deleteByGuildId(long guildId);
 
     @DeleteQuery
-    void deleteByChannelID(long channelID);
+    void deleteByChannelId(long channelId);
 
     @DeleteQuery
-    void deleteByNotifyRoleID(long notifyRoleID);
+    void deleteByNotifyRoleId(long notifyRoleId);
 
     @DeleteQuery
     void deleteBySecretToken(String secretToken);
 
-    boolean existsByChannelID(long channelID);
+    boolean existsByChannelId(long channelId);
 
-    boolean existsByNotifyRoleID(long notifyRoleID);
+    boolean existsByNotifyRoleId(long notifyRoleId);
 
-    Optional<Token> findByChannelID(long channelID);
+    boolean existsByGuildId(long guildId);
 
-    List<Token> findAllByChannelID(long channelID);
+    Optional<Token> findByChannelId(long channelId);
+
+    List<Token> findAllByChannelId(long channelId);
+
 }
