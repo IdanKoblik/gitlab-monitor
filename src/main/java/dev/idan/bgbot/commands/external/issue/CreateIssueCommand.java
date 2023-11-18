@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Component
 @AllArgsConstructor
@@ -29,11 +30,10 @@ public class CreateIssueCommand extends Command {
     @SneakyThrows
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("create-issue")) return;
-        // TODO: add drop down
 
         String issueTitle = event.getOption("issue-title").getAsString();
         String issueDescription = event.getOption("issue-description").getAsString();
-        long projectId = event.getOption("project-id").getAsLong();
+        String projectId = event.getOption("project-id").getAsString();
 
         if (issueTitle.isEmpty()) {
             // There is an issue with issue title.
@@ -46,8 +46,12 @@ public class CreateIssueCommand extends Command {
             return;
         }
 
-        issueService.createIssue(projectId, issueTitle, issueDescription);
-        event.reply("You have successfully created an issue. ✅").setEphemeral(true).queue();
+        try {
+            issueService.createIssue(projectId, issueTitle, issueDescription);
+            event.reply("You have successfully created an issue. ✅").setEphemeral(true).queue();
+        } catch (HttpClientErrorException e) {
+            event.reply("Invalid project id. ❌").setEphemeral(true).queue();
+        }
     }
 
     @Override
@@ -55,7 +59,7 @@ public class CreateIssueCommand extends Command {
         return Commands.slash("create-issue", "Create issue via discord")
                 .addOption(OptionType.STRING, "issue-title", "The issue title", true)
                 .addOption(OptionType.STRING, "issue-description", "The issue description", true)
-                .addOption(OptionType.INTEGER, "project-id", "Project ID", true)
+                .addOption(OptionType.STRING, "project-id", "Project ID", true, true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }
 }

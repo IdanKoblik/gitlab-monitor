@@ -2,6 +2,7 @@ package dev.idan.bgbot.commands.external;
 
 import dev.idan.bgbot.entities.ExternalToken;
 import dev.idan.bgbot.repository.ExternalTokenRepository;
+import dev.idan.bgbot.services.ProjectService;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.Permission;
@@ -12,6 +13,7 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -25,11 +27,18 @@ public class InitExternalCommand extends Command {
     @Autowired
     ExternalTokenRepository externalTokenRepository;
 
+    @Autowired
+    ProjectService projectService;
+
     @Override
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("init-external")) return;
 
         long projectId = event.getOption("project-id").getAsLong();
+        if (!(projectService.existsByProjectId(projectId).getStatusCode() == HttpStatusCode.valueOf(200))) {
+            event.reply("Invalid project id. ❌").setEphemeral(true).queue();
+            return;
+        }
 
         Optional<ExternalToken> externalTokenOptional = externalTokenRepository.findByGuildId(event.getGuild().getIdLong());
         if (externalTokenOptional.isEmpty()) {

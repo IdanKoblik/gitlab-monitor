@@ -18,6 +18,22 @@ public class ProjectService {
     @Autowired
     ConfigData configData;
 
+    public ResponseEntity<?> existsByProjectId(long projectId) {
+        try {
+            String apiUrl = String.format("https://%s/api/v4/projects/%d", configData.gitlabUrl(), projectId);
+            RestTemplate restTemplate = new RestTemplate();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("private-token", configData.botAccessToken());
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @SneakyThrows
     public String getProjectName(long projectId) {
         String apiUrl = String.format("https://%s/api/v4/projects/%d", configData.gitlabUrl(), projectId);

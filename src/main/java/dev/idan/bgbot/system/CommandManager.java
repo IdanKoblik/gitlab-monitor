@@ -54,7 +54,7 @@ public class CommandManager {
         addCommand(new TokensCommand(projectService, tokenRepository));
         addCommand(new RemoveNotifyCommand(tokenRepository));
         addCommand(new RemoveCommand(tokenRepository));
-        addCommand(new InitExternalCommand(externalTokenRepository));
+        addCommand(new InitExternalCommand(externalTokenRepository, projectService));
         addCommand(new RemoveProjectCommand(externalTokenRepository));
         addCommand(new CreateIssueCommand(externalTokenRepository, issueService));
 
