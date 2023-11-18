@@ -1,4 +1,4 @@
-package dev.idan.bgbot.commands.qol;
+package dev.idan.bgbot.commands.webhook.qol;
 
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;

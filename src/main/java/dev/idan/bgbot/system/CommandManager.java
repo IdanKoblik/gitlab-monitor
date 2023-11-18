@@ -1,13 +1,17 @@
 package dev.idan.bgbot.system;
 
-import dev.idan.bgbot.commands.*;
-import dev.idan.bgbot.commands.external.InitExternalCommand;
-import dev.idan.bgbot.commands.external.RemoveProjectCommand;
-import dev.idan.bgbot.commands.external.issue.CreateIssueCommand;
-import dev.idan.bgbot.commands.qol.NotifyCommand;
-import dev.idan.bgbot.commands.qol.RemoveNotifyCommand;
+import dev.idan.bgbot.commands.HelpCommand;
+import dev.idan.bgbot.commands.TokensCommand;
+import dev.idan.bgbot.commands.issuer.IssuerInitCommand;
+import dev.idan.bgbot.commands.issuer.RemoveIssuerProjectCommand;
+import dev.idan.bgbot.commands.issuer.issue.CreateIssueCommand;
+import dev.idan.bgbot.commands.webhook.RemoveWebhookChannelCommand;
+import dev.idan.bgbot.commands.webhook.RemoveWebhookProjectCommand;
+import dev.idan.bgbot.commands.webhook.WebhookInitCommand;
+import dev.idan.bgbot.commands.webhook.qol.NotifyCommand;
+import dev.idan.bgbot.commands.webhook.qol.RemoveNotifyCommand;
 import dev.idan.bgbot.config.ConfigData;
-import dev.idan.bgbot.repository.ExternalTokenRepository;
+import dev.idan.bgbot.repository.IssuerTokenRepository;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.services.IssueService;
 import dev.idan.bgbot.services.ProjectService;
@@ -32,15 +36,15 @@ public class CommandManager {
     private final String guildId;
     private final ConfigData configData;
     private final TokenRepository tokenRepository;
-    private final ExternalTokenRepository externalTokenRepository;
+    private final IssuerTokenRepository issuerTokenRepository;
     private final IssueService issueService;
     private final ProjectService projectService;
 
-    public CommandManager(JDA jda, String guildId, TokenRepository tokenRepository, ExternalTokenRepository externalTokenRepository, ConfigData configData, IssueService issueService, ProjectService projectService) {
+    public CommandManager(JDA jda, String guildId, TokenRepository tokenRepository, IssuerTokenRepository issuerTokenRepository, ConfigData configData, IssueService issueService, ProjectService projectService) {
         this.jda = jda;
         this.guildId = guildId;
         this.tokenRepository = tokenRepository;
-        this.externalTokenRepository = externalTokenRepository;
+        this.issuerTokenRepository = issuerTokenRepository;
         this.configData = configData;
         this.issueService = issueService;
         this.projectService = projectService;
@@ -48,15 +52,15 @@ public class CommandManager {
 
     public void initCommands() {
         addCommand(new HelpCommand());
-        addCommand(new InitCommand(tokenRepository, configData));
+        addCommand(new WebhookInitCommand(tokenRepository, configData));
         addCommand(new NotifyCommand(tokenRepository));
-        addCommand(new RemoveBySecretTokenCommand(tokenRepository));
+        addCommand(new RemoveWebhookProjectCommand(tokenRepository));
         addCommand(new TokensCommand(projectService, tokenRepository));
         addCommand(new RemoveNotifyCommand(tokenRepository));
-        addCommand(new RemoveCommand(tokenRepository));
-        addCommand(new InitExternalCommand(externalTokenRepository, projectService));
-        addCommand(new RemoveProjectCommand(externalTokenRepository));
-        addCommand(new CreateIssueCommand(externalTokenRepository, issueService));
+        addCommand(new RemoveWebhookChannelCommand(tokenRepository));
+        addCommand(new IssuerInitCommand(issuerTokenRepository, projectService));
+        addCommand(new RemoveIssuerProjectCommand(issuerTokenRepository));
+        addCommand(new CreateIssueCommand(issuerTokenRepository, issueService));
 
         Guild guild = jda.getGuildById(guildId);
         if (guild == null) {

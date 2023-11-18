@@ -1,7 +1,7 @@
 package dev.idan.bgbot.listeners;
 
 import dev.idan.bgbot.config.ConfigData;
-import dev.idan.bgbot.repository.ExternalTokenRepository;
+import dev.idan.bgbot.repository.IssuerTokenRepository;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.services.IssueService;
 import dev.idan.bgbot.services.ProjectService;
@@ -23,7 +23,7 @@ public class GuildReadyListener extends ListenerAdapter {
     TokenRepository tokenRepository;
 
     @Autowired
-    ExternalTokenRepository externalTokenRepository;
+    IssuerTokenRepository issuerTokenRepository;
 
     @Autowired
     IssueService issueService;
@@ -38,7 +38,7 @@ public class GuildReadyListener extends ListenerAdapter {
 
     @Override
     public void onGuildReady(GuildReadyEvent event) {
-        CommandManager commandManager = new CommandManager(event.getJDA(), event.getGuild().getId(), tokenRepository, externalTokenRepository, configData, issueService, projectService);
+        CommandManager commandManager = new CommandManager(event.getJDA(), event.getGuild().getId(), tokenRepository, issuerTokenRepository, configData, issueService, projectService);
         commandManagerMap.put(
                 event.getGuild().getId(),
                 commandManager

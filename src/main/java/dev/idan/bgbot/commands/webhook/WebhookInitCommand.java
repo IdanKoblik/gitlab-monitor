@@ -1,4 +1,4 @@
-package dev.idan.bgbot.commands;
+package dev.idan.bgbot.commands.webhook;
 
 import dev.idan.bgbot.config.ConfigData;
 import dev.idan.bgbot.entities.Token;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class InitCommand extends Command {
+public class WebhookInitCommand extends Command {
 
     @Autowired
     TokenRepository tokenRepository;
@@ -31,7 +31,7 @@ public class InitCommand extends Command {
 
     @Override
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("init")) return;
+        if (!event.getName().equals("webhook-init")) return;
 
         GuildChannelUnion channel = event.getOption("channel").getAsChannel();
         if (channel.getType() != ChannelType.TEXT) return;
@@ -48,7 +48,7 @@ public class InitCommand extends Command {
 
     @Override
     protected CommandData commandData() {
-        return Commands.slash("init", "Configure the Gitlab monitor as you wish")
+        return Commands.slash("webhook-init", "Configure the Gitlab monitor as you wish")
                 .addOption(OptionType.CHANNEL, "channel", "The channel that you want to get updates on", true)
                 .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
     }

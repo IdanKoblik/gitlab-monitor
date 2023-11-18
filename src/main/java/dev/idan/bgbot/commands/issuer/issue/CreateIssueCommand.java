@@ -1,6 +1,6 @@
-package dev.idan.bgbot.commands.external.issue;
+package dev.idan.bgbot.commands.issuer.issue;
 
-import dev.idan.bgbot.repository.ExternalTokenRepository;
+import dev.idan.bgbot.repository.IssuerTokenRepository;
 import dev.idan.bgbot.services.IssueService;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.web.client.HttpClientErrorException;
 public class CreateIssueCommand extends Command {
 
     @Autowired
-    ExternalTokenRepository externalTokenRepository;
+    IssuerTokenRepository issuerTokenRepository;
 
     @Autowired
     IssueService issueService;
