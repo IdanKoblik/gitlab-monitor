@@ -5,9 +5,7 @@ import dev.idan.bgbot.services.IssueService;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -59,7 +57,6 @@ public class CreateIssueCommand extends Command {
         return Commands.slash("create-issue", "Create issue via discord")
                 .addOption(OptionType.STRING, "issue-title", "The issue title", true)
                 .addOption(OptionType.STRING, "issue-description", "The issue description", true)
-                .addOption(OptionType.STRING, "project-id", "Project ID", true, true)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
+                .addOption(OptionType.STRING, "project-id", "Project ID", true, true);
     }
 }

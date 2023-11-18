@@ -4,9 +4,7 @@ import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +44,6 @@ public class WebhookTokensCommand extends Command {
 
     @Override
     protected CommandData commandData() {
-        return Commands.slash("webhook-tokens", "Get all the webhook tokens that are connected to this channel")
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
+        return Commands.slash("webhook-tokens", "Get all the webhook tokens that are connected to this channel");
     }
 }

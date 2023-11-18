@@ -5,11 +5,9 @@ import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.unions.GuildChannelUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -49,7 +47,6 @@ public class WebhookInitCommand extends Command {
     @Override
     protected CommandData commandData() {
         return Commands.slash("webhook-init", "Configure the Gitlab monitor as you wish")
-                .addOption(OptionType.CHANNEL, "channel", "The channel that you want to get updates on", true)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
+                .addOption(OptionType.CHANNEL, "channel", "The channel that you want to get updates on", true);
     }
 }

@@ -3,10 +3,8 @@ package dev.idan.bgbot.commands.webhook;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.channel.unions.GuildChannelUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -39,7 +37,6 @@ public class RemoveWebhookChannelCommand extends Command {
     @Override
     protected CommandData commandData() {
         return Commands.slash("remove-webhook-channel", "Disconnects a channel from the Gitlab monitor.")
-                .addOption(OptionType.CHANNEL, "channel", "The channel that you want to disconnect from the Gitlab monitor", true)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
+                .addOption(OptionType.CHANNEL, "channel", "The channel that you want to disconnect from the Gitlab monitor", true);
     }
 }

@@ -5,9 +5,7 @@ import dev.idan.bgbot.repository.IssuerTokenRepository;
 import dev.idan.bgbot.services.ProjectService;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -70,7 +68,6 @@ public class IssuerInitCommand extends Command {
     @Override
     protected CommandData commandData() {
         return Commands.slash("issuer-init", "Use this command if you planning to create issues via the bot")
-                .addOption(OptionType.INTEGER, "project-id", "your project id", true)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
+                .addOption(OptionType.INTEGER, "project-id", "your project id", true);
     }
 }

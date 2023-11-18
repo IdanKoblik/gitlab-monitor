@@ -4,10 +4,8 @@ import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -55,7 +53,6 @@ public class NotifyCommand extends Command {
     protected CommandData commandData() {
         return Commands.slash("notify", "The bot will mention a selected role when a pipeline fails")
                 .addOption(OptionType.ROLE, "role", "The role that you would like to get mention when pipeline fails", true)
-                .addOption(OptionType.STRING, "secret-token", "The secret token that you got when you ran the init command (use /tokens to find all the tokens)", true)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
+                .addOption(OptionType.STRING, "secret-token", "The secret token that you got when you ran the init command (use /tokens to find all the tokens)", true);
     }
 }

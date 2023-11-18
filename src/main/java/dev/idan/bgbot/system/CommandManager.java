@@ -77,6 +77,11 @@ public class CommandManager {
     public void handle(SlashCommandInteractionEvent event) {
         Command command = commands.get(event.getName().toLowerCase());
         if (command == null) return;
+
+        if (!(event.getMember().getRoles().contains(event.getJDA().getRolesByName("bgbot", true).get(0)))) {
+            event.reply("You dont have permissions to use this command. ❌").setEphemeral(true).queue();
+            return;
+        }
         command.execute(event);
     }
 

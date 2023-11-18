@@ -2,9 +2,7 @@ package dev.idan.bgbot.commands;
 
 import dev.idan.bgbot.system.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.jetbrains.annotations.NotNull;
@@ -53,7 +51,6 @@ public class HelpCommand extends Command {
 
     @Override
     protected CommandData commandData() {
-        return Commands.slash("help", "Gitlab monitor documentation")
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
+        return Commands.slash("help", "Gitlab monitor documentation");
     }
 }
