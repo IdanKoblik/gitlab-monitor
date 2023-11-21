@@ -1,7 +1,7 @@
 package dev.idan.bgbot.commands.issuer;
 
-import dev.idan.bgbot.entities.IssuerToken;
-import dev.idan.bgbot.repository.IssuerTokenRepository;
+import dev.idan.bgbot.entities.Project;
+import dev.idan.bgbot.repository.ProjectRepository;
 import dev.idan.bgbot.services.ProjectService;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 public class IssuerTokensCommand extends Command {
 
     @Autowired
-    IssuerTokenRepository issuerTokenRepository;
+    ProjectRepository projectRepository;
 
     @Autowired
     ProjectService projectService;
@@ -28,16 +28,17 @@ public class IssuerTokensCommand extends Command {
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("issuer-tokens")) return;
 
-        List<IssuerToken> issuerTokenList = issuerTokenRepository.findAllByGuildId(event.getGuild().getIdLong());
-        if (issuerTokenList.isEmpty()) {
+        List<Project> projectList = projectRepository.findAllByGuildId(event.getGuild().getIdLong());
+        if (projectList.isEmpty()) {
             event.reply("This server has 0 connected projects. ❌").setEphemeral(true).queue();
             return;
         }
 
         StringBuilder sb = new StringBuilder();
         sb.append("```").append("Issuer tokens:").append("\n");
-        for (IssuerToken token : issuerTokenList) {
-            token.getProjectIds().forEach(id -> sb.append(id).append(" - ").append(projectService.getProjectName(id)));
+
+        for (Project project : projectList) {
+            sb.append(project.getProjectId()).append(" - ").append(projectService.getProjectName(project.getProjectId())).append("\n");
         }
 
         sb.append("```");
