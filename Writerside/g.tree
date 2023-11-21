@@ -4,7 +4,7 @@
 
 <instance-profile id="g"
                  name="gitlab-monitor-docs"
-                 start-page="starter-topic.md">
+                 start-page="home-page.md">
 
     <toc-element topic="home-page.md"/>
     <toc-element topic="Getting-started.md"/>
