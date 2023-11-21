@@ -24,20 +24,19 @@ public class WebhookTokensCommand extends Command {
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("webhook-tokens")) return;
 
-        List<Token> tokenList = tokenRepository.findAllByChannelId(event.getChannel().getIdLong());
+        List<Token> tokenList = tokenRepository.findAllByGuildId(event.getGuild().getIdLong());
 
         if (tokenList.isEmpty()) {
-            event.reply("This channel is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
+            event.reply("This server is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
             return;
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("```").append("Webhook tokens:").append("\n");
-        for (Token token : tokenList) {
-            sb.append(token.getSecretToken()).append(" - ").append(event.getJDA().getTextChannelById(token.getChannelId()).getName()).append("\n");
-        }
+        sb.append("Webhook tokens:").append("\n");
 
-        sb.append("```");
+        for (Token token : tokenList)
+            sb.append(token.getSecretToken()).append(" - ").append(String.format("<#%d>", token.getChannelId())).append("\n");
+
 
         event.reply(sb.toString()).setEphemeral(true).queue();
     }

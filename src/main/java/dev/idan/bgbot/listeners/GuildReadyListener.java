@@ -38,7 +38,7 @@ public class GuildReadyListener extends ListenerAdapter {
 
     @Override
     public void onGuildReady(GuildReadyEvent event) {
-        CommandManager commandManager = new CommandManager(event.getJDA(), event.getGuild().getId(), configData, tokenRepository, issueService, projectService, projectRepository);
+        CommandManager commandManager = new CommandManager(event.getJDA(), event.getGuild().getId(), configData,issueService, projectService, tokenRepository, projectRepository);
         commandManagerMap.put(
                 event.getGuild().getId(),
                 commandManager

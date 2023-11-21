@@ -26,6 +26,8 @@ public interface TokenRepository extends MongoRepository<Token, String> {
 
     boolean existsByGuildId(long guildId);
 
+    List<Token> findAllByGuildId(long guildId);
+
     List<Token> findAllByChannelId(long channelId);
 
 }
