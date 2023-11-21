@@ -1,11 +1,5 @@
 # 📻 Self-hosting
 
-## 📂 Features
-> When you self-host the bot, you're getting the ability to create issues via a simple slash command.
-> 
-
-* [Follow these steps to get more understanding about this feature.]()
-
 ## 📂 Guide
 
 > Follow these steps to run the bot locally.

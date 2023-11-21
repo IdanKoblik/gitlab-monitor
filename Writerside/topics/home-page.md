@@ -18,6 +18,3 @@ enhancing collaboration and efficiency.
 3) Easy Setup: Setting up Gitlab Monitor is straightforward. Simply invite the bot to your Discord server, configure your webhook URLs for each repository, and select your notification preferences.
 4) User-friendly Commands: Interacting with Gitlab monitor is intuitive. Use commands to enable or disable notifications for specific event types.
 5) Security First: Gitlab monitor prioritizes security and data privacy. It operates using webhook URLs, ensuring that sensitive credentials and data remain safe and aren't exposed within Discord.
-
-## 🤖 Source Code
-> [](https://github.com/IdanKoblik/gitlab-monitor)
