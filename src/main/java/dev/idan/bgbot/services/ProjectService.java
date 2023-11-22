@@ -44,7 +44,6 @@ public class ProjectService {
         headers.set("private-token", projectOptional.get().getAccessToken());
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
-
         ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
 
         projectCache.put(projectId, responseEntity);
