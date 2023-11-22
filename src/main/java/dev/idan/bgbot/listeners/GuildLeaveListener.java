@@ -1,6 +1,6 @@
 package dev.idan.bgbot.listeners;
 
-import dev.idan.bgbot.repository.IssuerTokenRepository;
+import dev.idan.bgbot.repository.ProjectRepository;
 import dev.idan.bgbot.repository.TokenRepository;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -14,7 +14,7 @@ public class GuildLeaveListener extends ListenerAdapter {
     TokenRepository tokenRepository;
 
     @Autowired
-    IssuerTokenRepository issuerTokenRepository;
+    ProjectRepository projectRepository;
 
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
@@ -23,7 +23,7 @@ public class GuildLeaveListener extends ListenerAdapter {
         if (!tokenRepository.existsByGuildId(event.getGuild().getIdLong())) return;
         tokenRepository.deleteByGuildId(event.getGuild().getIdLong());
 
-        if (!issuerTokenRepository.existsByGuildId(event.getGuild().getIdLong())) return;
-        issuerTokenRepository.deleteByGuildId(event.getGuild().getIdLong());
+        if (!projectRepository.existsByGuildId(event.getGuild().getIdLong())) return;
+        projectRepository.deleteByGuildId(event.getGuild().getIdLong());
     }
 }

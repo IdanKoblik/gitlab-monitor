@@ -1,12 +1,10 @@
 package dev.idan.bgbot.commands.issuer;
 
-import dev.idan.bgbot.entities.IssuerToken;
-import dev.idan.bgbot.repository.IssuerTokenRepository;
+import dev.idan.bgbot.entities.Project;
+import dev.idan.bgbot.repository.ProjectRepository;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -14,43 +12,43 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Component
 @AllArgsConstructor
 public class RemoveIssuerProjectCommand extends Command {
 
     @Autowired
-    IssuerTokenRepository issuerTokenRepository;
+    ProjectRepository projectRepository;
 
     @Override
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("remove-issuer-project")) return;
 
-        long projectId = event.getOption("project-id").getAsLong();
+        String projectId = event.getOption("project-id").getAsString();
 
-        Optional<IssuerToken> externalTokenOptional = issuerTokenRepository.findByGuildId(event.getGuild().getIdLong());
-        if (externalTokenOptional.isEmpty()) {
+        Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
+        List<Project> projectList = projectRepository.findAllByGuildId(event.getGuild().getIdLong());
+        if (projectOptional.isEmpty() || projectList.isEmpty()) {
             event.reply("This server is not connected to the Gitlab-monitor. ❌").setEphemeral(true).queue();
             return;
         }
 
-        Set<Long> ids = externalTokenOptional.get().getProjectIds();
-        if (!ids.contains(projectId)) {
-            event.reply("This project does not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
+        if (!projectRepository.existsByProjectId(projectId)) {
+            event.reply("This project is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
             return;
         }
 
-        ids.remove(projectId);
-        issuerTokenRepository.save(externalTokenOptional.get());
+        projectList.removeIf(project -> project.getProjectId().equals(projectId));
+        projectRepository.delete(projectOptional.get());
+
         event.reply("This project has been successfully removed from Gitlab monitor. ✅").setEphemeral(true).queue();
     }
 
     @Override
     protected CommandData commandData() {
         return Commands.slash("remove-issuer-project", "Remove gitlab project from the Gitlab monitor")
-                .addOption(OptionType.INTEGER, "project-id", "your project id", true)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
+                .addOption(OptionType.STRING, "project-id", "your project id", true, true);
     }
 }

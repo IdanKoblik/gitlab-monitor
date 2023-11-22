@@ -1,5 +1,6 @@
 package dev.idan.bgbot.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,29 +10,32 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.util.Set;
-
 @Getter
 @Setter
-@Collation(value = "externalToken")
 @AllArgsConstructor
-public class IssuerToken {
+@Collation(value = "project")
+public class Project {
 
     @Id
     @MongoId
     @Field("_id")
-    private long guildId;
+    @JsonProperty("project_id")
+    private String projectId;
 
     @Field("_id")
-    public long getGuildId() {
-        return guildId;
+    public String getProjectId() {
+        return projectId;
     }
 
     @Field("_id")
-    public void setGuildId(long guildId) {
-        this.guildId = guildId;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
+
+    @JsonProperty("access_token")
+    @Indexed(unique = true)
+    private String accessToken;
 
     @Indexed(unique = true)
-    private Set<Long> projectIds;
+    private long guildId;
 }

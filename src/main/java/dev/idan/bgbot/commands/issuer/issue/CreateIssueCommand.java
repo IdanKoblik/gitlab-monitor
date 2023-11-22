@@ -1,13 +1,12 @@
 package dev.idan.bgbot.commands.issuer.issue;
 
-import dev.idan.bgbot.repository.IssuerTokenRepository;
+import dev.idan.bgbot.entities.Project;
+import dev.idan.bgbot.repository.ProjectRepository;
 import dev.idan.bgbot.services.IssueService;
 import dev.idan.bgbot.system.Command;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -16,15 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.Optional;
+
 @Component
 @AllArgsConstructor
 public class CreateIssueCommand extends Command {
 
     @Autowired
-    IssuerTokenRepository issuerTokenRepository;
+    IssueService issueService;
 
     @Autowired
-    IssueService issueService;
+    ProjectRepository projectRepository;
 
     @Override
     @SneakyThrows
@@ -46,11 +47,14 @@ public class CreateIssueCommand extends Command {
             return;
         }
 
-        try {
-            issueService.createIssue(projectId, issueTitle, issueDescription);
-            event.reply("You have successfully created an issue. ✅").setEphemeral(true).queue();
-        } catch (HttpClientErrorException e) {
-            event.reply("Invalid project id. ❌").setEphemeral(true).queue();
+        Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
+        if (projectOptional.isPresent()) {
+            try {
+                issueService.createIssue(projectId, issueTitle, issueDescription);
+                event.reply("You have successfully created an issue. ✅").setEphemeral(true).queue();
+            } catch (HttpClientErrorException e) {
+                event.reply("Invalid project id. ❌").setEphemeral(true).queue();
+            }
         }
     }
 
@@ -59,7 +63,6 @@ public class CreateIssueCommand extends Command {
         return Commands.slash("create-issue", "Create issue via discord")
                 .addOption(OptionType.STRING, "issue-title", "The issue title", true)
                 .addOption(OptionType.STRING, "issue-description", "The issue description", true)
-                .addOption(OptionType.STRING, "project-id", "Project ID", true, true)
-                .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.ADMINISTRATOR));
+                .addOption(OptionType.STRING, "project-id", "Project ID", true, true);
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface TokenRepository extends MongoRepository<Token, String> {
@@ -25,11 +24,9 @@ public interface TokenRepository extends MongoRepository<Token, String> {
 
     boolean existsByChannelId(long channelId);
 
-    boolean existsByNotifyRoleId(long notifyRoleId);
-
     boolean existsByGuildId(long guildId);
 
-    Optional<Token> findByChannelId(long channelId);
+    List<Token> findAllByGuildId(long guildId);
 
     List<Token> findAllByChannelId(long channelId);
 
