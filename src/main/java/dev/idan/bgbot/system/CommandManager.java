@@ -22,9 +22,12 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -70,13 +73,22 @@ public class CommandManager {
         Command command = commands.get(event.getName().toLowerCase());
         if (command == null) return;
 
-        if (!(event.getMember().getRoles().contains(event.getJDA().getRolesByName("bgbot", true).get(0)))) {
-            event.reply("You dont have permissions to use this command. ❌").setEphemeral(true).queue();
+        if (!(event.getMember().getRoles().contains(findRole(event.getMember(), "bgbot")))) {
+            event.reply("You dont have permissions to use this command (You must have `bgbot` role). ❌").setEphemeral(true).queue();
             return;
         }
 
         command.execute(event);
     }
+
+    private Role findRole(Member member, String name) {
+        List<Role> roles = member.getRoles();
+        return roles.stream()
+                .filter(role -> role.getName().equals(name))
+                .findFirst()
+                .orElse(null);
+    }
+
     private void addCommand(Command command) {
         commands.put(command.commandData().getName().toLowerCase(), command);
     }
