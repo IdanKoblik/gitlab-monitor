@@ -2,8 +2,10 @@ package dev.idan.bgbot.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class WebhookProjectData implements ProjectNameAndUrl {
 
     int id;

@@ -17,7 +17,7 @@ public class IssueServiceTest {
     @Test
     void createIssueValidProjectId() {
         assertEquals("Successfully created an issue. ✅",
-                issueService.createIssueResponse("").getBody());
+                issueService.createIssueResponse("52349384", "test", "unit test test").getBody());
     }
 
     @Test
