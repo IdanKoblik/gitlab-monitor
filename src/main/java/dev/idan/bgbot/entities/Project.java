@@ -19,7 +19,6 @@ public class Project {
     @Id
     @MongoId
     @Field("_id")
-    @JsonProperty("project_id")
     private String projectId;
 
     @Field("_id")
