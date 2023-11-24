@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -38,8 +38,8 @@ public class IssuerInitCommand extends Command {
             event.reply("Invalid project id. ❌").setEphemeral(true).queue();
         }
 
-        Optional<Project> projectOptional = projectRepository.findByGuildId(event.getGuild().getIdLong());
-        if (projectOptional.isEmpty()) {
+        List<Project> projectList = projectRepository.findByGuildId(event.getGuild().getIdLong());
+        if (projectList.isEmpty()) {
             // First time registering
             Project project = new Project(projectId, accessToken, event.getGuild().getIdLong());
 
@@ -49,16 +49,16 @@ public class IssuerInitCommand extends Command {
             return;
         }
 
-        if (projectOptional.get().getProjectId().equals(projectId)) {
+        if (projectList.get(0).getProjectId().equals(projectId)) {
             event.reply("You already registered that project. ❌").setEphemeral(true).queue();
             return;
         }
 
-        projectOptional.get().setProjectId(projectId);
-        projectOptional.get().setAccessToken(accessToken);
-        projectOptional.get().setGuildId(event.getGuild().getIdLong());
+        projectList.get(0).setProjectId(projectId);
+        projectList.get(0).setAccessToken(accessToken);
+        projectList.get(0).setGuildId(event.getGuild().getIdLong());
 
-        projectRepository.save(projectOptional.get());
+        projectRepository.save(projectList.get(0));
         event.reply("You successfully registered this project. ✅").setEphemeral(true).queue();
     }
 

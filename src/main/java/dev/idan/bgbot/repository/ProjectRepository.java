@@ -13,7 +13,7 @@ public interface ProjectRepository extends MongoRepository<Project, String> {
 
     Optional<Project> findByProjectId(String projectId);
 
-    Optional<Project> findByGuildId(long guildId);
+    List<Project> findByGuildId(long guildId);
 
     boolean existsByProjectId(String projectId);
 

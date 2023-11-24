@@ -25,9 +25,9 @@ public class ProjectService {
     @Autowired
     ProjectRepository projectRepository;
 
-    public void getProject(String projectId) {
+    public void getProject(String projectId) throws Exception {
         Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
-        if (projectOptional.isEmpty()) return;
+        if (projectOptional.isEmpty()) throw new Exception();
 
         String apiUrl = String.format("https://%s/api/v4/projects/%s", configData.gitlabUrl(), projectId);
 
