@@ -1,6 +1,5 @@
 package dev.idan.bgbot.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,23 +20,24 @@ public class Project {
     @Id
     @MongoId
     @Field("_id")
+    private String token;
+
+    @Field("_id")
+    public String getToken() {
+        return token;
+    }
+
+    @Field("_id")
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Indexed(unique = true)
     private String projectId;
 
-    @Field("_id")
-    public String getProjectId() {
-        return projectId;
-    }
-
-    @Field("_id")
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
-    }
-
-    @JsonProperty("access_token")
     @Indexed(unique = true)
     private String accessToken;
 
-    @JsonProperty("guild_id")
     @Indexed(unique = true)
     private long guildId;
 }

@@ -25,11 +25,27 @@ public class ProjectService {
     @Autowired
     ProjectRepository projectRepository;
 
-    public void getProject(String projectId) throws Exception {
+    private String buildApiUrl(String projectId) {
+        return String.format("https://%s/api/v4/projects/%s", configData.gitlabUrl(), projectId);
+    }
+
+    public void getProjectFirstTime(String projectId, String accessToken) {
+        String apiUrl = buildApiUrl(projectId);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("private-token", accessToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
+    }
+
+    public ResponseEntity<String> getProjectResponse(String projectId) throws Exception {
         Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
         if (projectOptional.isEmpty()) throw new Exception();
 
-        String apiUrl = String.format("https://%s/api/v4/projects/%s", configData.gitlabUrl(), projectId);
+        String apiUrl = buildApiUrl(projectId);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -37,16 +53,7 @@ public class ProjectService {
         headers.set("private-token", projectOptional.get().getAccessToken());
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
-    }
-
-    public ResponseEntity<String> getProjectResponse(String projectId) {
-        try {
-            getProject(projectId);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
     }
 
     @SneakyThrows

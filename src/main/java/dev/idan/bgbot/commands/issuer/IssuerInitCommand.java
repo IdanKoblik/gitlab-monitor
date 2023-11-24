@@ -13,7 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @AllArgsConstructor
@@ -33,15 +34,16 @@ public class IssuerInitCommand extends Command {
         String projectId = event.getOption("project-id").getAsString();
 
         try {
-            projectService.getProject(projectId);
+            projectService.getProjectFirstTime(projectId, accessToken);
         } catch (Exception e) {
             event.reply("Invalid project id. ❌").setEphemeral(true).queue();
+            return;
         }
 
-        List<Project> projectList = projectRepository.findByGuildId(event.getGuild().getIdLong());
-        if (projectList.isEmpty()) {
+        Optional<Project> projectOptional = projectRepository.findByGuildId(event.getGuild().getIdLong());
+        if (projectOptional.isEmpty()) {
             // First time registering
-            Project project = new Project(projectId, accessToken, event.getGuild().getIdLong());
+            Project project = new Project(UUID.randomUUID().toString().trim(), projectId, accessToken, event.getGuild().getIdLong());
 
             projectRepository.insert(project);
 
@@ -49,16 +51,17 @@ public class IssuerInitCommand extends Command {
             return;
         }
 
-        if (projectList.get(0).getProjectId().equals(projectId)) {
+        if (projectOptional.get().getProjectId().equals(projectId)) {
             event.reply("You already registered that project. ❌").setEphemeral(true).queue();
             return;
         }
 
-        projectList.get(0).setProjectId(projectId);
-        projectList.get(0).setAccessToken(accessToken);
-        projectList.get(0).setGuildId(event.getGuild().getIdLong());
+        projectOptional.get().setToken(UUID.randomUUID().toString().trim());
+        projectOptional.get().setProjectId(projectId);
+        projectOptional.get().setAccessToken(accessToken);
+        projectOptional.get().setGuildId(event.getGuild().getIdLong());
 
-        projectRepository.save(projectList.get(0));
+        projectRepository.save(projectOptional.get());
         event.reply("You successfully registered this project. ✅").setEphemeral(true).queue();
     }
 
