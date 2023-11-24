@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -27,14 +25,9 @@ public class ProjectService {
     @Autowired
     ProjectRepository projectRepository;
 
-    private final Map<String, ResponseEntity<String>> projectCache = new HashMap<>();
-
-    public ResponseEntity<String> existsByProjectId(String projectId) {
+    public void getProject(String projectId) {
         Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
-        if (projectOptional.isEmpty()) return null;
-
-        ResponseEntity<String> cachedResponse = projectCache.get(projectId);
-        if (cachedResponse != null) return cachedResponse;
+        if (projectOptional.isEmpty()) return;
 
         String apiUrl = String.format("https://%s/api/v4/projects/%s", configData.gitlabUrl(), projectId);
 
@@ -42,19 +35,23 @@ public class ProjectService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("private-token", projectOptional.get().getAccessToken());
-
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
+        restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
+    }
 
-        projectCache.put(projectId, responseEntity);
-        return responseEntity;
+    public ResponseEntity<String> getProjectResponse(String projectId) {
+        try {
+            getProject(projectId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @SneakyThrows
     public String getProjectName(String projectId) {
-        ResponseEntity<String> responseEntity = existsByProjectId(projectId);
-        if (responseEntity == null) return null;
+        ResponseEntity<String> responseEntity = getProjectResponse(projectId);
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseEntity.getBody());

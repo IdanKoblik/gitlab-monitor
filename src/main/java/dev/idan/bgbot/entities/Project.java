@@ -3,6 +3,7 @@ package dev.idan.bgbot.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.annotation.Collation;
@@ -13,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Collation(value = "project")
 public class Project {
 
@@ -35,6 +37,7 @@ public class Project {
     @Indexed(unique = true)
     private String accessToken;
 
+    @JsonProperty("guild_id")
     @Indexed(unique = true)
     private long guildId;
 }

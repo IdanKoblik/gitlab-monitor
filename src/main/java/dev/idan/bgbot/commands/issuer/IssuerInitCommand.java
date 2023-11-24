@@ -33,7 +33,7 @@ public class IssuerInitCommand extends Command {
         String projectId = event.getOption("project-id").getAsString();
 
         try {
-            projectService.existsByProjectId(projectId);
+            projectService.getProject(projectId);
         } catch (Exception e) {
             event.reply("Invalid project id. ❌").setEphemeral(true).queue();
         }
@@ -42,13 +42,14 @@ public class IssuerInitCommand extends Command {
         if (projectOptional.isEmpty()) {
             // First time registering
             Project project = new Project(projectId, accessToken, event.getGuild().getIdLong());
+
             projectRepository.insert(project);
 
             event.reply("You successfully registered this project. ✅").setEphemeral(true).queue();
             return;
         }
 
-        if (projectRepository.existsByProjectId(projectId)) {
+        if (projectOptional.get().getProjectId().equals(projectId)) {
             event.reply("You already registered that project. ❌").setEphemeral(true).queue();
             return;
         }
