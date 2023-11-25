@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.idan.bgbot.config.ConfigData;
 import dev.idan.bgbot.entities.Project;
-import dev.idan.bgbot.exceptions.DontConnectedException;
 import dev.idan.bgbot.repository.ProjectRepository;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,9 @@ public class ProjectService {
     private String buildApiUrl(String projectId) {
         return String.format("https://%s/api/v4/projects/%s", configData.gitlabUrl(), projectId);
     }
-  
+
     public void getProjectFirstTime(String projectId, String accessToken) {
         String apiUrl = buildApiUrl(projectId);
-      
-    public ResponseEntity<String> existsByProjectId(String projectId) {
-        Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
-        if (projectOptional.isEmpty())
-            throw new DontConnectedException("You have not registered the issuer feature. ❌");;
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -60,10 +54,6 @@ public class ProjectService {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         return restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
-        ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
-
-        projectCache.put(projectId, responseEntity);
-        return responseEntity;
     }
 
     @SneakyThrows
