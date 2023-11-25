@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @AllArgsConstructor
@@ -33,26 +34,28 @@ public class IssuerInitCommand extends Command {
         String projectId = event.getOption("project-id").getAsString();
 
         try {
-            projectService.existsByProjectId(projectId);
+            projectService.getProjectFirstTime(projectId, accessToken);
         } catch (Exception e) {
             event.reply("Invalid project id. ❌").setEphemeral(true).queue();
+            return;
         }
 
         Optional<Project> projectOptional = projectRepository.findByGuildId(event.getGuild().getIdLong());
         if (projectOptional.isEmpty()) {
             // First time registering
-            Project project = new Project(projectId, accessToken, event.getGuild().getIdLong());
+            Project project = new Project(UUID.randomUUID().toString().trim(), projectId, accessToken, event.getGuild().getIdLong());
             projectRepository.insert(project);
 
             event.reply("You successfully registered this project. ✅").setEphemeral(true).queue();
             return;
         }
 
-        if (projectRepository.existsByProjectId(projectId)) {
+        if (projectOptional.get().getProjectId().equals(projectId)) {
             event.reply("You already registered that project. ❌").setEphemeral(true).queue();
             return;
         }
 
+        projectOptional.get().setToken(UUID.randomUUID().toString().trim());
         projectOptional.get().setProjectId(projectId);
         projectOptional.get().setAccessToken(accessToken);
         projectOptional.get().setGuildId(event.getGuild().getIdLong());

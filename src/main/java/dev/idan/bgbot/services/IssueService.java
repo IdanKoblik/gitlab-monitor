@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,26 +23,24 @@ public class IssueService {
     @Autowired
     ProjectRepository projectRepository;
 
-    public void createIssue(String projectId, String title, String description) throws DontConnectedException {
-        Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
+    public void createIssue(String projectId, String title, String description, long guildId) throws DontConnectedException {
+        Optional<Project> projectOptional = projectRepository.findByGuildId(guildId);
         if (projectOptional.isEmpty())
             throw new DontConnectedException("You have not registered the issuer feature. ❌");
 
-        String apiUrl = String.format("https://%s/api/v4/projects/%s/issues", configData.gitlabUrl(), projectId);
+        Project project = projectOptional.get();
+        if (project.getProjectId().equals(projectId)) {
+            String apiUrl = String.format("https://%s/api/v4/projects/%s/issues", configData.gitlabUrl(), projectId);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("private-token", projectOptional.get().getAccessToken());
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("private-token", project.getAccessToken());
 
-        CreateIssueRequest issueRequest = new CreateIssueRequest(title, description);
-        HttpEntity<CreateIssueRequest> requestEntity = new HttpEntity<>(issueRequest, headers);
+            CreateIssueRequest issueRequest = new CreateIssueRequest(title, description);
+            HttpEntity<CreateIssueRequest> requestEntity = new HttpEntity<>(issueRequest, headers);
 
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
+        }
+
     }
-
-    public ResponseEntity<?> createIssueResponse(String projectId, String title, String description) {
-        createIssue(projectId, title, description);
-        return ResponseEntity.ok("Successfully created an issue. ✅");
-    }
-
 }

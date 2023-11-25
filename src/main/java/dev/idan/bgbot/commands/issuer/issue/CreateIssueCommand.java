@@ -1,6 +1,5 @@
 package dev.idan.bgbot.commands.issuer.issue;
 
-import dev.idan.bgbot.entities.Project;
 import dev.idan.bgbot.repository.ProjectRepository;
 import dev.idan.bgbot.services.IssueService;
 import dev.idan.bgbot.system.Command;
@@ -14,8 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
-
-import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -47,14 +44,11 @@ public class CreateIssueCommand extends Command {
             return;
         }
 
-        Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
-        if (projectOptional.isPresent()) {
-            try {
-                issueService.createIssue(projectId, issueTitle, issueDescription);
-                event.reply("You have successfully created an issue. ✅").setEphemeral(true).queue();
-            } catch (HttpClientErrorException e) {
-                event.reply("Invalid project id. ❌").setEphemeral(true).queue();
-            }
+        try {
+            issueService.createIssue(projectId, issueTitle, issueDescription, event.getGuild().getIdLong());
+            event.reply("You have successfully created an issue. ✅").setEphemeral(true).queue();
+        } catch (HttpClientErrorException e) {
+            event.reply("Invalid project id. ❌").setEphemeral(true).queue();
         }
     }
 
