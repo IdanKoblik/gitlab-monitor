@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
+import java.util.List;
 
 @Component
 public class ProjectService {
@@ -41,16 +41,16 @@ public class ProjectService {
         restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
     }
 
-    public ResponseEntity<String> getProjectResponse(String projectId) throws Exception {
-        Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
-        if (projectOptional.isEmpty()) throw new Exception();
+    public ResponseEntity<String> getProjectResponse(String projectId, String accessToken) {
+        List<Project> projectOptional = projectRepository.findByProjectId(projectId);
+        if (projectOptional.isEmpty()) return null;
 
         String apiUrl = buildApiUrl(projectId);
 
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("private-token", projectOptional.get().getAccessToken());
+        headers.set("private-token", accessToken);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         return restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
@@ -58,7 +58,11 @@ public class ProjectService {
 
     @SneakyThrows
     public String getProjectName(String projectId) {
-        ResponseEntity<String> responseEntity = getProjectResponse(projectId);
+        List<Project> projectList = projectRepository.findByProjectId(projectId);
+        if (projectList.isEmpty()) return null;
+
+        ResponseEntity<String> responseEntity = getProjectResponse(projectId, projectList.get(0).getAccessToken());
+        if (responseEntity == null) return null;
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseEntity.getBody());

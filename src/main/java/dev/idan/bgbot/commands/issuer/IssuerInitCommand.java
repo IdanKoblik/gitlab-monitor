@@ -44,7 +44,6 @@ public class IssuerInitCommand extends Command {
         if (projectOptional.isEmpty()) {
             // First time registering
             Project project = new Project(UUID.randomUUID().toString().trim(), projectId, accessToken, event.getGuild().getIdLong());
-
             projectRepository.insert(project);
 
             event.reply("You successfully registered this project. ✅").setEphemeral(true).queue();
