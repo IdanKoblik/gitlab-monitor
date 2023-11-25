@@ -14,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.List;
 
 @Component
 public class ProjectService {
@@ -27,33 +25,43 @@ public class ProjectService {
     @Autowired
     ProjectRepository projectRepository;
 
-    private final Map<String, ResponseEntity<String>> projectCache = new HashMap<>();
+    private String buildApiUrl(String projectId) {
+        return String.format("https://%s/api/v4/projects/%s", configData.gitlabUrl(), projectId);
+    }
 
-    public ResponseEntity<String> existsByProjectId(String projectId) {
-        Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
-        if (projectOptional.isEmpty()) return null;
-
-        ResponseEntity<String> cachedResponse = projectCache.get(projectId);
-        if (cachedResponse != null) return cachedResponse;
-
-        String apiUrl = String.format("https://%s/api/v4/projects/%s", configData.gitlabUrl(), projectId);
+    public void getProjectFirstTime(String projectId, String accessToken) {
+        String apiUrl = buildApiUrl(projectId);
 
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("private-token", projectOptional.get().getAccessToken());
-
+        headers.set("private-token", accessToken);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
+        restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
+    }
 
-        projectCache.put(projectId, responseEntity);
-        return responseEntity;
+    public ResponseEntity<String> getProjectResponse(String projectId, String accessToken) {
+        List<Project> projectOptional = projectRepository.findByProjectId(projectId);
+        if (projectOptional.isEmpty()) return null;
+
+        String apiUrl = buildApiUrl(projectId);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("private-token", accessToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        return restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
     }
 
     @SneakyThrows
     public String getProjectName(String projectId) {
-        ResponseEntity<String> responseEntity = existsByProjectId(projectId);
+        List<Project> projectList = projectRepository.findByProjectId(projectId);
+        if (projectList.isEmpty()) return null;
+
+        ResponseEntity<String> responseEntity = getProjectResponse(projectId, projectList.get(0).getAccessToken());
         if (responseEntity == null) return null;
 
         ObjectMapper objectMapper = new ObjectMapper();

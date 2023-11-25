@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -28,9 +27,8 @@ public class RemoveIssuerProjectCommand extends Command {
 
         String projectId = event.getOption("project-id").getAsString();
 
-        Optional<Project> projectOptional = projectRepository.findByProjectId(projectId);
         List<Project> projectList = projectRepository.findAllByGuildId(event.getGuild().getIdLong());
-        if (projectOptional.isEmpty() || projectList.isEmpty()) {
+        if (projectList.isEmpty()) {
             event.reply("This server is not connected to the Gitlab-monitor. ❌").setEphemeral(true).queue();
             return;
         }
@@ -41,7 +39,7 @@ public class RemoveIssuerProjectCommand extends Command {
         }
 
         projectList.removeIf(project -> project.getProjectId().equals(projectId));
-        projectRepository.delete(projectOptional.get());
+        projectRepository.delete(projectList.get(0));
 
         event.reply("This project has been successfully removed from Gitlab monitor. ✅").setEphemeral(true).queue();
     }
