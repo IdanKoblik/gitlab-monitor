@@ -6,6 +6,7 @@ import dev.idan.bgbot.data.WebhookProjectData;
 import dev.idan.bgbot.data.WebhookRepositoryData;
 import dev.idan.bgbot.entities.Token;
 import lombok.Getter;
+import lombok.Setter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import static dev.idan.bgbot.utils.CommitHelper.EMPTY_COMMIT_SHA;
 
 @Getter
+@Setter
 public abstract class TagPushData extends WebhookData {
 
     @JsonProperty("event_name")
