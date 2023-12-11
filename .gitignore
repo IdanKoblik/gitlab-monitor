@@ -40,3 +40,4 @@ out/
 ### Local staff ###
 config.json
 mongo.json
+gitlab-monitor.jar.jar
