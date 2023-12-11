@@ -40,3 +40,5 @@ out/
 ### Local staff ###
 config.json
 mongo.json
+unit_test.config.json
+
