@@ -24,9 +24,10 @@ jobs:
         with:
           arguments: bootJar
 
-      - name: Print Build Directory
+      - name: Print JAR Location
         run: |
-          ls -R ${{ github.workspace }}
+          ls -R ${{ github.workspace }}/build/libs
+
 
   release:
     needs: build
