@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ public class HelpCommand extends Command {
                         .setDescription (
                                 """
                                 ```
-                                1. write in any channel /setup and provide on which\s
+                                1. write in any channel /webhook-init and provide on which\s
                                 channel you want to get updates of your project
                                 ```
                                 ```
@@ -42,10 +43,16 @@ public class HelpCommand extends Command {
                                 ```
                                 """
                         )
-                        .setColor(Color.white)
-                        .setFooter("Made by Beta#8084")
+                        .setColor(Color.BLACK)
+                        .setFooter("Made by 0x62657461")
                         .setTimestamp(Instant.now())
                         .build()
+        ).addActionRow(
+                Button.link("https://idankoblik.github.io/gitlab-monitor/", "\uD83D\uDC7E Full bot guide"),
+                Button.link("https://idankoblik.github.io/gitlab-monitor/commands.html", "\uD83E\uDDED All bot commands guide"),
+                Button.link("https://idankoblik.github.io/gitlab-monitor/self-hosting.html", "\uD83D\uDCFB Self hosting guide")
+        ).addActionRow(
+                Button.danger("mail", "✏\uFE0F Create support ticket")
         ).queue();
     }
 

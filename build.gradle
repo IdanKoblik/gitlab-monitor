@@ -15,7 +15,7 @@ configurations {
         extendsFrom annotationProcessor
     }
 }
-    
+
 repositories {
     mavenCentral()
     maven {
@@ -41,6 +41,7 @@ dependencies {
     // Spring boot staff
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     // Test
     testCompileOnly 'org.projectlombok:lombok'
