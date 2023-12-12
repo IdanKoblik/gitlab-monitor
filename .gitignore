@@ -4,7 +4,7 @@ HELP.md
 !build
 build/
 
-src/main/resources/.env
+src/main/resources/application.yml
 
 ### STS ###
 .apt_generated
