@@ -24,6 +24,10 @@ jobs:
         with:
           arguments: bootJar
 
+      - name: Print Build Directory
+        run: |
+          ls -R ${{ github.workspace }}
+
   release:
     needs: build
     runs-on: ubuntu-latest
