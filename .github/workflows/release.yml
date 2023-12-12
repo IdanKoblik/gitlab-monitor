@@ -25,7 +25,7 @@ jobs:
 
       - name: Print JAR Location
         run: |
-          echo "JAR file location: ${{ github.workspace }}
+          echo "JAR file location: ${{ github.workspace }}/build/libs/"
 
   release:
     needs: build
