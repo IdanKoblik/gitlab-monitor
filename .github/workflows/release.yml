@@ -25,7 +25,7 @@ jobs:
 
       - name: Print JAR Location
         run: |
-          echo "JAR file location: ${{ github.workspace }}/build/libs/gitlab-monitor.jar"
+          echo "JAR file location: ${{ github.workspace }}
 
   release:
     needs: build
