@@ -60,12 +60,4 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         File json = new File("config.json");
         return mapper.readValue(json, ConfigData.class);
     }
-
-    @Bean
-    @SneakyThrows
-    public UnitTestConfigData unitTestConfigData() {
-        ObjectMapper mapper = new ObjectMapper();
-        File json = new File("unit_test_config.json");
-        return mapper.readValue(json, UnitTestConfigData.class);
-    }
 }
