@@ -8,6 +8,7 @@ import dev.idan.bgbot.utils.PartialImage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,10 +26,10 @@ public class WebhookEndpoint {
     TokenRepository tokenRepository;
 
     @Autowired
-    ConfigData configData;
-
-    @Autowired
     JDA jda;
+
+    @Value("${spring.bot.website_url}")
+    private String websiteURL;
 
     @PostMapping(value = "webhook", consumes = {
             "application/json"
@@ -51,7 +52,7 @@ public class WebhookEndpoint {
 
         if (token.isUseGravatar()) avatar = PartialImage.getEmail(avatar, data.getEmail(), token);
 
-        builder.setAuthor(userName, configData.websiteURL(), avatar);
+        builder.setAuthor(userName, websiteURL, avatar);
         builder.setFooter(data.getProjectName());
         builder.setTimestamp(Instant.now());
         data.apply(builder, instanceURL, token, jda.getTextChannelById(token.getChannelId()));
