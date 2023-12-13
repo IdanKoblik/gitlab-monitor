@@ -1,15 +1,16 @@
 package dev.idan.bgbot.listeners;
 
-import dev.idan.bgbot.services.MailService;
+import lombok.extern.slf4j.Slf4j;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+
+@Slf4j
 @Component
 public class ModalInteractionEvent extends ListenerAdapter {
-
-    @Autowired
-    MailService mailService;
 
     @Override
     public void onModalInteraction(net.dv8tion.jda.api.events.interaction.ModalInteractionEvent event) {
@@ -17,9 +18,28 @@ public class ModalInteractionEvent extends ListenerAdapter {
             String subject = event.getValue("subject").getAsString();
             String body = event.getValue("body").getAsString();
 
-            mailService.sendEmail("idankob@gmail.com", subject + " - " + event.getUser().getName(), body);
+            // Maintainer discord ID - 429212281914785793
+            User maintainer = event.getJDA().getUserById(429212281914785793L);
+            if (maintainer == null) {
+                log.error("Maintainer not found");
+                return;
+            }
 
-            event.reply("Thanks for your request!").setEphemeral(true).queue();
+            User user = event.getUser();
+            User bot = event.getJDA().getSelfUser();
+            maintainer.openPrivateChannel()
+                    .flatMap(message -> message.sendMessageEmbeds(
+                            new EmbedBuilder()
+                                    .setAuthor(user.getName(), "https://discord.com/user" + user.getId(), user.getEffectiveAvatarUrl())
+                                    .setTitle(subject)
+                                    .setDescription(body)
+                                    .setTimestamp(Instant.now())
+                                    .setFooter(bot.getName(), bot.getEffectiveAvatarUrl())
+                                    .build()
+                    ))
+                    .queue();
+
+            event.reply("Thanks for your report.").setEphemeral(true).queue();
             return;
         }
     }
