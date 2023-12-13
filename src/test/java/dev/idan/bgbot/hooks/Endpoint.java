@@ -1,6 +1,9 @@
 package dev.idan.bgbot.hooks;
 
 import dev.idan.bgbot.data.WebhookData;
+import dev.idan.bgbot.data.combined.data.TagPushData;
+import dev.idan.bgbot.data.issue.IssueWebhookData;
+import dev.idan.bgbot.data.push.PushWebhookData;
 import dev.idan.bgbot.entities.Token;
 import dev.idan.bgbot.repository.TokenRepository;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -26,14 +30,14 @@ public class Endpoint {
     private String secretToken;
 
     @Autowired
-    WebhookData webhookData;
+    private WebhookData webhookData;
 
     @Autowired
-    TokenRepository tokenRepository;
+    private TokenRepository tokenRepository;
 
     @Autowired
-    JDA jda;
-    
+    private JDA jda;
+
     public void applyWebhookData(EmbedBuilder builder) {
         Optional<Token> tokenOptional = tokenRepository.findById(secretToken);
         if (tokenOptional.isEmpty())

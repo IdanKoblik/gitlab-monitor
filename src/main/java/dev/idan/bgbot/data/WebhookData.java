@@ -15,6 +15,7 @@ import dev.idan.bgbot.data.tag.TagWebhookData;
 import dev.idan.bgbot.entities.Token;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import org.springframework.stereotype.Component;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "object_kind")
 @JsonSubTypes({
@@ -28,6 +29,7 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
         @JsonSubTypes.Type(BuildWebhookData.class),
         @JsonSubTypes.Type(DeploymentWebhookData.class)
 })
+@Component
 public abstract class WebhookData implements UserNameAndAvatar, ProjectNameAndUrl, UserEmail {
 
     @JsonProperty("object_kind")

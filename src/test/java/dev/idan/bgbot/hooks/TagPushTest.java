@@ -25,13 +25,13 @@ public class TagPushTest {
     Endpoint endpoint;
 
     @Autowired
-    PushWebhookData pushWebhookData;
-
-    @Autowired
     WebhookProjectData webhookProjectData;
 
     @Autowired
     TagPushCommitData tagPushCommitData;
+
+    @Autowired
+    PushWebhookData pushWebhookData;
 
     @Test
     void testPush() {
