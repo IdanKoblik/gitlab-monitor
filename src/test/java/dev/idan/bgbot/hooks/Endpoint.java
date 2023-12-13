@@ -33,7 +33,7 @@ public class Endpoint {
 
     @Autowired
     JDA jda;
-
+    
     public void applyWebhookData(EmbedBuilder builder) {
         Optional<Token> tokenOptional = tokenRepository.findById(secretToken);
         if (tokenOptional.isEmpty())
