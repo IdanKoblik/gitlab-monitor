@@ -42,9 +42,7 @@
 ```json
 {
 	"discord_token": "bot discord token",
-    "website_url": "https://idankoblik.github.io/gitlab-monitor/",
     "webhook_url": "your gitlab webhook url",
     "gitlab_url": "your gitlab url (format - gitlab.com)",
-    "bot_access_token": "self token"
 }
 ```
