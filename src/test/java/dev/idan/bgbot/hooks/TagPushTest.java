@@ -1,9 +1,12 @@
 package dev.idan.bgbot.hooks;
 
+import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.data.WebhookProjectData;
 import dev.idan.bgbot.data.combined.data.TagPushCommitData;
 import dev.idan.bgbot.data.push.PushWebhookData;
+import dev.idan.bgbot.utils.TestHelper;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +18,7 @@ import java.util.UUID;
 
 import static dev.idan.bgbot.data.combined.data.TagPushData.getTarget;
 import static dev.idan.bgbot.utils.CommitHelper.EMPTY_COMMIT_SHA;
+import static dev.idan.bgbot.utils.TestHelper.applyWebhookData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -22,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class TagPushTest {
 
     @Autowired
-    Endpoint endpoint;
+    JDA jda;
 
     @Autowired
     WebhookProjectData webhookProjectData;
@@ -72,7 +76,7 @@ public class TagPushTest {
         pushWebhookData.setCommits(Collections.emptyList());
 
         EmbedBuilder builder = new EmbedBuilder();
-        endpoint.applyWebhookData(builder);
+        applyWebhookData(pushWebhookData, jda, builder);
 
         assertEquals(getTarget(pushWebhookData.getRef()) + " was deleted", builder.build().getTitle());
         assertNull(builder.build().getDescription());
@@ -80,7 +84,7 @@ public class TagPushTest {
 
     private void validateEmbed(String expectedTitle) {
         EmbedBuilder builder = new EmbedBuilder();
-        endpoint.applyWebhookData(builder);
+        applyWebhookData(pushWebhookData, jda, builder);
 
         assertEquals(expectedTitle, builder.build().getTitle());
         assertEquals(getCommits(), builder.build().getDescription());

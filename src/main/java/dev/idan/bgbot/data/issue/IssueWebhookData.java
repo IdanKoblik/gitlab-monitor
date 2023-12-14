@@ -18,6 +18,10 @@ public class IssueWebhookData extends IssueCommentMergeData {
     @JsonProperty("object_attributes")
     IssueObjectAttributesData objectAttributes;
 
+    public IssueWebhookData() {
+        this.objectAttributes = new IssueObjectAttributesData();
+    }
+
     @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
         builder.setTitle(String.format("%s issue: #%d %s",
