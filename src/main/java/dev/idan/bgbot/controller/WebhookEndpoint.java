@@ -28,9 +28,6 @@ public class WebhookEndpoint {
     @Autowired
     JDA jda;
 
-    @Value("${spring.bot.website_url}")
-    private String websiteURL;
-
     @PostMapping(value = "webhook", consumes = {
             "application/json"
     })
@@ -52,7 +49,7 @@ public class WebhookEndpoint {
 
         if (token.isUseGravatar()) avatar = PartialImage.getEmail(avatar, data.getEmail(), token);
 
-        builder.setAuthor(userName, websiteURL, avatar);
+        builder.setAuthor(userName, "https://idankoblik.github.io/gitlab-monitor", avatar);
         builder.setFooter(data.getProjectName());
         builder.setTimestamp(Instant.now());
         data.apply(builder, instanceURL, token, jda.getTextChannelById(token.getChannelId()));
