@@ -51,26 +51,26 @@ public class TagPushTest {
         pushWebhookData.setRef(ref);
         getProjectBasics();
 
-        testValidData();
-        testValidCreate();
-        testValidDelete();
+        testData();
+        testCreate();
+        testDelete();
     }
 
-    private void testValidData() {
+    private void testData() {
         pushWebhookData.setBefore(UUID.randomUUID().toString().trim());
         pushWebhookData.setAfter(UUID.randomUUID().toString().trim());
 
         validateEmbed("Pushed to " + getTarget(pushWebhookData.getRef()).toLowerCase());
     }
 
-    private void testValidCreate() {
+    private void testCreate() {
         pushWebhookData.setBefore(EMPTY_COMMIT_SHA);
         pushWebhookData.setAfter(UUID.randomUUID().toString().trim());
 
         validateEmbed(getTarget(pushWebhookData.getRef()) + " was created");
     }
 
-    private void testValidDelete() {
+    private void testDelete() {
         pushWebhookData.setBefore(UUID.randomUUID().toString().trim());
         pushWebhookData.setAfter(EMPTY_COMMIT_SHA);
         pushWebhookData.setCommits(Collections.emptyList());

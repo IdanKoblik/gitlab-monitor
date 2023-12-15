@@ -24,13 +24,30 @@ public class IssueTest {
         issueWebhookData.getObjectAttributes().setIid(1);
         issueWebhookData.getObjectAttributes().setTitle("TestIssue");
 
-        openIssue("open");
+        openIssue();
+        reopenIssue();
+        updateIssue();
+        closeIssue();
     }
 
-    private void openIssue(String action) {
-        issueWebhookData.getObjectAttributes().setAction(action);
-
+    private void openIssue() {
+        issueWebhookData.getObjectAttributes().setAction("open");
         validateEmbed("Open issue: #1 TestIssue");
+    }
+
+    private void reopenIssue() {
+        issueWebhookData.getObjectAttributes().setAction("reopen");
+        validateEmbed("Reopen issue: #1 TestIssue");
+    }
+
+    private void updateIssue() {
+        issueWebhookData.getObjectAttributes().setAction("update");
+        validateEmbed("Update issue: #1 TestIssue");
+    }
+
+    private void closeIssue() {
+        issueWebhookData.getObjectAttributes().setAction("close");
+        validateEmbed("Close issue: #1 TestIssue");
     }
 
     private void validateEmbed(String expectedTitle) {
