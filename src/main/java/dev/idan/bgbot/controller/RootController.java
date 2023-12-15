@@ -12,11 +12,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping(path = "/")
 public class RootController {
 
-    @Value("${spring.bot.website_url}")
-    private String websiteURL;
-
     @GetMapping("/")
     public RedirectView redirectToWebsite() {
-        return new RedirectView(websiteURL);
+        return new RedirectView("https://idankoblik.github.io/gitlab-monitor");
     }
 }
