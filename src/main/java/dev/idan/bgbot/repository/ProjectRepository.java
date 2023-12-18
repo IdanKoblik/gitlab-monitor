@@ -22,5 +22,8 @@ public interface ProjectRepository extends MongoRepository<Project, String> {
     @DeleteQuery
     void deleteByGuildId(long guildId);
 
+    @DeleteQuery
+    void deleteAllByGuildId(long guildId);
+
     boolean existsByGuildId(long guildId);
 }
