@@ -57,7 +57,7 @@ public class ProjectService {
     }
 
     @SneakyThrows
-    public String getProjectName(String projectId) {
+    public String getProjectWithNamespace(String projectId) {
         List<Project> projectList = projectRepository.findByProjectId(projectId);
         if (projectList.isEmpty()) return null;
 
@@ -66,6 +66,6 @@ public class ProjectService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseEntity.getBody());
-        return jsonNode.get("name").asText();
+        return jsonNode.get("name_with_namespace").asText();
     }
 }
