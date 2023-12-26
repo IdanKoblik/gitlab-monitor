@@ -7,7 +7,9 @@ import dev.idan.bgbot.data.merge.object.attributes.MergeObjectAttributes;
 import dev.idan.bgbot.entities.Token;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import org.springframework.stereotype.Component;
 
+@Component
 @JsonTypeName("merge_request")
 public class MergeWebhookData extends IssueCommentMergeData {
 
