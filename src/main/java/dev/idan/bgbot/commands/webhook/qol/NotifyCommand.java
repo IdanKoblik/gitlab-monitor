@@ -26,33 +26,32 @@ public class NotifyCommand extends Command {
     protected void execute(@NotNull SlashCommandInteractionEvent event) {
         if (!event.getName().equals("notify")) return;
 
-        Role role = Optional.of(event.getOption("role").getAsRole()).orElse(null);
-        String secretToken = Optional.of(event.getOption("secret-token").getAsString()).orElse(null);
+        Role role = event.getOption("role").getAsRole();
+        String secretToken = event.getOption("secret-token").getAsString();
 
         Optional<Token> tokenOptional = tokenRepository.findById(secretToken);
 
         if (tokenOptional.isEmpty()) {
-            event.reply("This token is not connected to the Gitlab monitor. ❌").setEphemeral(true).queue();
-            return;
-        }
-
-        if (tokenOptional.get().getNotifyRoleId() != 0) {
-            event.reply("This token is already connected to a role. ❌").setEphemeral(true).queue();
+            event.reply("This project is not connected to Gitlab monitor. ❌").setEphemeral(true).queue();
             return;
         }
 
         Token token = tokenOptional.get();
+        if (token.getNotifyRoleId() != 0) {
+            event.reply("You already registered that project to use notify feature. ❌").setEphemeral(true).queue();
+            return;
+        }
 
         token.setNotifyRoleId(role.getIdLong());
         tokenRepository.save(token);
 
-        event.reply("The role has been added to the database. ✅").queue();
+        event.reply("You have successfully enabled notify feature on this project. ✅").setEphemeral(true).queue();
     }
 
     @Override
     protected CommandData commandData() {
         return Commands.slash("notify", "The bot will mention a selected role when a pipeline fails")
-                .addOption(OptionType.ROLE, "role", "The role that you would like to get mention when pipeline fails", true)
-                .addOption(OptionType.STRING, "secret-token", "The secret token that you got when you ran the init command (use /tokens to find all the tokens)", true);
+                .addOption(OptionType.ROLE, "role", "The role that you would like to get mentioned", true)
+                .addOption(OptionType.STRING, "secret-token", "Project secret token", true, true);
     }
 }

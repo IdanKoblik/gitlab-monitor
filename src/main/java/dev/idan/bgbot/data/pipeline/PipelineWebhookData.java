@@ -16,6 +16,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import java.util.List;
 import java.util.Optional;
 
+import static dev.idan.bgbot.utils.StringUtils.INVISIBLE_MENTION;
+
 @JsonTypeName("pipeline")
 public class PipelineWebhookData extends WebhookData {
 
@@ -91,7 +93,7 @@ public class PipelineWebhookData extends WebhookData {
             .setDescription("Reason: " + failedReason + "\n");
 
             Role role = channel.getGuild().getRoleById(token.getNotifyRoleId());
-            if (role != null) builder.appendDescription(role.getAsMention());
+            if (role != null) channel.sendMessage(INVISIBLE_MENTION + role.getAsMention()).queue();
         }
     }
 }
