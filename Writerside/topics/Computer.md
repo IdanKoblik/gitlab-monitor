@@ -28,7 +28,7 @@ cd gitlab-monitor/
 
 2) Building the project
 <tabs>
-    <tab title="Linux & Mac">
+    <tab title="Linux and Mac">
         <code-block lang="gradle">
         ./gradlew bootJar
         </code-block>
@@ -46,7 +46,7 @@ cd gitlab-monitor/
 {style="warning"}
 
 <tabs>
-    <tab title="Linux & Mac">
+    <tab title="Linux and Mac">
         <code-block lang="bash">
         mv build/libs/gitlab-monitor.jar .
         </code-block>
