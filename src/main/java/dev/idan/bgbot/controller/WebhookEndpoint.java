@@ -38,7 +38,7 @@ public class WebhookEndpoint {
        try {
            Optional<Token> tokenOptional = secretToken == null ? Optional.empty() : tokenRepository.findById(secretToken);
            if (tokenOptional.isEmpty())
-               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Secret discordToken must be specified");
+               throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Secret discordToken must be specified");
 
            Token token = tokenOptional.get();
 
