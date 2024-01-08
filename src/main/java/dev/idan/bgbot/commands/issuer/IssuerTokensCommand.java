@@ -38,7 +38,7 @@ public class IssuerTokensCommand extends Command {
         sb.append("```").append("Issuer tokens:").append("\n");
 
         for (Project project : projectList)
-            sb.append(project.getProjectId()).append(" - ").append(projectService.getProjectName(project.getProjectId())).append("\n");
+            sb.append(project.getProjectId()).append(" - ").append(projectService.getProjectWithNamespace(project.getProjectId())).append("\n");
 
         sb.append("```");
 

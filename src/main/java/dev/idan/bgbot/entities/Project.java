@@ -32,12 +32,15 @@ public class Project {
         this.token = token;
     }
 
+    @Field("project_id")
     @Indexed(unique = true)
     private String projectId;
 
+    @Field("access_token")
     @Indexed(unique = true)
     private String accessToken;
 
+    @Field("guild_id")
     @Indexed(unique = true)
     private long guildId;
 }
