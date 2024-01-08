@@ -41,5 +41,5 @@
 * Github: @IdanKoblik
 
 ## 📝 License
-Copyright © 2023 [Idan Koblik](https://github.com/IdanKoblik). <br>
+Copyright © 2024 [Idan Koblik](https://github.com/IdanKoblik). <br>
 This project is [Apache License 2.0](https://github.com/IdanKoblik/gitlab-monitor/blob/main/LICENSE) licensed.
