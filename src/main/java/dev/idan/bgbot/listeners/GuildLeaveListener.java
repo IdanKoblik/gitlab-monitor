@@ -1,5 +1,6 @@
 package dev.idan.bgbot.listeners;
 
+import dev.idan.bgbot.config.ConfigData;
 import dev.idan.bgbot.repository.ProjectRepository;
 import dev.idan.bgbot.repository.TokenRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class GuildLeaveListener extends ListenerAdapter {
 
-    @Value("${spring.bot.id}")
-    long botId;
+    @Autowired
+    ConfigData configData;
 
     @Autowired
     TokenRepository tokenRepository;
@@ -24,7 +25,7 @@ public class GuildLeaveListener extends ListenerAdapter {
 
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
-        if (event.getGuild().getSelfMember().getIdLong() != botId) return;
+        if (event.getGuild().getSelfMember().getIdLong() != configData.botId()) return;
 
         tokenRepository.deleteAllByGuildId(event.getGuild().getIdLong());
         projectRepository.deleteByGuildId(event.getGuild().getIdLong());

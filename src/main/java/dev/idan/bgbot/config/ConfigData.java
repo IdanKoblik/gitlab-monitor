@@ -10,7 +10,10 @@ public record ConfigData(
         String webhookURL,
 
         @JsonProperty("gitlab_url")
-        String gitlabUrl
+        String gitlabUrl,
+
+        @JsonProperty("bot_id")
+        long botId
 ) {
 
 }
