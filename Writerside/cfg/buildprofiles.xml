@@ -7,7 +7,7 @@
     </variables>
     <build-profile instance="instance_id"/>
     <footer>
-        <copyright>Idan Koblik 2023</copyright>
+        <copyright>Idan Koblik 2024</copyright>
         <link href="https://github.com/IdanKoblik/gitlab-monitor/blob/main/LICENSE">Licence</link>
         <link href="https://github.com/IdanKoblik/gitlab-monitor">Source code</link>
         <link href="https://github.com/IdanKoblik/gitlab-monitor/issues">Report an issue</link>
