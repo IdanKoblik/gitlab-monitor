@@ -41,8 +41,9 @@
 
 ```json
 {
-	"discord_token": "bot discord token",
+    "discord_token": "bot discord token",
     "webhook_url": "your gitlab webhook url",
     "gitlab_url": "your gitlab url (format - gitlab.com)",
+    "bot_id": discord bot id
 }
 ```
