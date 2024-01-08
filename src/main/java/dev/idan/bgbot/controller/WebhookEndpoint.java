@@ -1,14 +1,14 @@
 package dev.idan.bgbot.controller;
 
-import dev.idan.bgbot.config.ConfigData;
 import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.entities.Token;
+import dev.idan.bgbot.exception.NullChannelException;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.utils.PartialImage;
+import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 public class WebhookEndpoint {
 
@@ -33,27 +35,32 @@ public class WebhookEndpoint {
     })
     public void onWebhook(@RequestBody WebhookData data, @RequestHeader("X-Gitlab-Instance") String instanceURL,
                           @RequestHeader("X-Gitlab-Token") String secretToken) {
-        Optional<Token> tokenOptional = secretToken == null ? Optional.empty() : tokenRepository.findById(secretToken);
-        if (tokenOptional.isEmpty())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Secret discordToken must be specified");
+       try {
+           Optional<Token> tokenOptional = secretToken == null ? Optional.empty() : tokenRepository.findById(secretToken);
+           if (tokenOptional.isEmpty())
+               throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Secret discordToken must be specified");
 
-        Token token = tokenOptional.get();
+           Token token = tokenOptional.get();
 
-        if (!data.sendEmbed()) return;
+           if (!data.sendEmbed()) return;
 
-        if (jda.getTextChannelById(token.getChannelId()) == null) return;
+           if (jda.getTextChannelById(token.getChannelId()) == null) throw new NullChannelException("Token does not registered inside the DB");
 
-        EmbedBuilder builder = new EmbedBuilder();
-        String userName = data.getAuthorName();
-        String avatar = data.getAuthorAvatarUrl();
+           EmbedBuilder builder = new EmbedBuilder();
+           String userName = data.getAuthorName();
+           String avatar = data.getAuthorAvatarUrl();
 
-        if (token.isUseGravatar()) avatar = PartialImage.getEmail(avatar, data.getEmail(), token);
+           if (token.isUseGravatar()) avatar = PartialImage.getEmail(avatar, data.getEmail(), token);
 
-        builder.setAuthor(userName, "https://idankoblik.github.io/gitlab-monitor", avatar);
-        builder.setFooter(data.getProjectName());
-        builder.setTimestamp(Instant.now());
-        data.apply(builder, instanceURL, token, jda.getTextChannelById(token.getChannelId()));
+           builder.setAuthor(userName, "https://idankoblik.github.io/gitlab-monitor", avatar);
+           builder.setFooter(data.getProjectName());
+           builder.setTimestamp(Instant.now());
+           data.apply(builder, instanceURL, token, jda.getTextChannelById(token.getChannelId()));
 
-        jda.getTextChannelById(token.getChannelId()).sendMessageEmbeds(builder.build()).queue();
+           jda.getTextChannelById(token.getChannelId()).sendMessageEmbeds(builder.build()).queue();
+       } catch (NullChannelException e) {
+           log.error(e.getMessage());
+           log.error(Arrays.toString(e.getStackTrace()));
+       }
     }
 }
