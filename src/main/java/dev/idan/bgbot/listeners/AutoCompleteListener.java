@@ -37,10 +37,7 @@ public class AutoCompleteListener extends ListenerAdapter {
                     .toList();
 
             event.replyChoices(options).queue();
-            return;
-        }
-
-        if ((event.getName().equals("notify")) && event.getFocusedOption().getName().equals("secret-token")) {
+        } else if ((event.getName().equals("notify") || event.getName().equals("remove-notify")) && event.getFocusedOption().getName().equals("secret-token")) {
             List<Token> tokenList = tokenRepository.findAllByGuildId(event.getGuild().getIdLong());
             if (tokenList.isEmpty()) return;
 
@@ -50,7 +47,6 @@ public class AutoCompleteListener extends ListenerAdapter {
                     .toList();
 
             event.replyChoices(options).queue();
-            return;
         }
     }
 
