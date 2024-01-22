@@ -2,7 +2,6 @@ package dev.idan.bgbot.controller;
 
 import dev.idan.bgbot.data.WebhookData;
 import dev.idan.bgbot.entities.Token;
-import dev.idan.bgbot.exception.NullChannelException;
 import dev.idan.bgbot.repository.TokenRepository;
 import dev.idan.bgbot.utils.PartialImage;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Slf4j
