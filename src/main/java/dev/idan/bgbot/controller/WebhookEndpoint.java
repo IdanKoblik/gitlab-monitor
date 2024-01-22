@@ -8,6 +8,7 @@ import dev.idan.bgbot.utils.PartialImage;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,32 +36,41 @@ public class WebhookEndpoint {
     })
     public void onWebhook(@RequestBody WebhookData data, @RequestHeader("X-Gitlab-Instance") String instanceURL,
                           @RequestHeader("X-Gitlab-Token") String secretToken) {
-       try {
-           Optional<Token> tokenOptional = secretToken == null ? Optional.empty() : tokenRepository.findById(secretToken);
-           if (tokenOptional.isEmpty())
-               throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Secret discordToken must be specified");
+        if (secretToken == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Secret token must be specified");
 
-           Token token = tokenOptional.get();
+        Optional<Token> tokenOptional = tokenRepository.findById(secretToken);
+        if (tokenOptional.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Secret token not found");
 
-           if (!data.sendEmbed()) return;
+        Token token = tokenOptional.get();
 
-           if (jda.getTextChannelById(token.getChannelId()) == null) throw new NullChannelException("Token does not registered inside the DB");
+        if (!data.sendEmbed())
+            return;
 
-           EmbedBuilder builder = new EmbedBuilder();
-           String userName = data.getAuthorName();
-           String avatar = data.getAuthorAvatarUrl();
+        TextChannel channel = jda.getTextChannelById(token.getChannelId());
+        if (channel == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token does not registered inside the DB");
 
-           if (token.isUseGravatar()) avatar = PartialImage.getEmail(avatar, data.getEmail(), token);
+        EmbedBuilder builder = new EmbedBuilder();
+        String userName = data.getAuthorName();
+        String avatar = data.getAuthorAvatarUrl();
 
-           builder.setAuthor(userName, "https://idankoblik.github.io/gitlab-monitor", avatar);
-           builder.setFooter(data.getProjectName());
-           builder.setTimestamp(Instant.now());
-           data.apply(builder, instanceURL, token, jda.getTextChannelById(token.getChannelId()));
+        if (token.isUseGravatar())
+            avatar = PartialImage.getEmail(avatar, data.getEmail(), token);
 
-           jda.getTextChannelById(token.getChannelId()).sendMessageEmbeds(builder.build()).queue();
-       } catch (NullChannelException e) {
-           log.error(e.getMessage());
-           log.error(Arrays.toString(e.getStackTrace()));
-       }
+        builder.setAuthor(userName, "https://idankoblik.github.io/gitlab-monitor", avatar);
+        builder.setFooter(data.getProjectName());
+        builder.setTimestamp(Instant.now());
+
+        try {
+            data.apply(builder, instanceURL, token, channel);
+        } catch (Exception e) {
+            log.error("Error while applying webhook data to embed builder", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        channel.sendMessageEmbeds(builder.build()).queue();
+
     }
 }
