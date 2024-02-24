@@ -1,22 +1,34 @@
-name: GitlabSync
+name: Push to GitLab
 
 on:
-  - push
-  - delete
+  push:
+    branches:
+      - main  # adjust the branch as needed
 
 jobs:
-  sync:
+  build:
     runs-on: ubuntu-latest
-    name: Git Repo Sync
+
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: wangchucheng/git-repo-sync@v0.1.0
-      with:
-        # Such as https://github.com/wangchucheng/git-repo-sync.git
-        target-url: ${{ secrets.TARGET_URL }}
-        # Such as wangchucheng
-        target-username: ${{ secrets.TARGET_USERNAME }}
-          # You can store token in your project's 'Setting > Secrets' and reference the name here. Such as ${{ secrets.ACCESS\_TOKEN }}
-        target-token: ${{ secrets.TARGET_TOKEN }}
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Push to GitLab
+      env:
+        GITLAB_TOKEN: ${{ secrets.TARGET_TOKEN }}
+      run: |
+        # Set up Git configuration
+        git config --global user.email "idankob@gmail.com"
+        git config --global user.name "BETAIDK"
+        
+        # Add GitLab remote
+        git remote add gitlab https://gitlab.com/BETAIDK/gitlab-monitor.git
+        
+        # Fetch GitLab changes
+        git fetch gitlab
+        
+        # Merge GitHub changes into GitLab
+        git merge gitlab/main --allow-unrelated-histories
+        
+        # Push changes back to GitLab
+        git push gitlab main  # adjust the branch as needed
