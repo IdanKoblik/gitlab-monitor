@@ -27,8 +27,13 @@ jobs:
         # Fetch GitLab changes
         git fetch gitlab
         
-        # Merge GitHub changes into GitLab
+        # Merge GitHub changes into GitLab, resolving conflicts
         git merge gitlab/main --allow-unrelated-histories
         
+        # Resolve merge conflicts in conflicted files
+        git checkout --theirs .  # Choose GitHub changes
+        git add .
+        git commit -m "Resolve merge conflicts"
+        
         # Push changes back to GitLab
-        git push gitlab main  # adjust the branch as needed
+        git push gitlab main 
