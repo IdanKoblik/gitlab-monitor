@@ -21,6 +21,8 @@ public class CommentIssueWebhookData extends IssueCommentMergeData {
     @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
         String noteableType = objectAttributes.getNoteableType();
+        if (noteableType.equalsIgnoreCase("MergeRequest"))
+            noteableType = "Merge Request";
 
         if (objectAttributes.getNoteableType().equals("Issue")) {
             builder.setTitle(
