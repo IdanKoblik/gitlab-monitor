@@ -6,6 +6,10 @@ import lombok.Getter;
 
 @Getter
 public class MergeObjectAttributes extends IssueMergeObjectAttributesData {
+
+    @JsonProperty("iid")
+    int iid;
+
     @JsonProperty("source_branch")
     String sourceBranch;
 
