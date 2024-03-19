@@ -16,9 +16,14 @@ public class MergeWebhookData extends IssueCommentMergeData {
 
     @Override
     public void apply(EmbedBuilder builder, String instanceURL, Token token, TextChannel channel) {
-        builder.setTitle(String.format("%s request from branch %s to branch %s",
-                objectAttributes.getAction().substring(0, 1).toUpperCase()
-                        + objectAttributes.getAction().substring(1),
+        String action = objectAttributes.getAction();
+        if (action.equalsIgnoreCase("Merge"))
+            action += "d";
+
+        builder.setTitle(String.format("%s `MR %d` request from branch %s to branch %s",
+                action.substring(0, 1).toUpperCase()
+                        + action.substring(1),
+                objectAttributes.getIid(),
                 objectAttributes.getSourceBranch(),
                 objectAttributes.getTargetBranch()
         ), objectAttributes.getUrl());
